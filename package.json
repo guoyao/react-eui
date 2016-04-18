@@ -1,0 +1,20 @@
+{
+    "name": "reui",
+    "version": "0.0.0",
+    "title": "reui",
+    "description": "ui components based on react",
+    "keywords": [
+        "reui",
+        "ui",
+        "react",
+        "react-ui",
+        "react-component",
+        "component",
+        "components"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "http://gitlab.baidu.com/bce-crm/reui.git"
+    },
+    "license": "MIT"
+}
