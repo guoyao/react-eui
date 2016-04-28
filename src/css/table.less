@@ -1,0 +1,107 @@
+/**
+ * @file css/table.less
+ *
+ * Table 样式
+ */
+
+.react-bs-table-tool-bar {
+    .custom-column-dropdown-wrap {
+        float: right;
+
+        .dropdown-menu {
+            width: 566px;
+            left: -480px;
+            padding: 0 10px;
+            outline: none;
+            .box-shadow(0 2px 8px 2px rgba(0, 0, 0, 0.15));
+
+            li {
+                float: left;
+                margin: 0 10px 0 0;
+                width: 170px;
+                line-height: 30px;
+
+                &.last-column {
+                    margin-right: 0;
+                }
+            }
+
+            button {
+                margin: 0;
+                padding: 2px 8px;
+                border-radius: 0;
+                outline: none;
+                border: 1px solid #5fa2dd;
+                &.cancel-btn {
+                    height: 26px;
+                    border-color: #cdd6e1;
+                }
+            }
+
+            input[type=checkbox] {
+                margin-top: 10px;
+            }
+
+            .form-group {
+                margin: 0;
+            }
+
+            .checkbox {
+                margin: 0;
+            }
+
+            .custom-column-area-header,
+            .custom-column-area-footer {
+                padding: 10px;
+                background: #F7F7F7;
+                margin: 0 -10px;
+
+                button {
+                    margin-right: 12px;
+                }
+            }
+
+            .custom-column-area-header {
+                padding: 0 10px;
+                border-bottom: 1px solid #E5E5E5;
+                .form-group {
+                    float: left;
+                    margin-right: 20px;
+                }
+            }
+
+            .custom-column-area-footer {
+                clear: both;
+                border-top: 1px solid #E5E5E5;
+            }
+
+            .area-title {
+                clear: both;
+                font-size: 14px;
+                font-weight: bold;
+                padding: 10px 0 6px 0;
+            }
+
+            .area-separator {
+                clear: both;
+                border-bottom: 1px dashed #E5E5E5;
+                padding-top: 10px;
+                margin-bottom: 4px;
+            }
+
+            .footer-separator {
+                clear: both;
+                padding-top: 10px;
+            }
+        }
+
+        .dropdown.btn-group {
+            width: 86px;
+            outline: none;
+        }
+    }
+
+    .react-bs-table-search-form {
+        width: 75%;
+    }
+}

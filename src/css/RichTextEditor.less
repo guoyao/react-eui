@@ -1,0 +1,105 @@
+/**
+ * @file css/select.less
+ *
+ * RichTextEditor 样式
+ */
+
+.rich-text-editor {
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 0;
+
+    &.has-error {
+        .help-block {
+            display: block;
+            float: left;
+            margin: 10px 0 0;
+        }
+    }
+
+    .modal-body & {
+        margin: 0 5% 0 20%;
+    }
+
+    .rich-text-editor-editor {
+        border-top: 1px solid #ddd;
+        cursor: text;
+        font-size: 12px;
+        padding: 0 10px 10px;
+        line-height: 20px;
+
+        .public-DraftEditor-content,
+        .public-DraftEditorPlaceholder-root {
+            margin: 0 -15px -15px;
+            padding: 10px 15px;
+        }
+
+        .public-DraftEditor-content {
+            min-height: 100px;
+        }
+
+        .rich-text-editor-blockquote {
+            border-left: 5px solid #eee;
+            color: #666;
+            font-family: inherit;
+            font-style: italic;
+            margin: 16px 0;
+            padding: 10px 20px;
+        }
+
+        .public-DraftStyleDefault-pre {
+            background-color: rgba(0, 0, 0, 0.05);
+            font-family: inherit;
+            font-size: 16px;
+            padding: 20px;
+        }
+    }
+
+    .rich-text-editor-hide-placeholder .public-DraftEditorPlaceholder-root {
+        display: none;
+    }
+
+    .rich-text-editor-controls {
+        font-family: inherit;
+        font-size: 12px;
+        user-select: none;
+        display: inline;
+    }
+
+    .rich-text-editor-style-button {
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 22px;
+        padding: 3px 8px;
+        border-right: 1px solid #ddd;
+        margin: 0;
+        display: inline-block;
+        background: linear-gradient(to bottom, #fdfdfd 0%, #f6f7f8 100%);
+
+        &.block-header {
+            padding: 2px 8px 4px;
+        }
+    }
+
+    .rich-text-editor-active-button {
+        color: #5890ff;
+    }
+
+    .length-tip {
+        float: right;
+        margin: 10px 0 0;
+        font-size: 12px;
+
+        &.overstep {
+            color: #F00;
+        }
+    }
+
+    .help-block {
+        display: none;
+        font-size: 12px;
+    }
+}
