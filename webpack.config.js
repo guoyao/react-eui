@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+var program = require('commander');
 var webpack = require('webpack');
 
 // file-loader 强制转换为 publicPath + hash.ext，这会影响css中的背景图片定位
@@ -8,12 +9,14 @@ var webpack = require('webpack');
 // any problems @chenqiang03
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var util = require('./server/util');
-
 require('es6-promise').polyfill();
 
-var DEBUG = util.get('--debug');
-var PORT = util.getValue('--port');
+program.option('-d, --debug', 'Enable debug')
+    .option('-p, --port <n>', 'Set port for server', parseInt)
+    .parse(process.argv);
+
+var PORT = program.port || 8080;
+var DEBUG = !!program.debug;
 
 var documentPath = __dirname;
 
@@ -22,8 +25,8 @@ module.exports = {
         main: DEBUG ? [
             'webpack-dev-server/client?http://localhost:' + PORT,
             'webpack/hot/only-dev-server',
-            './demo/main'
-        ] : ['./src/index.js']
+            './demo/public/main'
+        ] : ['./index.js']
     },
     output: {
         filename: DEBUG ? '[name].js' : 'reui.min.js',
@@ -41,6 +44,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 include: [
+                    path.join(documentPath, 'index.js'),
                     path.join(documentPath, 'src'),
                     path.join(documentPath, 'demo')
                 ],

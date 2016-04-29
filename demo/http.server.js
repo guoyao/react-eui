@@ -1,12 +1,16 @@
 var path = require('path');
+var program = require('commander');
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
+
 var config = require('../webpack.config');
-
 var devServer = require('./webpackdev.server');
-var util = require('./util');
 
-var PORT = parseInt(util.getValue('--port'), 10);
+program.option('-d, --debug', 'Enable debug')
+    .option('-p, --port <n>', 'Set port for server', parseInt)
+    .parse(process.argv);
+
+var PORT = program.port || 8080;
 var API_PORT = PORT + 1;
 
 devServer.start(API_PORT);
@@ -24,12 +28,6 @@ var server = new WebpackDevServer(webpack(config), {
         }
     }
 });
-
-// 默认进入的静态资源页面
-/*server.use('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../src/common/index.html'));
-});*/
-
 
 server.listen(PORT, 'localhost', function (err, result) {
     if (err) {

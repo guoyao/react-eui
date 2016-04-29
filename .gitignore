@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
 dist/
-server/uploader_files/*
-!server/uploader_files/.gitkeep
+demo/upload/*
+!demo/upload/.gitkeep
 *.log
