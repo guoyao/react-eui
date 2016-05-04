@@ -5,26 +5,24 @@
 
 import './css/select.less';
 
+import React from 'react';
 import u from 'underscore';
 import classnames from 'classnames';
-import { Component } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { ValidatedInput } from 'react-bootstrap-validation';
+import {DropdownButton, MenuItem} from 'react-bootstrap';
+import {ValidatedInput} from 'react-bootstrap-validation';
 
-class ItemRenderer extends Component {
+class ItemRenderer extends React.Component {
     constructor(props, context) {
-		super(props, context);
+        super(props, context);
 
-        const { selectedValue } = this.props;
+        const {selectedValue} = this.props;
 
         this.afterSelect = false;
-        this.state = {
-			selectedValue: selectedValue
-		}
-	}
+        this.state = {selectedValue};
+    }
 
     get datasource() {
-        let { datasource, emptyLabel, isRawSource } = this.props;
+        let {datasource, emptyLabel, isRawSource} = this.props;
         !emptyLabel && (emptyLabel = '请选择');
         const emptyItem = {label: emptyLabel, value: ''};
         datasource = !datasource ? [] : datasource.slice();
@@ -35,18 +33,18 @@ class ItemRenderer extends Component {
         return datasource;
     }
 
-	onSelect(e, key) {
+    onSelect(e, key) {
         if (this.props.disableChange) {
             this.props.onSelect && this.props.onSelect(e, key, this.datasource, this.props.index);
             return false;
         }
 
         this.selectedValue = key;
-		this.setState({selectedValue: key});
+        this.setState({selectedValue: key});
         this.props.onSelect && this.props.onSelect(e, key, this.datasource, this.props.index);
-	}
+    }
 
-	render() {
+    render() {
         if (this.datasource.length === 0) {
             return null;
         }
@@ -56,45 +54,54 @@ class ItemRenderer extends Component {
         !selectedItem && (selectedItem = this.datasource[0]);
         let title = selectedItem.label;
 
-		return (
-			<DropdownButton title={title} id={this.props.id}
-                            disabled={!!this.props.disabled}
-							onSelect={::this.onSelect}>
+        return (
+            <DropdownButton
+                title={title}
+                id={this.props.id}
+                disabled={!!this.props.disabled}
+                onSelect={::this.onSelect}
+            >
                 {
                     this.datasource.map(item => {
                         return (
-                            <MenuItem eventKey={item.value} key={item.value} disabled={!!item.disabled}>{item.label}</MenuItem>
+                            <MenuItem
+                                eventKey={item.value}
+                                key={item.value}
+                                disabled={!!item.disabled}
+                            >
+                                {item.label}
+                            </MenuItem>
                         );
                     })
                 }
-			</DropdownButton>
-		);
-	}
+            </DropdownButton>
+        );
+    }
 }
 
 export default class Select extends ValidatedInput {
     constructor(props, context) {
-		super(props, context);
+        super(props, context);
 
-        const { selectedValue } = this.props;
+        const {selectedValue} = this.props;
 
-		this.state = {
-			selectedValue: selectedValue
-		}
+        this.state = {selectedValue};
         this.numItemRenderer = 0;
-	}
+    }
 
-	onSelect(e, key, datasource, index) {
-        const { selectHandler } = this.props;
+    onSelect(e, key, datasource, index) {
+        const {selectHandler} = this.props;
+        const selectedValue = this.state.selectedValue || key;
+        let selectedValues = selectedValue.split(',');
+
         if (this.props.disableChange) {
             selectHandler && selectHandler(key, datasource, index, selectedValues);
             return;
         }
 
-        const selectedValue = this.state.selectedValue || key;
-        let selectedValues = selectedValue.split(',');
         let selectedItem = u.find(datasource, item => item.value === key);
         selectedValues.splice(index, selectedValues.length, key);
+
         if (selectedItem.children && selectedItem.children.length) {
             selectedValues.push('');
         }
@@ -109,7 +116,7 @@ export default class Select extends ValidatedInput {
         setTimeout(() => {
             this._form && this._form._validateOne(this.props.name, this._form.getValues());
         }, 0);
-	}
+    }
 
     getValue() {
         let selectedValue = this.state.selectedValue;
@@ -141,14 +148,17 @@ export default class Select extends ValidatedInput {
         let controlLabel;
         let classes = {
             'control-label': 'control-label'
-        }
+        };
+
         if (this.props.label) {
             let labelClassName = this.props.labelClassName;
             let validate = this.props.validate;
             classes[labelClassName] = labelClassName;
 
-            if (!/\brequired\b/.test(labelClassName)
-                && (u.isString(validate) && /\brequired\b/.test(validate) || /\brequired\b/.test(this.props.className))) {
+            if (!/\brequired\b/.test(labelClassName) &&
+                (u.isString(validate) &&
+                /\brequired\b/.test(validate) ||
+                /\brequired\b/.test(this.props.className))) {
                 classes.required = 'required';
             }
 
@@ -156,7 +166,10 @@ export default class Select extends ValidatedInput {
             let required = /\brequired\b/.test(classNames);
 
             controlLabel = (
-                <label className={classNames} dangerouslySetInnerHTML={{__html: `${required ? '<i>*</i>' : ''}${this.props.label}`}}></label>
+                <label
+                    className={classNames}
+                    dangerouslySetInnerHTML={{__html: `${required ? '<i>*</i>' : ''}${this.props.label}`}}
+                />
             );
         }
 
@@ -169,8 +182,8 @@ export default class Select extends ValidatedInput {
         this.refs['itemRenderer' + itemRendererNo].selectedValue = val;
     }
 
-	render() {
-        let { datasource, selectedValue } = this.props;
+    render() {
+        let {datasource, selectedValue} = this.props;
 
         selectedValue = this.afterSelect
             ? this.state.selectedValue
@@ -184,7 +197,7 @@ export default class Select extends ValidatedInput {
 
         if (datasource && datasource.length > 0) {
             do {
-                let datasourceItem = {datasource: datasource};
+                let datasourceItem = {datasource};
                 let selectedItem = u.find(datasource, item => item.value === selectedValues[0]);
                 datasources.push(datasourceItem);
                 if (!selectedItem) {
@@ -202,7 +215,7 @@ export default class Select extends ValidatedInput {
                     selectedValues.push('');
                 }
             }
-            while (selectedValues.length > 0)
+            while (selectedValues.length > 0);
         }
 
         let groupClassName = {
@@ -220,7 +233,7 @@ export default class Select extends ValidatedInput {
         this.numItemRenderer = datasources.length;
         let innerclassName = classnames('select-group', this.props.className);
 
-		return (
+        return (
             <div className={className}>
                 {this.renderLabel()}
                 <div className={innerclassName}>
@@ -228,7 +241,9 @@ export default class Select extends ValidatedInput {
                     datasources.map((datasource, index) => {
                         // prevent warning: supply id property
                         return (
-                            <ItemRenderer ref={`itemRenderer${index}`} datasource={datasource.datasource}
+                            <ItemRenderer
+                                ref={`itemRenderer${index}`}
+                                datasource={datasource.datasource}
                                 index={index}
                                 key={index}
                                 id={`${this.props.name}-${index}`}
@@ -237,7 +252,8 @@ export default class Select extends ValidatedInput {
                                 emptyLabel={this.props.emptyLabel}
                                 disabled={!!this.props.disabled}
                                 disableChange={!!this.props.disableChange}
-                                onSelect={::this.onSelect}></ItemRenderer>
+                                onSelect={::this.onSelect}
+                            />
                         );
                     })
                 }
@@ -249,11 +265,12 @@ export default class Select extends ValidatedInput {
                 }
             </div>
 		);
-	}
+    }
 
     componentDidMount() {
         super.componentDidMount && super.componentDidMount();
-        let { datasource } = this.props;
+        let {datasource} = this.props;
+
         // 让datasource支持调用api方法
         if (datasource && u.isFunction(datasource.then)) {
             datasource.then(response => {
@@ -265,3 +282,4 @@ export default class Select extends ValidatedInput {
         }
     }
 }
+

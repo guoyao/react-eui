@@ -13,38 +13,38 @@ import _lodashCompatObjectPick2 from 'lodash-compat/object/pick';
 import _lodashCompatObjectOmit2 from 'lodash-compat/object/omit';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BootstrapTable } from 'react-bootstrap-table';
-import { DropdownButton, Dropdown, Input, Button } from 'react-bootstrap';
+import {BootstrapTable} from 'react-bootstrap-table';
+import {DropdownButton, Dropdown, Input, Button} from 'react-bootstrap';
 import ToolBar from 'react-bootstrap-table/lib/toolbar/ToolBar';
 import _Const2 from 'react-bootstrap-table/lib/Const';
 import _NotificationJs2 from 'react-bootstrap-table/lib/Notification';
 
 class DropdownButtonEx extends DropdownButton {
     render() {
-        var _props = this.props;
-        var bsStyle = _props.bsStyle;
-        var bsSize = _props.bsSize;
-        var disabled = _props.disabled;
-        var _props2 = this.props;
-        var title = _props2.title;
-        var children = _props2.children;
+        let _props = this.props;
+        let bsStyle = _props.bsStyle;
+        let bsSize = _props.bsSize;
+        let disabled = _props.disabled;
+        let _props2 = this.props;
+        let title = _props2.title;
+        let children = _props2.children;
 
-        var props = _objectWithoutProperties(_props2, ['title', 'children']);
+        let props = _objectWithoutProperties(_props2, ['title', 'children']);
 
-        var dropdownProps = _lodashCompatObjectPick2(props, _Object$keys(Dropdown.ControlledComponent.propTypes));
-        var toggleProps = _lodashCompatObjectOmit2(props, _Object$keys(Dropdown.ControlledComponent.propTypes));
+        let dropdownProps = _lodashCompatObjectPick2(props, _Object$keys(Dropdown.ControlledComponent.propTypes));
+        let toggleProps = _lodashCompatObjectOmit2(props, _Object$keys(Dropdown.ControlledComponent.propTypes));
 
         return React.createElement(
             Dropdown,
             _extends({}, dropdownProps, {
-                bsSize: bsSize,
-                bsStyle: bsStyle,
+                bsSize,
+                bsStyle,
                 ref: 'dropdown'
             }),
             React.createElement(
                 Dropdown.Toggle,
                 _extends({}, toggleProps, {
-                    disabled: disabled
+                    disabled
                 }),
                 title
             ),
@@ -107,7 +107,7 @@ class TableToolBar extends ToolBar {
             try {
                 columns = columns ? JSON.parse(columns) : [];
             }
-            catch(error) {
+            catch (error) {
                 columns = [];
             }
         }
@@ -182,14 +182,14 @@ class TableToolBar extends ToolBar {
     }
 
     columnChangeHandler(e) {
-        const { visibleColumns } = this.state;
+        const {visibleColumns} = this.state;
         if (e.target.checked) {
             visibleColumns.push(e.target.value);
         }
         else {
             visibleColumns.splice(u.indexOf(visibleColumns, e.target.value), 1);
         }
-        this.setState({visibleColumns: visibleColumns});
+        this.setState({visibleColumns});
     }
 
     toggleHandler(isOpen) {
@@ -207,7 +207,7 @@ class TableToolBar extends ToolBar {
     selectDefault() {
         let visibleColumns = [].concat(this.allDefaultVisibleColumns);
         visibleColumns.length === 0 && (visibleColumns = [].concat(this.allColumns));
-        this.setState({visibleColumns: visibleColumns});
+        this.setState({visibleColumns});
     }
 
     shortcutChangeHandler(e) {
@@ -238,11 +238,12 @@ class TableToolBar extends ToolBar {
         let customColumn = null;
 
         if (this.enableCustomColumn) {
-            const { columns } = this.props;
-            const { visibleColumns } = this.state;
+            const {columns} = this.props;
+            const {visibleColumns} = this.state;
             let shortcut = this.getShortcut(visibleColumns);
             let defaultShortcut = null;
-            let allMustVisibleColumns = u.filter(columns, column => u.contains(this.allMustVisibleColumns, column.field));
+            let allMustVisibleColumns = u.filter(columns,
+                column => u.contains(this.allMustVisibleColumns, column.field));
             let allCustomColumns = u.filter(columns, column => u.contains(this.allCustomColumns, column.field));
 
             if (this.allDefaultVisibleColumns.length > 0) {
@@ -250,10 +251,11 @@ class TableToolBar extends ToolBar {
                     <Input
                         type="radio"
                         name="shortcut"
-                        label='默认'
-                        value='default'
+                        label="默认"
+                        value="default"
                         checked={shortcut === 'default'}
-                        onChange={this.shortcutChangeHandler} />
+                        onChange={this.shortcutChangeHandler}
+                    />
                 );
             }
 
@@ -270,18 +272,20 @@ class TableToolBar extends ToolBar {
                             <Input
                                 type="radio"
                                 name="shortcut"
-                                label='全选'
-                                value='all'
+                                label="全选"
+                                value="all"
                                 checked={shortcut === 'all'}
-                                onChange={this.shortcutChangeHandler} />
+                                onChange={this.shortcutChangeHandler}
+                            />
                             <Input
                                 type="radio"
                                 name="shortcut"
-                                label='自定义'
-                                value='custom'
+                                label="自定义"
+                                value="custom"
                                 disabled
                                 checked={shortcut === 'custom'}
-                                onChange={this.shortcutChangeHandler} />
+                                onChange={this.shortcutChangeHandler}
+                            />
                         </div>
                         <h4 className="area-title">必选列</h4>
                         {
@@ -294,7 +298,8 @@ class TableToolBar extends ToolBar {
                                             label={column.title}
                                             value={column.field}
                                             disabled
-                                            checked />
+                                            checked
+                                        />
                                     </li>
                                 );
                             })
@@ -312,7 +317,8 @@ class TableToolBar extends ToolBar {
                                             label={column.title}
                                             value={column.field}
                                             checked={checked}
-                                            onChange={this.columnChangeHandler} />
+                                            onChange={this.columnChangeHandler}
+                                        />
                                     </li>
                                 );
                             })
@@ -333,10 +339,10 @@ class TableToolBar extends ToolBar {
 
     render() {
         this.modalClassName = 'bs-table-modal-sm' + ToolBar.modalSeq++;
-        var insertBtn = null;
-        var deleteBtn = null;
-        var exportCSV = null;
-        var showSelectedOnlyBtn = null;
+        let insertBtn = null;
+        let deleteBtn = null;
+        let exportCSV = null;
+        let showSelectedOnlyBtn = null;
 
         if (this.props.enableInsert) {
             insertBtn = React.createElement('button', {
@@ -378,9 +384,9 @@ class TableToolBar extends ToolBar {
             }, React.createElement('i', {className: 'glyphicon glyphicon-export'}), this.props.exportCSVText);
         }
 
-        var customColumn = this.renderCustomColumn();
-        var searchTextInput = this.renderSearchPanel();
-        var modal = this.props.enableInsert ? this.renderInsertRowModal() : null;
+        let customColumn = this.renderCustomColumn();
+        let searchTextInput = this.renderSearchPanel();
+        let modal = this.props.enableInsert ? this.renderInsertRowModal() : null;
 
         return React.createElement('div', {
             className: 'row'
@@ -423,19 +429,20 @@ export default class Table extends BootstrapTable {
     }
 
     renderToolBar() {
-        var _props2 = this.props;
-        var selectRow = _props2.selectRow;
-        var insertRow = _props2.insertRow;
-        var deleteRow = _props2.deleteRow;
-        var search = _props2.search;
-        var children = _props2.children;
+        let _props2 = this.props;
+        let selectRow = _props2.selectRow;
+        let insertRow = _props2.insertRow;
+        let deleteRow = _props2.deleteRow;
+        let search = _props2.search;
+        let children = _props2.children;
 
-        var enableShowOnlySelected = selectRow && selectRow.showOnlySelected;
-        if (enableShowOnlySelected || insertRow || deleteRow || search || this.enableCustomColumn || this.props.exportCSV) {
-            var columns = undefined;
+        let enableShowOnlySelected = selectRow && selectRow.showOnlySelected;
+        if (enableShowOnlySelected || insertRow || deleteRow || search ||
+            this.enableCustomColumn || this.props.exportCSV) {
+            let columns = undefined;
             if (Array.isArray(children)) {
-                columns = children.map(function(column) {
-                    var props = column.props;
+                columns = children.map((column) => {
+                    let props = column.props;
 
                     return {
                         name: props.children,
@@ -448,7 +455,7 @@ export default class Table extends BootstrapTable {
                             ? props.editable()
                             : props.editable,
                         format: props.dataFormat
-                            ? function(value) {
+                            ? function (value) {
                                 return props.dataFormat(value, null, props.formatExtraData).replace(/<.*?>/g, '');
                             }
                             : false,
@@ -479,8 +486,8 @@ export default class Table extends BootstrapTable {
                 enableDelete: deleteRow,
                 enableSearch: search,
                 enableExportCSV: this.props.exportCSV,
-                enableShowOnlySelected: enableShowOnlySelected,
-                columns: columns,
+                enableShowOnlySelected,
+                columns,
                 searchPlaceholder: this.props.searchPlaceholder,
                 exportCSVText: this.props.options.exportCSVText,
                 ignoreEditable: this.props.options.ignoreEditable,
@@ -494,8 +501,7 @@ export default class Table extends BootstrapTable {
                 ref: 'toolbar'
             }));
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 }
