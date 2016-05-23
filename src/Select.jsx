@@ -12,36 +12,45 @@ import {DropdownButton, MenuItem} from 'react-bootstrap';
 import {ValidatedInput} from 'react-bootstrap-validation';
 
 class ItemRenderer extends React.Component {
+    static propTypes = {
+        ...React.Component.propTypes,
+        selectHandler: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        ...React.Component.defaultProps,
+        selectHandler: (e, value, datasource, index) => {}
+    }
+
     constructor(props, context) {
         super(props, context);
 
-        const {selectedValue} = this.props;
-
-        this.afterSelect = false;
-        this.state = {selectedValue};
+        this.state = {selectedValue: this.props.selectedValue};
+        this.selectHandler = this.selectHandler.bind(this);
+        // this.datasource = this.getDatasource();
     }
 
     get datasource() {
-        let {datasource, emptyLabel, isRawSource} = this.props;
-        !emptyLabel && (emptyLabel = '请选择');
-        const emptyItem = {label: emptyLabel, value: ''};
+        const isRawSource = this.props.isRawSource;
+        let {datasource, emptyLabel} = this.props;
+
         datasource = !datasource ? [] : datasource.slice();
-        if (datasource.length > 0 && datasource[0].value !== '' && !isRawSource) {
-            datasource.unshift(emptyItem);
+
+        if (!isRawSource && datasource[0] && datasource[0].value !== '') {
+            datasource.unshift({label: emptyLabel || '请选择', value: ''});
         }
 
         return datasource;
     }
 
-    onSelect(e, key) {
+    selectHandler(e, value) {
         if (this.props.disableChange) {
-            this.props.onSelect && this.props.onSelect(e, key, this.datasource, this.props.index);
+            this.props.selectHandler(e, value, this.datasource, this.props.index);
             return false;
         }
 
-        this.selectedValue = key;
-        this.setState({selectedValue: key});
-        this.props.onSelect && this.props.onSelect(e, key, this.datasource, this.props.index);
+        this.setState({selectedValue: value});
+        this.props.selectHandler(e, value, this.datasource, this.props.index);
     }
 
     render() {
@@ -49,82 +58,85 @@ class ItemRenderer extends React.Component {
             return null;
         }
 
-        const selectedValue = this.selectedValue || this.props.selectedValue;
+        const selectedValue = this.state.selectedValue;
         let selectedItem = u.find(this.datasource, item => item.value === selectedValue);
         !selectedItem && (selectedItem = this.datasource[0]);
         let title = selectedItem.label;
 
         return (
             <DropdownButton
-                title={title}
                 id={this.props.id}
+                title={title}
                 disabled={!!this.props.disabled}
-                onSelect={::this.onSelect}
+                onSelect={this.selectHandler}
             >
-                {
-                    this.datasource.map(item => {
-                        return (
-                            <MenuItem
-                                eventKey={item.value}
-                                key={item.value}
-                                disabled={!!item.disabled}
-                            >
-                                {item.label}
-                            </MenuItem>
-                        );
-                    })
-                }
+            {
+                this.datasource.map(item => {
+                    return (
+                        <MenuItem
+                            key={item.value}
+                            eventKey={item.value}
+                            disabled={!!item.disabled}
+                        >
+                            {item.label}
+                        </MenuItem>
+                    );
+                })
+            }
             </DropdownButton>
         );
     }
 }
 
 export default class Select extends ValidatedInput {
+    static propTypes = {
+        ...ValidatedInput.propTypes,
+        selectHandler: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        ...ValidatedInput.defaultProps,
+        selectHandler: (value, datasource, index, selectedValues) => {}
+    }
+
     constructor(props, context) {
         super(props, context);
 
-        const {selectedValue} = this.props;
-
-        this.state = {selectedValue};
-        this.numItemRenderer = 0;
+        this.selectHandler = this.selectHandler.bind(this);
     }
 
-    onSelect(e, key, datasource, index) {
+    selectHandler(e, value, datasource, index) {
         const {selectHandler} = this.props;
-        const selectedValue = this.state.selectedValue || key;
+        const selectedValue = this.props.selectedValue || value;
         let selectedValues = selectedValue.split(',');
 
         if (this.props.disableChange) {
-            selectHandler && selectHandler(key, datasource, index, selectedValues);
+            selectHandler(value, datasource, index, selectedValues);
             return;
         }
 
-        let selectedItem = u.find(datasource, item => item.value === key);
-        selectedValues.splice(index, selectedValues.length, key);
+        selectedValues.splice(index, selectedValues.length, value);
+
+        let selectedItem = u.find(datasource, item => item.value === value);
 
         if (selectedItem.children && selectedItem.children.length) {
             selectedValues.push('');
         }
 
-        this.setState({
-            selectedValue: selectedValues.join(',')
-        });
+        selectHandler(value, datasource, index, selectedValues);
 
-        this.afterSelect = true;
-
-        selectHandler && selectHandler(key, datasource, index, selectedValues);
         setTimeout(() => {
             this._form && this._form._validateOne(this.props.name, this._form.getValues());
         }, 0);
     }
 
     getValue() {
-        let selectedValue = this.state.selectedValue;
+        const datasource = this.props.datasource;
+        let selectedValue = this.props.selectedValue;
 
         // 处理初始值本身是错误的问题
         if (selectedValue) {
             const selectedValues = selectedValue.split(',');
-            const datasource = this.state.datasource || this.props.datasource;
             const values = u.pluck(datasource, 'value');
             if (!u.contains(values, selectedValues[0])) {
                 return '';
@@ -132,8 +144,7 @@ export default class Select extends ValidatedInput {
         }
 
         if (this.props.isRawSource && selectedValue === undefined) {
-            selectedValue = this.props.datasource[0]
-                ? this.props.datasource[0].value : '';
+            selectedValue = datasource[0] ? datasource[0].value : '';
         }
 
         return selectedValue ? selectedValue.replace(/,$/, '') : '';
@@ -176,24 +187,12 @@ export default class Select extends ValidatedInput {
         return controlLabel;
     }
 
-    // 想通过props来改item的选中值，就调用它
-
-    setSelectedValue(itemRendererNo, val) {
-        this.refs['itemRenderer' + itemRendererNo].selectedValue = val;
-    }
-
     render() {
-        let {datasource, selectedValue} = this.props;
-
-        selectedValue = this.afterSelect
-            ? this.state.selectedValue
-            : selectedValue;
-
-        this.afterSelect = false;
-
+        const {selectedValue} = this.props;
+        console.log(selectedValue);
+        let datasource = this.props.datasource;
         let selectedValues = selectedValue && selectedValue.split(',') || [''];
         let datasources = [];
-        datasource = this.state.datasource || datasource;
 
         if (datasource && datasource.length > 0) {
             do {
@@ -206,12 +205,11 @@ export default class Select extends ValidatedInput {
                     break;
                 }
                 datasourceItem.selectedValue = selectedItem.value;
-                let lastValue = selectedValues.shift();
                 datasource = selectedItem.children;
                 if (!datasource || datasource.length === 0) {
                     break;
                 }
-                if (selectedValues.length === 0 && lastValue) {
+                if (selectedValues.shift() && selectedValues.length === 0) {
                     selectedValues.push('');
                 }
             }
@@ -230,7 +228,6 @@ export default class Select extends ValidatedInput {
         };
 
         let className = classnames(groupClassName, this.props.groupClassName);
-        this.numItemRenderer = datasources.length;
         let innerclassName = classnames('select-group', this.props.className);
 
         return (
@@ -239,20 +236,19 @@ export default class Select extends ValidatedInput {
                 <div className={innerclassName}>
                 {
                     datasources.map((datasource, index) => {
-                        // prevent warning: supply id property
                         return (
                             <ItemRenderer
+                                id={`${this.props.name}-${index}`}
                                 ref={`itemRenderer${index}`}
                                 datasource={datasource.datasource}
                                 index={index}
                                 key={index}
-                                id={`${this.props.name}-${index}`}
                                 isRawSource={this.props.isRawSource}
                                 selectedValue={datasource.selectedValue}
                                 emptyLabel={this.props.emptyLabel}
                                 disabled={!!this.props.disabled}
                                 disableChange={!!this.props.disableChange}
-                                onSelect={::this.onSelect}
+                                selectHandler={this.selectHandler}
                             />
                         );
                     })
@@ -266,20 +262,4 @@ export default class Select extends ValidatedInput {
             </div>
 		);
     }
-
-    componentDidMount() {
-        super.componentDidMount && super.componentDidMount();
-        let {datasource} = this.props;
-
-        // 让datasource支持调用api方法
-        if (datasource && u.isFunction(datasource.then)) {
-            datasource.then(response => {
-                let data = response.result;
-                this.setState({
-                    datasource: data
-                });
-            });
-        }
-    }
 }
-

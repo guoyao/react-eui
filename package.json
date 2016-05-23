@@ -25,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-runtime": "^6.6.1",
+    "bootstrap": "^3.3.6",
     "classnames": "^2.2.4",
     "draft-js": "^0.6.0",
     "draft-js-export-html": "^0.1.13",

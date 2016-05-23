@@ -1,9 +1,12 @@
+import './main.less';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import reui from '../../index';
+import RichTextEditorDemo from './RichTextEditorDemo';
+import SelectDemo from './SelectDemo';
 
 ReactDOM.render(
-    <reui.RichTextEditor></reui.RichTextEditor>,
+    <SelectDemo />,
     document.getElementById('react-app')
 )
