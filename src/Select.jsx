@@ -19,7 +19,10 @@ class ItemRenderer extends React.Component {
 
     static defaultProps = {
         ...React.Component.defaultProps,
+
+        /* eslint-disable no-unused-vars */
         selectHandler: (e, value, datasource, index) => {}
+        /* eslint-enable no-unused-vars */
     }
 
     constructor(props, context) {
@@ -27,12 +30,12 @@ class ItemRenderer extends React.Component {
 
         this.state = {selectedValue: this.props.selectedValue};
         this.selectHandler = this.selectHandler.bind(this);
-        // this.datasource = this.getDatasource();
+        this.datasource = this.getDatasource(this.props);
     }
 
-    get datasource() {
-        const isRawSource = this.props.isRawSource;
-        let {datasource, emptyLabel} = this.props;
+    getDatasource(props) {
+        const isRawSource = props.isRawSource;
+        let {datasource, emptyLabel} = props;
 
         datasource = !datasource ? [] : datasource.slice();
 
@@ -51,6 +54,16 @@ class ItemRenderer extends React.Component {
 
         this.setState({selectedValue: value});
         this.props.selectHandler(e, value, this.datasource, this.props.index);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.selectedValue !== nextProps.selectedValue) {
+            this.setState({selectedValue: nextProps.selectedValue});
+        }
+
+        if (this.props.datasource !== nextProps.datasource) {
+            this.datasource = this.getDatasource(nextProps);
+        }
     }
 
     render() {
@@ -96,7 +109,10 @@ export default class Select extends ValidatedInput {
 
     static defaultProps = {
         ...ValidatedInput.defaultProps,
+
+        /* eslint-disable no-unused-vars */
         selectHandler: (value, datasource, index, selectedValues) => {}
+        /* eslint-enable no-unused-vars */
     }
 
     constructor(props, context) {
@@ -120,7 +136,8 @@ export default class Select extends ValidatedInput {
         let selectedItem = u.find(datasource, item => item.value === value);
 
         if (selectedItem.children && selectedItem.children.length) {
-            selectedValues.push('');
+            let value = this.props.isRawSource && selectedItem.children[0] && selectedItem.children[0].value || '';
+            selectedValues.push(value);
         }
 
         selectHandler(value, datasource, index, selectedValues);
@@ -131,16 +148,30 @@ export default class Select extends ValidatedInput {
     }
 
     getValue() {
-        const datasource = this.props.datasource;
+        let datasource = this.props.datasource;
         let selectedValue = this.props.selectedValue;
 
         // 处理初始值本身是错误的问题
         if (selectedValue) {
             const selectedValues = selectedValue.split(',');
-            const values = u.pluck(datasource, 'value');
-            if (!u.contains(values, selectedValues[0])) {
-                return '';
+            const values = [];
+
+            for (var i = 0, length = selectedValues.length; i < length; i++) {
+                if (!datasource || datasource.length === 0) {
+                    break;
+                }
+
+                if (u.contains(u.pluck(datasource, 'value'), selectedValues[i])) {
+                    values.push(selectedValues[i]);
+                    datasource = datasource[i].children;
+                }
+                else {
+                    this.props.isRawSource && values.push(datasource[0].value || '');
+                    break;
+                }
             }
+
+            selectedValue = values.join(',');
         }
 
         if (this.props.isRawSource && selectedValue === undefined) {
@@ -189,7 +220,7 @@ export default class Select extends ValidatedInput {
 
     render() {
         const {selectedValue} = this.props;
-        console.log(selectedValue);
+        // console.log(selectedValue);
         let datasource = this.props.datasource;
         let selectedValues = selectedValue && selectedValue.split(',') || [''];
         let datasources = [];
@@ -200,7 +231,6 @@ export default class Select extends ValidatedInput {
                 let selectedItem = u.find(datasource, item => item.value === selectedValues[0]);
                 datasources.push(datasourceItem);
                 if (!selectedItem) {
-                    // selectedValues[0] === '' && (datasourceItem.selectedValue = '');
                     datasourceItem.selectedValue = '';
                     break;
                 }
@@ -238,11 +268,11 @@ export default class Select extends ValidatedInput {
                     datasources.map((datasource, index) => {
                         return (
                             <ItemRenderer
+                                key={index}
+                                index={index}
                                 id={`${this.props.name}-${index}`}
                                 ref={`itemRenderer${index}`}
                                 datasource={datasource.datasource}
-                                index={index}
-                                key={index}
                                 isRawSource={this.props.isRawSource}
                                 selectedValue={datasource.selectedValue}
                                 emptyLabel={this.props.emptyLabel}

@@ -113,6 +113,7 @@ export default class FormEx extends Form {
         var errors = [];
 
         if (typeof this.props.validateAll === 'function') {
+            /* eslint-disable */
             (function () {
                 var result = _this4.props.validateAll(context);
 
@@ -126,21 +127,18 @@ export default class FormEx extends Form {
                     });
                 }
             })();
+            /* eslint-enable */
 
-            return {
-                isValid: isValid,
-                errors: errors
-            };
+            return {isValid, errors};
         }
-        else {
-            let promises = [];
 
-            _Object$keys(this._inputs).forEach(iptName => {
-                promises.push(_this4._validateOne(iptName, context));
-            });
+        let promises = [];
 
-            return Promise.all(promises);
-        }
+        _Object$keys(this._inputs).forEach(iptName => {
+            promises.push(_this4._validateOne(iptName, context));
+        });
+
+        return Promise.all(promises);
     }
 
     _handleSubmit(e) {
@@ -155,13 +153,15 @@ export default class FormEx extends Form {
         var _validateAll2 = this._validateAll(values);
 
         if (isPromise(_validateAll2)) {
-            _validateAll2.then((results) => {
+            _validateAll2.then(() => {
                 this.props.onValidSubmit(values);
             })
-            .catch((err) => {
+            .catch(() => {
                 this.props.onInvalidSubmit(this._errorIptNames, values);
                 if (this._errorIptNames.length > 0) {
-                    let input = this._inputs[this._errorIptNames[0]].getInputDOMNode && this._inputs[this._errorIptNames[0]].getInputDOMNode();
+                    let input = this._inputs[this._errorIptNames[0]].getInputDOMNode &&
+                        this._inputs[this._errorIptNames[0]].getInputDOMNode();
+
                     input && input.focus();
                 }
             });
@@ -176,7 +176,9 @@ export default class FormEx extends Form {
             else {
                 this.props.onInvalidSubmit(errors, values);
                 if (this._errorIptNames.length > 0) {
-                    let input = this._inputs[this._errorIptNames[0]].getInputDOMNode && this._inputs[this._errorIptNames[0]].getInputDOMNode();
+                    let input = this._inputs[this._errorIptNames[0]].getInputDOMNode &&
+                        this._inputs[this._errorIptNames[0]].getInputDOMNode();
+
                     input && input.focus();
                 }
             }

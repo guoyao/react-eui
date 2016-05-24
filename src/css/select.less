@@ -7,3 +7,47 @@
 .select-wrap-hidden {
     display: none;
 }
+
+.select-group {
+    > .btn-group {
+        margin-left: -1px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        > .btn {
+            line-height: 30px;
+            padding: 0 10px;
+            border: 1px solid #CDD6E1;
+            box-shadow: none;
+            background-image: none;
+            background-color: #FAFAFA;
+            .border-radius(0);
+
+            &:hover {
+                background-color: #E9E9E9;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        min-width: 100%;
+        padding: 0;
+        margin: 0;
+        .border-radius(0);
+        .box-shadow(0 2px 1px 0 rgba(0,0,0,.15));
+
+        > li > a {
+            display: inline-block;
+            width: 100%;
+            line-height: 30px;
+            padding: 0 10px;
+            background: none;
+            &:hover {
+                // background-color: #54ABD9;
+                background-color: #E9E9E9;
+            }
+        }
+    }
+}

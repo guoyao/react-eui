@@ -28,11 +28,32 @@ const datasource = [
 export default class SelectDemo extends React.Component {
     constructor(...args) {
         super(...args);
-        this.state = {datasource: datasource, selectedValue: 'value-5,value-5-2,value-5-2-2'};
+        this.state = {datasource: datasource};
         this.selectHandler = this.selectHandler.bind(this);
+        // this.usages();
+    }
 
+    usages() {
         setTimeout(() => {
-            this.setState({datasource: [{label: 'label001', value: 'value-5'}], selectedValue: 'value-5'});
+            this.setState({datasource: [
+                {
+                    label: 'label001',
+                    value: 'value-5',
+                    children: [
+                        {label: 'label001-1', value: 'value-001-1'},
+                        {
+                            label: 'label001-2',
+                            value: 'value-001-2',
+                            children: [
+                                {label: 'label001-2-1', value: 'value-001-2-1'},
+                                {label: 'label001-2-2', value: 'value-001-2-2'},
+                                {label: 'label001-2-3', value: 'value-001-2-3'},
+                            ]
+                        },
+                        {label: 'label001-3', value: 'value-001-3'}
+                    ]
+                },
+            ], selectedValue: 'value-5,value-001-2,value-001-2-3'});
         }, 3000);
 
         setTimeout(() => {
@@ -45,7 +66,6 @@ export default class SelectDemo extends React.Component {
     }
 
     render() {
-        console.log(this.state.datasource);
         return (
             <Form>
                 <Select
