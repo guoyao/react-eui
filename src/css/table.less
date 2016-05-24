@@ -4,7 +4,17 @@
  * Table 样式
  */
 
+.react-bs-container-header {
+    overflow: hidden;
+    
+    .table {
+        margin-bottom: -1px;
+    }
+}
+
 .react-bs-table-tool-bar {
+    margin-bottom: 6px;
+
     .custom-column-dropdown-wrap {
         float: right;
 
@@ -32,6 +42,7 @@
                 border-radius: 0;
                 outline: none;
                 border: 1px solid #5fa2dd;
+
                 &.cancel-btn {
                     height: 26px;
                     border-color: #cdd6e1;
@@ -64,6 +75,7 @@
             .custom-column-area-header {
                 padding: 0 10px;
                 border-bottom: 1px solid #E5E5E5;
+
                 .form-group {
                     float: left;
                     margin-right: 20px;
@@ -103,5 +115,24 @@
 
     .react-bs-table-search-form {
         width: 75%;
+    }
+
+    .btn {
+        &.btn-default {
+            background-color: #fafafa;
+            &:hover {
+                border-color: #aaa;
+            }
+        }
+        &.btn-disabled {
+            box-shadow: none;
+            opacity: .65;
+        }
+    }
+
+    .btn-sm,
+    .btn-group-sm > .btn,
+    .btn-icon.btn-sm {
+        padding: 5px 12px;
     }
 }

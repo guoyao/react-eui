@@ -6,6 +6,7 @@ import {Tab, Tabs} from 'react-bootstrap';
 
 import RichTextEditorDemo from './RichTextEditorDemo';
 import SelectDemo from './SelectDemo';
+import TableDemo from './TableDemo';
 
 class Container extends React.Component {
     constructor(...args) {
@@ -30,6 +31,9 @@ class Container extends React.Component {
                  </Tab>
                  <Tab eventKey="rich-text-editor" title="RichTextEditor">
                      <RichTextEditorDemo />
+                 </Tab>
+                 <Tab eventKey="table" title="Table">
+                     <TableDemo />
                  </Tab>
             </Tabs>
         );

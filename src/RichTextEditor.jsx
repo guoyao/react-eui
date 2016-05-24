@@ -6,7 +6,6 @@
 import './css/RichTextEditor.less';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 export default class RichTextEditor extends React.Component {
     static propTypes = {
@@ -36,7 +35,7 @@ export default class RichTextEditor extends React.Component {
             ],
             toolbars: [
                 [
-                    'source','undo', 'redo', 'insertunorderedlist', 'insertorderedlist', 'unlink',
+                    'source', 'undo', 'redo', 'insertunorderedlist', 'insertorderedlist', 'unlink',
                     'link', 'bold', 'underline', 'fontborder', 'strikethrough', 'forecolor',
                     'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify',
                     'removeformat', 'fontfamily', 'fontsize', '|', 'blockquote', 'cleardoc', 'formatmatch',
@@ -62,17 +61,21 @@ export default class RichTextEditor extends React.Component {
         const {maximumWords} = this.props.config;
         let currentWords = this.editor.getContentLength(true);
         let valid = currentWords <= maximumWords;
-        this.setState({valid: valid});
+        this.setState({valid});
         return valid;
     }
 
     render() {
-        return <div id={this.editorId} className="rich-text-editor" title={this.props.placeholder}></div>;
+        return <div id={this.editorId} className="rich-text-editor" title={this.props.placeholder} />;
     }
 
     componentDidMount() {
         super.componentDidMount && super.componentDidMount();
+
+        /* eslint-disable no-undef */
         this.editor = UE.getEditor(this.editorId, this.props.config);
+        /* eslint-enable */
+
         this.editor.ready(() => {
             this.editor.setContent(this.props.content || '');
         });

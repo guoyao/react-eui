@@ -14,7 +14,7 @@ import _lodashCompatObjectOmit2 from 'lodash-compat/object/omit';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BootstrapTable} from 'react-bootstrap-table';
-import {DropdownButton, Dropdown, Input, Button} from 'react-bootstrap';
+import {DropdownButton, Dropdown, Input, Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import ToolBar from 'react-bootstrap-table/lib/toolbar/ToolBar';
 import _Const2 from 'react-bootstrap-table/lib/Const';
 import _NotificationJs2 from 'react-bootstrap-table/lib/Notification';
@@ -68,14 +68,17 @@ class TableToolBar extends ToolBar {
         uniqueName: ''
     }
 
-    constructor() {
-        super(...arguments);
+    constructor(...args) {
+        super(...args);
         this.enableCustomColumn = !!this.props.uniqueName;
+
         this.submitHandler = this.submitHandler.bind(this);
         this.cancelHandler = this.cancelHandler.bind(this);
         this.columnChangeHandler = this.columnChangeHandler.bind(this);
         this.toggleHandler = this.toggleHandler.bind(this);
         this.shortcutChangeHandler = this.shortcutChangeHandler.bind(this);
+        this.handleEditRowBtnClick = this.handleEditRowBtnClick.bind(this);
+
         this.state = {visibleColumns: this.visibleColumns};
         this.allColumns = u.pluck(this.props.columns, 'field');
         this.allDefaultVisibleColumns = u.pluck(u.filter(this.props.columns, column => column.defaultVisible), 'field');
@@ -97,7 +100,8 @@ class TableToolBar extends ToolBar {
     }
 
     get uniqueName() {
-        return `${sessionStorage.getItem('login-user-name')}:${this.props.uniqueName}`;
+        let session = sessionStorage.getItem('login-user-name');
+        return `${session ? session + ':' : ''}${this.props.uniqueName}`;
     }
 
     get visibleColumns() {
@@ -143,10 +147,22 @@ class TableToolBar extends ToolBar {
 
             u.each(heads, (item, index) => {
                 let field = item.getAttribute('data-field');
-                if (u.contains(visibleColumns, field)) {
+                let isSelectAll = item.querySelector('input.react-bs-select-all');
+                if (u.contains(visibleColumns, field) || isSelectAll) {
                     item.style.display = 'table-cell';
+                    if (isSelectAll) {
+                        item.style.width = '50px';
+                        item.style.minWidth = '50px';
+                    }
                     u.each(rows, row => {
-                        row.children[index] && (row.children[index].style.display = 'table-cell');
+                        let rowItem = row.children[index];
+                        if (rowItem) {
+                            rowItem.style.display = 'table-cell';
+                            if (isSelectAll) {
+                                rowItem.style.width = '50px';
+                                rowItem.style.minWidth = '50px';
+                            }
+                        }
                     });
                 }
                 else {
@@ -337,9 +353,16 @@ class TableToolBar extends ToolBar {
         return customColumn;
     }
 
+    handleEditRowBtnClick() {
+        let table = this.props.table;
+        let {rowKeys, rows} = table.selectedRowArgs;
+        this.props.editRowProp.handleEditRow && rowKeys && this.props.editRowProp.handleEditRow(rowKeys, rows);
+    }
+
     render() {
         this.modalClassName = 'bs-table-modal-sm' + ToolBar.modalSeq++;
         let insertBtn = null;
+        let editBtn = null;
         let deleteBtn = null;
         let exportCSV = null;
         let showSelectedOnlyBtn = null;
@@ -351,6 +374,37 @@ class TableToolBar extends ToolBar {
                 'data-toggle': 'modal',
                 'data-target': '.' + this.modalClassName
             }, React.createElement('i', {className: 'glyphicon glyphicon-plus'}), ' New');
+        }
+
+        if (this.props.editRowProp) {
+            let editRowProp = this.props.editRowProp;
+            let title = editRowProp.title;
+            let text = editRowProp.text || title;
+            let className = 'btn btn-default react-bs-table-edit-btn';
+
+            if (editRowProp.disabled) {
+                className += ' btn-disabled';
+            }
+
+            editBtn = React.createElement('button', {
+                type: 'button',
+                className,
+                disabled: editRowProp.disabled && !editRowProp.tooltip,
+                'data-toggle': 'tooltip',
+                'data-placement': 'right',
+                title: title || 'Edit selected row',
+                onClick: this.handleEditRowBtnClick
+            }, React.createElement('i', {className: 'glyphicon glyphicon-edit'}), ` ${text || 'Edit'}`);
+            if (editRowProp.tooltip) {
+                let tooltip = (
+                    <Tooltip id={editRowProp.tooltip}>{editRowProp.tooltip}</Tooltip>
+                );
+                editBtn = (
+                    <OverlayTrigger placement="top" overlay={tooltip}>
+                        <span>{editBtn}</span>
+                    </OverlayTrigger>
+                );
+            }
         }
 
         if (this.props.enableDelete) {
@@ -395,7 +449,7 @@ class TableToolBar extends ToolBar {
         }, React.createElement('div', {
             className: 'btn-group btn-group-sm',
             role: 'group'
-        }, exportCSV, insertBtn, deleteBtn, showSelectedOnlyBtn)), React.createElement('div', {
+        }, exportCSV, insertBtn, editBtn, deleteBtn, showSelectedOnlyBtn)), React.createElement('div', {
             className: 'col-xs-12 col-sm-6 col-md-6 col-lg-4'
         }, customColumn, searchTextInput), React.createElement(_NotificationJs2, {ref: 'notifier'}), modal);
     }
@@ -428,16 +482,51 @@ export default class Table extends BootstrapTable {
         this.refs.toolbar && this.refs.toolbar.columnVisibleUpdate();
     }
 
+    unselectAllRow() {
+        let selectRow = this.props.selectRow;
+        selectRow.onSelectAll(false);
+        this.selectedRowArgs = {rowKeys: []};
+    }
+
+    compactSelectedRowArgs(rowKeys) {
+        let rows = [];
+        if (rowKeys && rowKeys.length) {
+            let key = this.store.getKeyField();
+            rows = u.filter(this.store.data, item => u.contains(rowKeys, item[key]));
+            if (!this.props.selectCrossPage) {   // 如果支持跨页选择，则返回所有页选中的key，否则只有当前页的
+                rowKeys = u.pluck(rows, key);
+            }
+        }
+        return {rowKeys, rows};
+    }
+
+    set selectedRowArgs(rowArgs) {
+        let rowKeys = rowArgs.rowKeys || rowArgs;
+        this.store.setSelectedRowKey(rowKeys);
+        this.setState({selectedRowKeys: rowKeys});
+        let newRowArgs = this.compactSelectedRowArgs(rowKeys);
+
+        return {rowKeys: newRowArgs.rowKeys, rows: newRowArgs.rows};
+    }
+
+    get selectedRowArgs() {
+        let rowKeys = this.store.getSelectedRowKeys();
+        let newRowArgs = this.compactSelectedRowArgs(rowKeys);
+
+        return {rowKeys: newRowArgs.rowKeys, rows: newRowArgs.rows};
+    }
+
     renderToolBar() {
         let _props2 = this.props;
         let selectRow = _props2.selectRow;
         let insertRow = _props2.insertRow;
         let deleteRow = _props2.deleteRow;
+        let editRowProp = _props2.editRowProp;
         let search = _props2.search;
         let children = _props2.children;
 
         let enableShowOnlySelected = selectRow && selectRow.showOnlySelected;
-        if (enableShowOnlySelected || insertRow || deleteRow || search ||
+        if (enableShowOnlySelected || insertRow || deleteRow || editRowProp || search ||
             this.enableCustomColumn || this.props.exportCSV) {
             let columns = undefined;
             if (Array.isArray(children)) {
@@ -481,8 +570,10 @@ export default class Table extends BootstrapTable {
                 className: 'react-bs-table-tool-bar'
             }, React.createElement(TableToolBar, {
                 clearSearch: this.props.options.clearSearch,
+                selectRow: this.props.selectRow,
                 searchDelayTime: this.props.options.searchDelayTime,
                 enableInsert: insertRow,
+                editRowProp,
                 enableDelete: deleteRow,
                 enableSearch: search,
                 enableExportCSV: this.props.exportCSV,
