@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './css/table.less';
+import './css/Table.less';
 
 import u from 'underscore';
 import _extends from 'babel-runtime/helpers/extends';

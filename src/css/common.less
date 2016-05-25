@@ -10,14 +10,29 @@
     box-shadow: none;
     outline: none;
 
+    &:hover,
+    &:focus,
+    &:active {
+        outline: none;
+    }
+
     &.btn-disabled {
-        opacity: .65;
+        opacity: .5;
+        cursor: not-allowed;
     }
 }
 
 .btn-default {
     border: 1px solid #CDD6E1;
     background-color: #FAFAFA;
+
+    &.btn-disabled {
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: #FAFAFA;
+        }
+    }
 
     &:hover {
         background-color: #E9E9E9;

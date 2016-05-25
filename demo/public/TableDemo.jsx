@@ -2,6 +2,7 @@
 * @file demo for Table component
 * @author guoyao(wuguoyao@baidu.com)
 **/
+import u from 'underscore';
 import React from 'react';
 import {TableHeaderColumn} from 'react-bootstrap-table';
 
@@ -19,18 +20,26 @@ export default class TableDemo extends React.Component {
     constructor(...args) {
         super(...args);
 
-        this.state = {datasource, disableEditRow: false};
+        this.state = {datasource, disableEditRow: true};
         this.rowSelectHandler = this.rowSelectHandler.bind(this);
         this.selectAllHandler = this.selectAllHandler.bind(this);
+        this.selectStatusMap = {};
     }
 
     rowSelectHandler(selectItem, selected, e) {
         console.log(selectItem, selected);
+        selected && (this.selectStatusMap[selectItem.id] = true);
+        !selected && (delete this.selectStatusMap[selectItem.id]);
+        this.setState({disableEditRow: u.isEmpty(this.selectStatusMap)});
     }
 
     selectAllHandler(selected, selects) {
         console.log(selected, selects);
-        this.setState({disableEditRow: !this.state.disableEditRow});
+        !selected && (this.selectStatusMap = {});
+        if (selected) {
+            u.each(selects, item => this.selectStatusMap[item.id] = true);
+        }
+        this.setState({disableEditRow: u.isEmpty(this.selectStatusMap)});
     }
 
     render() {

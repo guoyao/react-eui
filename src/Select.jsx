@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './css/select.less';
+import './css/Select.less';
 
 import React from 'react';
 import u from 'underscore';
