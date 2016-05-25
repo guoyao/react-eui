@@ -400,7 +400,7 @@ class TableToolBar extends ToolBar {
                     <Tooltip id={editRowProp.tooltip}>{editRowProp.tooltip}</Tooltip>
                 );
                 editBtn = (
-                    <OverlayTrigger placement="top" overlay={tooltip}>
+                    <OverlayTrigger placement="right" overlay={tooltip}>
                         <span>{editBtn}</span>
                     </OverlayTrigger>
                 );

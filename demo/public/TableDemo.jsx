@@ -30,6 +30,7 @@ export default class TableDemo extends React.Component {
 
     selectAllHandler(selected, selects) {
         console.log(selected, selects);
+        this.setState({disableEditRow: !this.state.disableEditRow});
     }
 
     render() {
