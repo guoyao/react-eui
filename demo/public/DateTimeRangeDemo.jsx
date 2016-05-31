@@ -20,8 +20,22 @@ export default class DateTimeRangeDemo extends React.Component {
         return (
             <Form>
                 <DateTimeRange
+                    name="dateRange"
+                    label="日期段"
+                    className="required"
+                    mode={DateTimeRange.Mode.date}
+                    defaultValue={this.state.timeRange}
+                    startInputProps={{readOnly: true}}
+                    endInputProps={{readOnly: true}}
+                    changeHandler={this.changeHandler}
+                    validate="isTimeRange"
+                    errorHelp={{
+                        isTimeRange: '结束日期必须晚于开始日期'
+                    }}
+                />
+                <DateTimeRange
                     name="timeRange"
-                    label="时间段"
+                    label="日期时间段"
                     className="required"
                     defaultValue={this.state.timeRange}
                     startInputProps={{readOnly: true}}

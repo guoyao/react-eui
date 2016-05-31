@@ -5,6 +5,7 @@ import {Tab, Tabs} from 'react-bootstrap';
 import SelectDemo from './SelectDemo';
 import TableDemo from './TableDemo';
 import RichTextEditorDemo from './RichTextEditorDemo';
+import DateTimeFieldDemo from './DateTimeFieldDemo';
 import DateTimeRangeDemo from './DateTimeRangeDemo';
 
 import './main.less';
@@ -36,7 +37,10 @@ class Container extends React.Component {
                  <Tab eventKey="table" title="Table">
                      <TableDemo />
                  </Tab>
-                 <Tab eventKey="date-time-rage" title="DateTimeRange">
+                 <Tab eventKey="date-time-field" title="DateTimeField">
+                     <DateTimeFieldDemo />
+                 </Tab>
+                 <Tab eventKey="date-time-range" title="DateTimeRange">
                      <DateTimeRangeDemo />
                  </Tab>
             </Tabs>

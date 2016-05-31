@@ -14,42 +14,31 @@ import DateTimeField from 'react-bootstrap-datetimepicker';
 import ValidatedInput from './ValidatedInput';
 
 const Mode = {
-    MODE_DATE: 'date',
-    MODE_DATETIME: 'datetime',
-    MODE_TIME: 'time'
+    date: 'date',
+    datetime: 'datetime',
+    time: 'time'
 };
 
 const DEFAULT_FORMAT = {
-    [Mode.MODE_DATE]: {
+    [Mode.date]: {
         format: 'YYYY-MM-DD',
         inputFormat: 'YYYY-MM-DD'
     },
-    [Mode.MODE_DATETIME]: {
+    [Mode.datetime]: {
         format: 'YYYY-MM-DDTHH:mm:ssZ',
         inputFormat: 'YYYY-MM-DD HH:mm:ss'
     },
-    [Mode.MODE_TIME]: {
+    [Mode.time]: {
         format: 'YYYY-MM-DDTHH:mm:ssZ',
         inputFormat: 'HH:mm:ss'
     }
 };
 
 export default class DateTimeRange extends ValidatedInput {
-    static get defaultProps() {
-        return {
-            ...ValidatedInput.defaultProps,
-            mode: Mode.MODE_DATETIME,
-            startInputProps: {},
-            endInputProps: {},
-            valueFormatter: v => v,
-            changeHandler: v => v
-        };
-    }
-
     static get propTypes() {
         return {
             ...ValidatedInput.propTypes,
-            mode: React.PropTypes.oneOf([Mode.MODE_DATE, Mode.MODE_DATETIME, Mode.MODE_TIME]),
+            mode: React.PropTypes.oneOf([Mode.date, Mode.datetime, Mode.time]),
             format: React.PropTypes.string,
             inputFormat: React.PropTypes.string,
             startTime: React.PropTypes.string,
@@ -61,7 +50,18 @@ export default class DateTimeRange extends ValidatedInput {
         };
     }
 
-    static get mode() {
+    static get defaultProps() {
+        return {
+            ...ValidatedInput.defaultProps,
+            mode: Mode.datetime,
+            startInputProps: {},
+            endInputProps: {},
+            valueFormatter: v => v,
+            changeHandler: v => v
+        };
+    }
+
+    static get Mode() {
         return Mode;
     }
 
