@@ -43,6 +43,7 @@
         "no-underscore-dangle": 0,
         "no-unused-expressions": 0,
         "no-nested-ternary": 0,
+        "no-cond-assign": 0,
         "arrow-body-style": 0,
         "brace-style": ["error", "stroustrup", {"allowSingleLine": true}],
         "space-before-function-paren": ["error", {"anonymous": "always", "named": "never"}],

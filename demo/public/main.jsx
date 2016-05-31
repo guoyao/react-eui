@@ -1,12 +1,13 @@
-import './main.less';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
 
-import RichTextEditorDemo from './RichTextEditorDemo';
 import SelectDemo from './SelectDemo';
 import TableDemo from './TableDemo';
+import RichTextEditorDemo from './RichTextEditorDemo';
+import DateTimeRangeDemo from './DateTimeRangeDemo';
+
+import './main.less';
 
 class Container extends React.Component {
     constructor(...args) {
@@ -34,6 +35,9 @@ class Container extends React.Component {
                  </Tab>
                  <Tab eventKey="table" title="Table">
                      <TableDemo />
+                 </Tab>
+                 <Tab eventKey="date-time-rage" title="DateTimeRange">
+                     <DateTimeRangeDemo />
                  </Tab>
             </Tabs>
         );

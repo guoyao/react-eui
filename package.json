@@ -33,6 +33,7 @@
     "font-awesome": "^4.6.1",
     "lodash-compat": "^3.10.2",
     "react-bootstrap": "^0.28.5",
+    "react-bootstrap-datetimepicker": "0.0.22",
     "react-bootstrap-table": "^2.1.5",
     "react-bootstrap-validation": "^0.1.10",
     "underscore": "^1.8.3"
