@@ -9,7 +9,7 @@ import u from 'underscore';
 import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
-import DateTimeField from 'react-bootstrap-datetimepicker';
+import DateTimeField from './DateTimeField';
 
 import ValidatedInput from './ValidatedInput';
 
@@ -106,19 +106,17 @@ export default class DateTimeRange extends ValidatedInput {
     }
 
     startTimeChangeHandler(e) {
-        this.setState({startTime: e});
-        setTimeout(() => {
+        this.setState({startTime: e}, () => {
             this.validate();
             this.props.changeHandler(this.getValue());
-        }, 0);
+        });
     }
 
     endTimeChangeHandler(e) {
-        this.setState({endTime: e});
-        setTimeout(() => {
+        this.setState({endTime: e}, () => {
             this.validate();
             this.props.changeHandler(this.getValue());
-        }, 0);
+        });
     }
 
     validate() {
@@ -153,7 +151,7 @@ export default class DateTimeRange extends ValidatedInput {
                         inputFormat={inputFormat}
                         inputProps={startInputProps}
                         dateTime={this.state.startTime}
-                        onChange={this.startTimeChangeHandler}
+                        changeHandler={this.startTimeChangeHandler}
                     />
                     <DateTimeField
                         mode={mode}
@@ -161,7 +159,7 @@ export default class DateTimeRange extends ValidatedInput {
                         inputFormat={inputFormat}
                         inputProps={endInputProps}
                         dateTime={this.state.endTime}
-                        onChange={this.endTimeChangeHandler}
+                        changeHandler={this.endTimeChangeHandler}
                     />
                 </div>
                 {super.renderHelp()}

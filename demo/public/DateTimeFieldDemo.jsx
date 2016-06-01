@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
-import {DateTimeField, Form} from '../../index';
+import {DateTimeField} from '../../index';
 
 export default class DateTimeFieldDemo extends React.Component {
     constructor(...args) {
@@ -18,29 +18,29 @@ export default class DateTimeFieldDemo extends React.Component {
 
     render() {
         return (
-            <Form>
+            <div className="date-time-field-demo">
                 <DateTimeField
                     name="date"
                     mode={DateTimeField.Mode.date}
-                    format={DateTimeField.Format.date.format}
-                    inputFormat={DateTimeField.Format.date.inputFormat}
                     inputProps={{readOnly: true}}
+                    dateTime="2016-06-01"
+                    changeHandler={this.changeHandler}
                 />
                 <DateTimeField
                     name="time"
                     mode={DateTimeField.Mode.time}
-                    format={DateTimeField.Format.time.format}
-                    inputFormat={DateTimeField.Format.time.inputFormat}
                     inputProps={{readOnly: true}}
+                    dateTime="2016-06-01T08:00:00Z"
+                    changeHandler={this.changeHandler}
                 />
                 <DateTimeField
                     name="datetime"
                     mode={DateTimeField.Mode.datetime}
-                    format={DateTimeField.Format.datetime.foramt}
-                    inputFormat={DateTimeField.Format.datetime.inputFormat}
                     inputProps={{readOnly: true}}
+                    dateTime="2016-06-01T08:00:00Z"
+                    changeHandler={this.changeHandler}
                 />
-            </Form>
+            </div>
         );
     }
 }
