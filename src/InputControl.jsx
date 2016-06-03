@@ -5,12 +5,10 @@
 
 import React from 'react';
 
-export default class InputControl extends React.Component {
+import Control from './Control';
+
+export default class InputControl extends Control {
     getValue() {
 
-    }
-
-    render() {
-        return super.render();
     }
 }

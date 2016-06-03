@@ -94,7 +94,7 @@ export default class DateTimeFieldEx extends InputControl {
         });
     }
 
-    render() {
+    renderControl() {
         const {mode} = this.props;
 
         let className = {

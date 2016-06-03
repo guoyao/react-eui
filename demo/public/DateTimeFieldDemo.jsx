@@ -8,7 +8,6 @@ import {DateTimeField} from '../../index';
 export default class DateTimeFieldDemo extends React.Component {
     constructor(...args) {
         super(...args);
-        this.state = {};
         this.changeHandler = this.changeHandler.bind(this);
     }
 

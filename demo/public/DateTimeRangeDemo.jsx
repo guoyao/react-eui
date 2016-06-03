@@ -21,7 +21,6 @@ export default class DateTimeRangeDemo extends React.Component {
             <Form>
                 <DateTimeRange
                     name="dateRange"
-                    label="日期段"
                     className="required"
                     mode={DateTimeRange.Mode.date}
                     defaultValue={this.state.timeRange}
