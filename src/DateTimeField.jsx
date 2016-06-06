@@ -11,7 +11,8 @@ import React from 'react';
 import classnames from 'classnames';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 
-import InputControl from './InputControl';
+import ValidatedInput from './ValidatedInput';
+import Wrapper from './Wrapper';
 import timeUtil from './util/timeUtil';
 import util from './util/util';
 
@@ -38,10 +39,10 @@ const DEFAULT_FORMAT = {
 
 const propKeys = u.keys(DateTimeField.propTypes);
 
-export default class DateTimeFieldEx extends InputControl {
+export default class DateTimeFieldEx extends ValidatedInput {
     static get propTypes() {
         return {
-            ...InputControl.propTypes,
+            ...ValidatedInput.propTypes,
             ...DateTimeField.propTypes,
             changeHandler: React.PropTypes.func
         };
@@ -49,7 +50,7 @@ export default class DateTimeFieldEx extends InputControl {
 
     static get defaultProps() {
         return {
-            ...InputControl.defaultProps,
+            ...ValidatedInput.defaultProps,
             ...(u.omit(DateTimeField.defaultProps, 'dateTime', 'format')),
             changeHandler: util.emptyFunc
         };
@@ -94,17 +95,18 @@ export default class DateTimeFieldEx extends InputControl {
         });
     }
 
-    renderControl() {
+    renderInput() {
         const {mode} = this.props;
 
         let className = {
-            'date-time-field': true,
-            [`date-time-field-${mode}`]: true
+            'eui-date-time-field': true,
+            [`eui-date-time-field-${mode}`]: true
         };
 
         className = classnames(className, this.props.className);
 
         const props = u.extend(
+            {key: ''},
             u.pick(this.props, propKeys),
             {
                 dateTime: this.state.dateTime,
@@ -114,10 +116,9 @@ export default class DateTimeFieldEx extends InputControl {
             }
         );
 
-        return (
-            <div className={className}>
-                <DateTimeField {...props} />
-            </div>
+        return Wrapper.createWrapper(
+            {className},
+            <DateTimeField {...props} />
         );
     }
 }

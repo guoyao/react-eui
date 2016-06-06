@@ -40,6 +40,22 @@
     }
 }
 
+.form-group {
+    &.horizontal {
+        > .control-label {
+            float: left;
+            line-height: 32px;
+            width: 100px;
+            padding-right: 10px;
+            text-align: right;
+
+            + .eui-wrapper {
+                margin-left: 100px;
+            }
+        }
+    }
+}
+
 .control-label {
     &.required {
         i {

@@ -9,8 +9,9 @@ import u from 'underscore';
 import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
-import DateTimeField from './DateTimeField';
 
+import Wrapper from './Wrapper';
+import DateTimeField from './DateTimeField';
 import ValidatedInput from './ValidatedInput';
 
 const Mode = {
@@ -123,47 +124,37 @@ export default class DateTimeRange extends ValidatedInput {
         this._form && this._form._validateOne(this.props.name, this._form.getValues());
     }
 
-    render() {
+    renderInput() {
         const {mode, startInputProps, endInputProps} = this.props;
         const format = this.getFormat();
         const inputFormat = this.getInputFormat();
 
         let className = {
-            'form-group date-time-range-group': !this.props.standalone,
-            'form-group-lg date-time-range-group-lg': !this.props.standalone && this.props.bsSize === 'large',
-            'form-group-sm date-time-range-group-sm': !this.props.standalone && this.props.bsSize === 'small',
-            'form-group-hidden date-time-range-group-hidden': this.props.isHidden,
-            'has-feedback': this.props.hasFeedback,
-            'has-success': this.props.bsStyle === 'success',
-            'has-warning': this.props.bsStyle === 'warning',
-            'has-error': this.props.bsStyle === 'error'
+            'eui-date-time-range': true
         };
 
         className = classnames(className, this.props.className);
 
-        return (
-            <div className={className}>
-                {super.renderLabel()}
-                <div className="date-time-range">
-                    <DateTimeField
-                        mode={mode}
-                        format={format}
-                        inputFormat={inputFormat}
-                        inputProps={startInputProps}
-                        dateTime={this.state.startTime}
-                        changeHandler={this.startTimeChangeHandler}
-                    />
-                    <DateTimeField
-                        mode={mode}
-                        format={format}
-                        inputFormat={inputFormat}
-                        inputProps={endInputProps}
-                        dateTime={this.state.endTime}
-                        changeHandler={this.endTimeChangeHandler}
-                    />
-                </div>
-                {super.renderHelp()}
-            </div>
+        return Wrapper.createWrapper(
+            {className},
+            <DateTimeField
+                key="start"
+                mode={mode}
+                format={format}
+                inputFormat={inputFormat}
+                inputProps={startInputProps}
+                dateTime={this.state.startTime}
+                changeHandler={this.startTimeChangeHandler}
+            />,
+            <DateTimeField
+                key="end"
+                mode={mode}
+                format={format}
+                inputFormat={inputFormat}
+                inputProps={endInputProps}
+                dateTime={this.state.endTime}
+                changeHandler={this.endTimeChangeHandler}
+            />
         );
     }
 }

@@ -17,28 +17,79 @@ export default class DateTimeFieldDemo extends React.Component {
 
     render() {
         return (
-            <div className="date-time-field-demo">
-                <DateTimeField
-                    name="date"
-                    mode={DateTimeField.Mode.date}
-                    inputProps={{readOnly: true}}
-                    dateTime="2016-06-01"
-                    changeHandler={this.changeHandler}
-                />
-                <DateTimeField
-                    name="time"
-                    mode={DateTimeField.Mode.time}
-                    inputProps={{readOnly: true}}
-                    dateTime="2016-06-01T08:00:00Z"
-                    changeHandler={this.changeHandler}
-                />
-                <DateTimeField
-                    name="datetime"
-                    mode={DateTimeField.Mode.datetime}
-                    inputProps={{readOnly: true}}
-                    dateTime="2016-06-01T08:00:00Z"
-                    changeHandler={this.changeHandler}
-                />
+            <div className="row date-time-field-demo">
+                <div className="col-md-4">
+                    <DateTimeField
+                        mode={DateTimeField.Mode.date}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        mode={DateTimeField.Mode.time}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        mode={DateTimeField.Mode.datetime}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                </div>
+                <div className="col-md-4">
+                    <DateTimeField
+                        label="日期"
+                        name="date"
+                        mode={DateTimeField.Mode.date}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        label="时间"
+                        name="time"
+                        mode={DateTimeField.Mode.time}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        label="日期时间"
+                        name="datetime"
+                        mode={DateTimeField.Mode.datetime}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                </div>
+                <div className="col-md-4">
+                    <DateTimeField
+                        label="日期"
+                        groupClassName="horizontal"
+                        mode={DateTimeField.Mode.date}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        label="时间"
+                        groupClassName="horizontal"
+                        mode={DateTimeField.Mode.time}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                    <DateTimeField
+                        label="日期时间"
+                        groupClassName="horizontal"
+                        mode={DateTimeField.Mode.datetime}
+                        inputProps={{readOnly: true}}
+                        dateTime="2016-06-01T08:00:00Z"
+                        changeHandler={this.changeHandler}
+                    />
+                </div>
             </div>
         );
     }

@@ -18,34 +18,63 @@ export default class DateTimeRangeDemo extends React.Component {
 
     render() {
         return (
-            <Form>
-                <DateTimeRange
-                    name="dateRange"
-                    className="required"
-                    mode={DateTimeRange.Mode.date}
-                    defaultValue={this.state.timeRange}
-                    startInputProps={{readOnly: true}}
-                    endInputProps={{readOnly: true}}
-                    changeHandler={this.changeHandler}
-                    validate="isTimeRange"
-                    errorHelp={{
-                        isTimeRange: '结束日期必须晚于开始日期'
-                    }}
-                />
-                <DateTimeRange
-                    name="timeRange"
-                    label="日期时间段"
-                    className="required"
-                    defaultValue={this.state.timeRange}
-                    startInputProps={{readOnly: true}}
-                    endInputProps={{readOnly: true}}
-                    changeHandler={this.changeHandler}
-                    validate="isTimeRange"
-                    errorHelp={{
-                        isTimeRange: '结束时间必须晚于开始时间'
-                    }}
-                />
-            </Form>
+            <div className="row date-time-range-demo">
+                <div className="col-md-6">
+                    <DateTimeRange
+                        className="required"
+                        mode={DateTimeRange.Mode.date}
+                        defaultValue={this.state.timeRange}
+                        startInputProps={{readOnly: true}}
+                        endInputProps={{readOnly: true}}
+                        changeHandler={this.changeHandler}
+                        validate="isTimeRange"
+                        errorHelp={{
+                            isTimeRange: '结束日期必须晚于开始日期'
+                        }}
+                    />
+                    <DateTimeRange
+                        className="required"
+                        defaultValue={this.state.timeRange}
+                        startInputProps={{readOnly: true}}
+                        endInputProps={{readOnly: true}}
+                        changeHandler={this.changeHandler}
+                        validate="isTimeRange"
+                        errorHelp={{
+                            isTimeRange: '结束时间必须晚于开始时间'
+                        }}
+                    />
+                </div>
+                <div className="col-md-6">
+                    <Form>
+                        <DateTimeRange
+                            name="dateRange"
+                            className="required"
+                            mode={DateTimeRange.Mode.date}
+                            defaultValue={this.state.timeRange}
+                            startInputProps={{readOnly: true}}
+                            endInputProps={{readOnly: true}}
+                            changeHandler={this.changeHandler}
+                            validate="isTimeRange"
+                            errorHelp={{
+                                isTimeRange: '结束日期必须晚于开始日期'
+                            }}
+                        />
+                        <DateTimeRange
+                            name="timeRange"
+                            label="日期时间段"
+                            className="required"
+                            defaultValue={this.state.timeRange}
+                            startInputProps={{readOnly: true}}
+                            endInputProps={{readOnly: true}}
+                            changeHandler={this.changeHandler}
+                            validate="isTimeRange"
+                            errorHelp={{
+                                isTimeRange: '结束时间必须晚于开始时间'
+                            }}
+                        />
+                    </Form>
+                </div>
+            </div>
         );
     }
 }

@@ -25,7 +25,10 @@ export default class ValidatedInputEx extends ValidatedInput {
     static get defaultProps() {
         return {
             ...ValidatedInput.defaultProps,
-            showLengthTip: true
+            showLengthTip: true,
+            name: '',
+            _registerInput: () => {},
+            _unregisterInput: () => {}
         };
     }
 
@@ -102,7 +105,15 @@ export default class ValidatedInputEx extends ValidatedInput {
             );
         }
 
-        return super.renderFormGroup(children);
+        if (this.props.label || this.props.help || this.maxLength) {
+            return super.renderFormGroup(children);
+        }
+
+        if (u.isArray(children[1])) {
+            return children[1][0] || null;
+        }
+
+        return children[1] || null;
     }
 
     componentWillUnmount() {
