@@ -19,21 +19,19 @@ export default class DateTimeFieldDemo extends React.Component {
         return (
             <div className="row date-time-field-demo">
                 <div className="col-md-4">
+                    <DateTimeField changeHandler={this.changeHandler} />
                     <DateTimeField
                         mode={DateTimeField.Mode.date}
-                        inputProps={{readOnly: true}}
-                        dateTime="2016-06-01"
+                        dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         mode={DateTimeField.Mode.time}
-                        inputProps={{readOnly: true}}
                         dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         mode={DateTimeField.Mode.datetime}
-                        inputProps={{readOnly: true}}
                         dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
@@ -43,7 +41,6 @@ export default class DateTimeFieldDemo extends React.Component {
                         label="日期"
                         name="date"
                         mode={DateTimeField.Mode.date}
-                        inputProps={{readOnly: true}}
                         dateTime="2016-06-01"
                         changeHandler={this.changeHandler}
                     />
@@ -51,15 +48,12 @@ export default class DateTimeFieldDemo extends React.Component {
                         label="时间"
                         name="time"
                         mode={DateTimeField.Mode.time}
-                        inputProps={{readOnly: true}}
-                        dateTime="2016-06-01T08:00:00Z"
+                        dateTime="08:00:00"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="日期时间"
                         name="datetime"
-                        mode={DateTimeField.Mode.datetime}
-                        inputProps={{readOnly: true}}
                         dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
@@ -69,24 +63,17 @@ export default class DateTimeFieldDemo extends React.Component {
                         label="日期"
                         groupClassName="horizontal"
                         mode={DateTimeField.Mode.date}
-                        inputProps={{readOnly: true}}
-                        dateTime="2016-06-01"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="时间"
                         groupClassName="horizontal"
                         mode={DateTimeField.Mode.time}
-                        inputProps={{readOnly: true}}
-                        dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="日期时间"
                         groupClassName="horizontal"
-                        mode={DateTimeField.Mode.datetime}
-                        inputProps={{readOnly: true}}
-                        dateTime="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                 </div>

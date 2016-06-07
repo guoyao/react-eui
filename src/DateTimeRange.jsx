@@ -13,97 +13,61 @@ import classnames from 'classnames';
 import Wrapper from './Wrapper';
 import DateTimeField from './DateTimeField';
 import ValidatedInput from './ValidatedInput';
+import util from './util/util';
 
-const Mode = {
-    date: 'date',
-    datetime: 'datetime',
-    time: 'time'
-};
+const Mode = DateTimeField.Mode;
+const Format = DateTimeField.Format;
 
-const DEFAULT_FORMAT = {
-    [Mode.date]: {
-        format: 'YYYY-MM-DD',
-        inputFormat: 'YYYY-MM-DD'
-    },
-    [Mode.datetime]: {
-        format: 'YYYY-MM-DDTHH:mm:ssZ',
-        inputFormat: 'YYYY-MM-DD HH:mm:ss'
-    },
-    [Mode.time]: {
-        format: 'YYYY-MM-DDTHH:mm:ssZ',
-        inputFormat: 'HH:mm:ss'
+function buildValue(props) {
+    let startTime;
+    let endTime;
+
+    if (props.value) {
+        [startTime, endTime] = props.value.split(/\s*,\s*/);
     }
-};
+
+    return [startTime, endTime];
+}
 
 export default class DateTimeRange extends ValidatedInput {
-    static get propTypes() {
-        return {
-            ...ValidatedInput.propTypes,
-            mode: React.PropTypes.oneOf([Mode.date, Mode.datetime, Mode.time]),
-            format: React.PropTypes.string,
-            inputFormat: React.PropTypes.string,
-            startTime: React.PropTypes.string,
-            endTime: React.PropTypes.string,
-            startInputProps: React.PropTypes.object,
-            endInputProps: React.PropTypes.object,
-            valueFormatter: React.PropTypes.func,
-            changeHandler: React.PropTypes.func
-        };
+    static propTypes = {
+        ...ValidatedInput.propTypes,
+        mode: React.PropTypes.oneOf([Mode.date, Mode.datetime, Mode.time]),
+        format: React.PropTypes.string,
+        inputFormat: React.PropTypes.string,
+        startTime: React.PropTypes.string,
+        endTime: React.PropTypes.string,
+        startInputProps: React.PropTypes.object,
+        endInputProps: React.PropTypes.object,
+        changeHandler: React.PropTypes.func
     }
 
-    static get defaultProps() {
-        return {
-            ...ValidatedInput.defaultProps,
-            mode: Mode.datetime,
-            startInputProps: {},
-            endInputProps: {},
-            valueFormatter: v => v,
-            changeHandler: v => v
-        };
+    static defaultProps = {
+        ...ValidatedInput.defaultProps,
+        startInputProps: {},
+        endInputProps: {},
+        changeHandler: util.emptyFunc
     }
 
-    static get Mode() {
-        return Mode;
-    }
+    static Mode = Mode
+
+    static Format = Format
 
     constructor(props, context) {
         super(props, context);
 
-        let startTime;
-        let endTime;
+        let [startTime, endTime] = buildValue(props);
 
-        if (props.defaultValue) {
-            [startTime, endTime] = props.defaultValue.split(/\s*,\s*/);
-        }
-
-        const format = this.getFormat();
-        this.state = {
-            startTime: moment(startTime).format(format) || moment().format(format),
-            endTime: moment(endTime).format(format) || moment().format(format)
-        };
-
+        this.state = {startTime, endTime};
         this.startTimeChangeHandler = this.startTimeChangeHandler.bind(this);
         this.endTimeChangeHandler = this.endTimeChangeHandler.bind(this);
     }
 
     getValue() {
-        const {valueFormatter} = this.props;
-        let value = u.pick(this.state, 'startTime', 'endTime');
-
-        value.startTime = valueFormatter(value.startTime);
-        value.endTime = valueFormatter(value.endTime);
-
-        return `${value.startTime},${value.endTime}`;
-    }
-
-    getFormat() {
-        const {format, mode} = this.props;
-        return format || DEFAULT_FORMAT[mode].format;
-    }
-
-    getInputFormat() {
-        const {inputFormat, mode} = this.props;
-        return inputFormat || DEFAULT_FORMAT[mode].inputFormat;
+        return [
+            this.refs.startDateTimeField.getValue(),
+            this.refs.endDateTimeField.getValue()
+        ].join(',');
     }
 
     startTimeChangeHandler(e) {
@@ -124,10 +88,17 @@ export default class DateTimeRange extends ValidatedInput {
         this._form && this._form._validateOne(this.props.name, this._form.getValues());
     }
 
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
+
+        if (this.props.value !== nextProps.value) {
+            let [startTime, endTime] = buildValue(nextProps);
+            this.setState({startTime, endTime});
+        }
+    }
+
     renderInput() {
-        const {mode, startInputProps, endInputProps} = this.props;
-        const format = this.getFormat();
-        const inputFormat = this.getInputFormat();
+        const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;
 
         let className = {
             'eui-date-time-range': true
@@ -138,6 +109,7 @@ export default class DateTimeRange extends ValidatedInput {
         return Wrapper.createWrapper(
             {className},
             <DateTimeField
+                ref="startDateTimeField"
                 key="start"
                 mode={mode}
                 format={format}
@@ -147,6 +119,7 @@ export default class DateTimeRange extends ValidatedInput {
                 changeHandler={this.startTimeChangeHandler}
             />,
             <DateTimeField
+                ref="endDateTimeField"
                 key="end"
                 mode={mode}
                 format={format}

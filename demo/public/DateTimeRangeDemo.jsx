@@ -10,6 +10,10 @@ export default class DateTimeRangeDemo extends React.Component {
         super(...args);
         this.state = {};
         this.changeHandler = this.changeHandler.bind(this);
+
+        setTimeout(() => {
+            this.setState({timeRange: '2016-05-05T00:00:00Z,2016-06-06T00:00:00Z'});
+        }, 5000);
     }
 
     changeHandler(value) {
@@ -20,12 +24,12 @@ export default class DateTimeRangeDemo extends React.Component {
         return (
             <div className="row date-time-range-demo">
                 <div className="col-md-6">
+                    <DateTimeRange />
+                    <DateTimeRange changeHandler={this.changeHandler} />
                     <DateTimeRange
                         className="required"
                         mode={DateTimeRange.Mode.date}
-                        defaultValue={this.state.timeRange}
-                        startInputProps={{readOnly: true}}
-                        endInputProps={{readOnly: true}}
+                        value={this.state.timeRange}
                         changeHandler={this.changeHandler}
                         validate="isTimeRange"
                         errorHelp={{
@@ -34,9 +38,7 @@ export default class DateTimeRangeDemo extends React.Component {
                     />
                     <DateTimeRange
                         className="required"
-                        defaultValue={this.state.timeRange}
-                        startInputProps={{readOnly: true}}
-                        endInputProps={{readOnly: true}}
+                        value={this.state.timeRange}
                         changeHandler={this.changeHandler}
                         validate="isTimeRange"
                         errorHelp={{
@@ -50,9 +52,7 @@ export default class DateTimeRangeDemo extends React.Component {
                             name="dateRange"
                             className="required"
                             mode={DateTimeRange.Mode.date}
-                            defaultValue={this.state.timeRange}
-                            startInputProps={{readOnly: true}}
-                            endInputProps={{readOnly: true}}
+                            value={this.state.timeRange}
                             changeHandler={this.changeHandler}
                             validate="isTimeRange"
                             errorHelp={{
@@ -63,9 +63,7 @@ export default class DateTimeRangeDemo extends React.Component {
                             name="timeRange"
                             label="日期时间段"
                             className="required"
-                            defaultValue={this.state.timeRange}
-                            startInputProps={{readOnly: true}}
-                            endInputProps={{readOnly: true}}
+                            value={this.state.timeRange}
                             changeHandler={this.changeHandler}
                             validate="isTimeRange"
                             errorHelp={{

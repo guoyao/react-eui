@@ -24,7 +24,7 @@ const Mode = {
 
 const DEFAULT_FORMAT = {
     [Mode.date]: {
-        format: 'YYYY-MM-DDTHH:mm:ssZ',
+        format: 'YYYY-MM-DD',
         inputFormat: 'YYYY-MM-DD'
     },
     [Mode.datetime]: {
@@ -32,7 +32,7 @@ const DEFAULT_FORMAT = {
         inputFormat: 'YYYY-MM-DD HH:mm:ss'
     },
     [Mode.time]: {
-        format: 'YYYY-MM-DDTHH:mm:ssZ',
+        format: 'HH:mm:ss',
         inputFormat: 'HH:mm:ss'
     }
 };
@@ -40,49 +40,42 @@ const DEFAULT_FORMAT = {
 const propKeys = u.keys(DateTimeField.propTypes);
 
 export default class DateTimeFieldEx extends ValidatedInput {
-    static get propTypes() {
-        return {
-            ...ValidatedInput.propTypes,
-            ...DateTimeField.propTypes,
-            changeHandler: React.PropTypes.func
-        };
+    static propTypes = {
+        ...ValidatedInput.propTypes,
+        ...DateTimeField.propTypes,
+        changeHandler: React.PropTypes.func
     }
 
-    static get defaultProps() {
-        return {
-            ...ValidatedInput.defaultProps,
-            ...(u.omit(DateTimeField.defaultProps, 'dateTime', 'format')),
-            changeHandler: util.emptyFunc
-        };
+    static defaultProps = {
+        ...ValidatedInput.defaultProps,
+        ...(u.omit(DateTimeField.defaultProps, 'dateTime', 'format')),
+        inputProps: {},
+        changeHandler: util.emptyFunc
     }
 
-    static get Mode() {
-        return Mode;
-    }
+    static Mode = Mode
 
-    static get Format() {
-        return DEFAULT_FORMAT;
-    }
+    static Format = DEFAULT_FORMAT
 
     constructor(...args) {
         super(...args);
 
         const {format, inputFormat, mode, dateTime} = this.props;
+
         this.format = format || DEFAULT_FORMAT[mode].format;
         this.inputFormat = inputFormat || DEFAULT_FORMAT[mode].inputFormat;
 
         this.state = {
-            dateTime: (dateTime ? moment(dateTime) : moment()).format(format)
+            dateTime: (dateTime ? moment(dateTime, this.format) : moment()).format(this.format)
         };
 
         this.changeHandler = this.changeHandler.bind(this);
     }
 
     getValue() {
-        const format = this.format;
         let dateTime = this.state.dateTime;
 
-        if (/Z$/.test(format)) {
+        if (/Z$/.test(this.format)) {
             dateTime = timeUtil.timeToUtc(dateTime);
         }
 
@@ -93,6 +86,16 @@ export default class DateTimeFieldEx extends ValidatedInput {
         this.setState({dateTime: value}, () => {
             this.props.changeHandler(this.getValue());
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
+
+        if (this.props.dateTime !== nextProps.dateTime) {
+            this.setState({
+                dateTime: moment(nextProps.dateTime, this.format).format(this.format)
+            });
+        }
     }
 
     renderInput() {
@@ -115,6 +118,8 @@ export default class DateTimeFieldEx extends ValidatedInput {
                 inputFormat: this.inputFormat
             }
         );
+
+        props.inputProps.readOnly = true;
 
         return Wrapper.createWrapper(
             {className},

@@ -13,23 +13,19 @@ import {ValidatedInput} from 'react-bootstrap-validation';
 import autosize from './util/autosize';
 
 export default class ValidatedInputEx extends ValidatedInput {
-    static get propTypes() {
-        return {
-            ...ValidatedInput.propTypes,
+    static propTypes = {
+        ...ValidatedInput.propTypes,
 
-            // 当有字符串长度限制时，是否展示当前已输入的字数
-            showLengthTip: React.PropTypes.bool
-        };
+        // 当有字符串长度限制时，是否展示当前已输入的字数
+        showLengthTip: React.PropTypes.bool
     }
 
-    static get defaultProps() {
-        return {
-            ...ValidatedInput.defaultProps,
-            showLengthTip: true,
-            name: '',
-            _registerInput: () => {},
-            _unregisterInput: () => {}
-        };
+    static defaultProps = {
+        ...ValidatedInput.defaultProps,
+        showLengthTip: true,
+        name: '',
+        _registerInput: () => {},
+        _unregisterInput: () => {}
     }
 
     constructor(props, context) {
