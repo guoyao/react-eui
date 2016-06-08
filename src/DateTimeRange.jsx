@@ -56,9 +56,6 @@ export default class DateTimeRange extends ValidatedInput {
     constructor(props, context) {
         super(props, context);
 
-        let [startTime, endTime] = buildValue(props);
-
-        this.state = {startTime, endTime};
         this.startTimeChangeHandler = this.startTimeChangeHandler.bind(this);
         this.endTimeChangeHandler = this.endTimeChangeHandler.bind(this);
     }
@@ -70,36 +67,26 @@ export default class DateTimeRange extends ValidatedInput {
         ].join(',');
     }
 
-    startTimeChangeHandler(e) {
-        this.setState({startTime: e}, () => {
-            this.validate();
-            this.props.changeHandler(this.getValue());
-        });
+    startTimeChangeHandler(value) {
+        this.validate();
+        this.props.changeHandler(this.getValue());
     }
 
-    endTimeChangeHandler(e) {
-        this.setState({endTime: e}, () => {
-            this.validate();
-            this.props.changeHandler(this.getValue());
-        });
+    endTimeChangeHandler(value) {
+        this.validate();
+        this.props.changeHandler(this.getValue());
     }
 
     validate() {
-        this._form && this._form._validateOne(this.props.name, this._form.getValues());
-    }
-
-    componentWillReceiveProps(nextProps) {
-        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
-
-        if (this.props.value !== nextProps.value) {
-            let [startTime, endTime] = buildValue(nextProps);
-            this.setState({startTime, endTime});
+        if (this._form) {
+            this._form._validateOne(this.props.name, this._form.getValues());
         }
     }
 
     renderInput() {
         const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;
 
+        let [startTime, endTime] = buildValue(this.props);
         let className = {
             'eui-date-time-range': true
         };
@@ -115,7 +102,7 @@ export default class DateTimeRange extends ValidatedInput {
                 format={format}
                 inputFormat={inputFormat}
                 inputProps={startInputProps}
-                dateTime={this.state.startTime}
+                dateTime={startTime}
                 changeHandler={this.startTimeChangeHandler}
             />,
             <DateTimeField
@@ -125,7 +112,7 @@ export default class DateTimeRange extends ValidatedInput {
                 format={format}
                 inputFormat={inputFormat}
                 inputProps={endInputProps}
-                dateTime={this.state.endTime}
+                dateTime={endTime}
                 changeHandler={this.endTimeChangeHandler}
             />
         );

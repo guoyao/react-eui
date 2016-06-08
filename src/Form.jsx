@@ -28,6 +28,11 @@ export default class FormEx extends Form {
         input._form = this;
     }
 
+    unregisterInput(input) {
+        super.unregisterInput(input);
+        input._form = undefined;
+    }
+
     _validateOne(iptName, context) {
         var input = this._inputs[iptName];
 

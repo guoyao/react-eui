@@ -10,6 +10,7 @@ import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
 import DateTimeField from 'react-bootstrap-datetimepicker';
+import Constants from 'react-bootstrap-datetimepicker/lib/Constants'
 
 import ValidatedInput from './ValidatedInput';
 import Wrapper from './Wrapper';
@@ -17,9 +18,9 @@ import timeUtil from './util/timeUtil';
 import util from './util/util';
 
 const Mode = {
-    date: 'date',
-    datetime: 'datetime',
-    time: 'time'
+    date: Constants.MODE_DATE,
+    datetime: Constants.MODE_DATETIME,
+    time: Constants.MODE_TIME
 };
 
 const DEFAULT_FORMAT = {

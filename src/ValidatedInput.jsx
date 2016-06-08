@@ -8,7 +8,8 @@ import './ValidateInput.less';
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
-import {ValidatedInput} from 'react-bootstrap-validation';
+import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
+import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
 
 import autosize from './util/autosize';
 
@@ -41,6 +42,13 @@ export default class ValidatedInputEx extends ValidatedInput {
         }
 
         this.inputHandler = this.inputHandler.bind(this);
+    }
+
+    componentWillMount() {
+        super.componentWillMount && super.componentWillMount();
+        if (!this._form) {
+            this._validators = compileValidationRules(this, this.props.validate);
+        }
     }
 
     componentDidMount() {
@@ -127,4 +135,52 @@ export default class ValidatedInputEx extends ValidatedInput {
 
         super.componentWillUnmount && super.componentWillUnmount();
     }
+}
+
+function getInputErrorMessage(input, ruleName) {
+    const errorHelp = input.props.errorHelp;
+
+    if (typeof errorHelp === 'object') {
+        return errorHelp[ruleName];
+    }
+
+    return errorHelp;
+}
+
+function compileValidationRules(input, ruleProp) {
+    const rules = ruleProp.split(',').map(function (rule) {
+        const params = rule.split(':');
+        let name = params.shift();
+        const inverse = name[0] === '!';
+
+        if (inverse) {
+            name = name.substr(1);
+        }
+
+        return {name, inverse, params};
+    });
+
+    const validator = (input.props && input.props.type) === 'file' ? FileValidator : Validator;
+
+    return function (val) {
+        let result = true;
+
+        rules.forEach(function (rule) {
+            if (typeof validator[rule.name] !== 'function') {
+                throw new Error('Invalid input validation rule "' + rule.name + '"');
+            }
+
+            const ruleResult = validator[rule.name].apply(validator, [val].concat(toConsumableArray(rule.params)));
+
+            if (rule.inverse) {
+                ruleResult = !ruleResult;
+            }
+
+            if (result === true && ruleResult !== true) {
+                result = getInputErrorMessage(input, rule.name) || false;
+            }
+        });
+
+        return result;
+    };
 }

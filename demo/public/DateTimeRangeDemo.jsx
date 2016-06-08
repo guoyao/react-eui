@@ -11,9 +11,9 @@ export default class DateTimeRangeDemo extends React.Component {
         this.state = {};
         this.changeHandler = this.changeHandler.bind(this);
 
-        setTimeout(() => {
-            this.setState({timeRange: '2016-05-05T00:00:00Z,2016-06-06T00:00:00Z'});
-        }, 5000);
+        // setTimeout(() => {
+        //     this.setState({timeRange: '2016-05-05T00:00:00Z,2016-06-06T00:00:00Z'});
+        // }, 5000);
     }
 
     changeHandler(value) {
