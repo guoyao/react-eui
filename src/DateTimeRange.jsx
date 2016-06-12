@@ -77,12 +77,6 @@ export default class DateTimeRange extends ValidatedInput {
         this.props.changeHandler(this.getValue());
     }
 
-    validate() {
-        if (this._form) {
-            this._form._validateOne(this.props.name, this._form.getValues());
-        }
-    }
-
     renderInput() {
         const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;
 

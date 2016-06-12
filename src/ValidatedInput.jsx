@@ -41,26 +41,16 @@ export default class ValidatedInputEx extends ValidatedInput {
             }
         }
 
+        this.state = {};
         this.inputHandler = this.inputHandler.bind(this);
     }
 
     componentWillMount() {
         super.componentWillMount && super.componentWillMount();
-        if (!this._form) {
+        if (!this._form && typeof this.props.validate === 'string') {
+            this.state = u.extend(this.state || {}, {_error: false});
             this._validators = compileValidationRules(this, this.props.validate);
         }
-    }
-
-    componentDidMount() {
-        super.componentDidMount && super.componentDidMount();
-
-        let inputNode = this.getInputDOMNode();
-        this.maxLength && inputNode.addEventListener('input', this.inputHandler);
-        this.props.type === 'textarea' && autosize(inputNode);
-    }
-
-    inputHandler() {
-        this.maxLength && this.forceUpdate();
     }
 
     renderLabel(children) {
@@ -97,6 +87,14 @@ export default class ValidatedInputEx extends ValidatedInput {
         ) : children;
     }
 
+    renderHelp() {
+        if (!this._form && this.state._error && typeof this.state._error === 'string') {
+            return <span key="help" className="help-block">{this.state._error}</span>;
+        }
+
+        return super.renderHelp();
+    }
+
     renderFormGroup(children) {
         if (this.maxLength) {
             let currentLength = this.getInputDOMNode() ? this.getValue().length : this.currentLength;
@@ -109,15 +107,81 @@ export default class ValidatedInputEx extends ValidatedInput {
             );
         }
 
-        if (this.props.label || this.props.help || this.maxLength) {
-            return super.renderFormGroup(children);
+        let group = null;
+
+        if (this.props.label || this.props.help || this.maxLength || this.state._error) {
+            group = super.renderFormGroup(children);
+
+            if (this.state._error) {
+                let props = u.extend({}, this.props, {bsStyle: 'error'});
+                group = React.cloneElement(group, props);
+            }
+        }
+        else {
+            group = u.isArray(children[1]) ? children[1][0] : children[1];
         }
 
-        if (u.isArray(children[1])) {
-            return children[1][0] || null;
+        return group;
+    }
+
+    componentDidMount() {
+        super.componentDidMount && super.componentDidMount();
+
+        let inputNode = this.getInputDOMNode();
+        this.maxLength && inputNode.addEventListener('input', this.inputHandler);
+        this.props.type === 'textarea' && autosize(inputNode);
+    }
+
+    inputHandler() {
+        this.maxLength && this.forceUpdate();
+    }
+
+    validate() {
+        if (this._form) {
+            return this._form._validateOne(this.props.name, this._form.getValues());
         }
 
-        return children[1] || null;
+        const {validate} = this.props;
+        const value = this.getValue();
+
+        let isValid = true;
+        let result;
+        let error;
+
+        if (typeof validate === 'function') {
+            result = validate(value);
+        }
+        else if (typeof validate === 'string') {
+            result = this._validators(value)
+        }
+        else {
+            result = true;
+        }
+
+        // if result is !== true, it is considered an error
+        // it can be either bool or string error
+        if (result !== true) {
+            isValid = false;
+
+            if (typeof result === 'string') {
+                error = result;
+            }
+        }
+
+        this._setError(!isValid, error);
+
+        return isValid;
+    }
+
+    _setError(isError, errText) {
+        if (isError && errText && typeof errText !== 'string' && typeof errText !== 'boolean') {
+            errText = errText + '';
+        }
+
+        // set value to either bool or error description string
+        this.setState({
+            _error: isError ? errText || true : false
+        });
     }
 
     componentWillUnmount() {
@@ -134,6 +198,7 @@ export default class ValidatedInputEx extends ValidatedInput {
         }
 
         super.componentWillUnmount && super.componentWillUnmount();
+        this._validators = undefined;
     }
 }
 
@@ -170,7 +235,7 @@ function compileValidationRules(input, ruleProp) {
                 throw new Error('Invalid input validation rule "' + rule.name + '"');
             }
 
-            const ruleResult = validator[rule.name].apply(validator, [val].concat(toConsumableArray(rule.params)));
+            let ruleResult = validator[rule.name].apply(validator, [val].concat(toConsumableArray(rule.params)));
 
             if (rule.inverse) {
                 ruleResult = !ruleResult;

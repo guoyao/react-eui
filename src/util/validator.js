@@ -97,7 +97,8 @@ u.each(Validator, function (v, key) {
     if (u.isFunction(v)) {
         Validator[key] = function () {
             let args = u.toArray(arguments);
-            let index = u.findIndex(args, item => item === 'allowEmpty' || item.allowEmpty);
+            let index = u.findIndex(args, item => item === 'allowEmpty' || (item && item.allowEmpty));
+
             if (index > -1) {
                 args.splice(index, 1);
                 if (!args[0]) {
