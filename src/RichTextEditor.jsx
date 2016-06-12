@@ -7,7 +7,9 @@ import './css/RichTextEditor.less';
 
 import React from 'react';
 
-export default class RichTextEditor extends React.Component {
+import Control from './Control'
+
+export default class RichTextEditor extends Control {
     static propTypes = {
         ...React.Component.propTypes,
         placeholder: React.PropTypes.string,

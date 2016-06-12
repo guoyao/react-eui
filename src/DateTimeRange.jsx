@@ -11,8 +11,8 @@ import React from 'react';
 import classnames from 'classnames';
 
 import Wrapper from './Wrapper';
+import InputControl from './InputControl';
 import DateTimeField from './DateTimeField';
-import ValidatedInput from './ValidatedInput';
 import util from './util/util';
 
 const Mode = DateTimeField.Mode;
@@ -29,9 +29,9 @@ function buildValue(props) {
     return [startTime, endTime];
 }
 
-export default class DateTimeRange extends ValidatedInput {
+export default class DateTimeRange extends InputControl {
     static propTypes = {
-        ...ValidatedInput.propTypes,
+        ...InputControl.propTypes,
         mode: React.PropTypes.oneOf([Mode.date, Mode.datetime, Mode.time]),
         format: React.PropTypes.string,
         inputFormat: React.PropTypes.string,
@@ -43,7 +43,7 @@ export default class DateTimeRange extends ValidatedInput {
     }
 
     static defaultProps = {
-        ...ValidatedInput.defaultProps,
+        ...InputControl.defaultProps,
         startInputProps: {},
         endInputProps: {},
         changeHandler: util.emptyFunc

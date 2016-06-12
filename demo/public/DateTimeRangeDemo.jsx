@@ -25,9 +25,12 @@ export default class DateTimeRangeDemo extends React.Component {
             <div className="row date-time-range-demo">
                 <div className="col-md-6">
                     <DateTimeRange />
-                    <DateTimeRange changeHandler={this.changeHandler} />
                     <DateTimeRange
-                        className="required"
+                        label="日期时间"
+                        required
+                    />
+                    <DateTimeRange
+                        label="日期"
                         mode={DateTimeRange.Mode.date}
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
@@ -37,7 +40,6 @@ export default class DateTimeRangeDemo extends React.Component {
                         }}
                     />
                     <DateTimeRange
-                        className="required"
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
                         validate="isTimeRange"

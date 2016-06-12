@@ -12,7 +12,7 @@ import classnames from 'classnames';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 import Constants from 'react-bootstrap-datetimepicker/lib/Constants'
 
-import ValidatedInput from './ValidatedInput';
+import InputControl from './InputControl';
 import Wrapper from './Wrapper';
 import timeUtil from './util/timeUtil';
 import util from './util/util';
@@ -40,15 +40,15 @@ const DEFAULT_FORMAT = {
 
 const propKeys = u.keys(DateTimeField.propTypes);
 
-export default class DateTimeFieldEx extends ValidatedInput {
+export default class DateTimeFieldEx extends InputControl {
     static propTypes = {
-        ...ValidatedInput.propTypes,
+        ...InputControl.propTypes,
         ...DateTimeField.propTypes,
         changeHandler: React.PropTypes.func
     }
 
     static defaultProps = {
-        ...ValidatedInput.defaultProps,
+        ...InputControl.defaultProps,
         ...(u.omit(DateTimeField.defaultProps, 'dateTime', 'format')),
         inputProps: {},
         changeHandler: util.emptyFunc

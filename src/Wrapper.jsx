@@ -7,11 +7,13 @@ import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
 
+import Control from './Control';
+
 const defaultProps = {
     className: 'eui-wrapper'
 };
 
-export default class Wrapper extends React.Component {
+export default class Wrapper extends Control {
     static createWrapper(props, ...children) {
         const className = classnames(defaultProps.className, props.className);
         props = u.extend({}, defaultProps, props, {className});

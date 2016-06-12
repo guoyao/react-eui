@@ -3,19 +3,22 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './ValidateInput.less';
+import './InputControl.less';
 
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
 
 import autosize from './util/autosize';
 
-export default class ValidatedInputEx extends ValidatedInput {
+export default class InputControl extends ValidatedInput {
     static propTypes = {
         ...ValidatedInput.propTypes,
+
+        required: React.PropTypes.bool,
 
         // 当有字符串长度限制时，是否展示当前已输入的字数
         showLengthTip: React.PropTypes.bool
@@ -23,6 +26,7 @@ export default class ValidatedInputEx extends ValidatedInput {
 
     static defaultProps = {
         ...ValidatedInput.defaultProps,
+        required: false,
         showLengthTip: true,
         name: '',
         _registerInput: () => {},
@@ -64,6 +68,10 @@ export default class ValidatedInputEx extends ValidatedInput {
 
         if (!/\brequired\b/.test(labelClassName)
             && (u.isString(validate) && /\brequired\b/.test(validate) || /\brequired\b/.test(this.props.className))) {
+            classes.required = 'required';
+        }
+
+        if (this.props.required) {
             classes.required = 'required';
         }
 
@@ -109,12 +117,15 @@ export default class ValidatedInputEx extends ValidatedInput {
 
         let group = null;
 
-        if (this.props.label || this.props.help || this.maxLength || this.state._error) {
+        if (this.props.label || this.props.help || this.maxLength ||
+            this.props.validate || this.state._error) {
+
             group = super.renderFormGroup(children);
 
             if (this.state._error) {
-                let props = u.extend({}, this.props, {bsStyle: 'error'});
+                const props = u.extend({}, this.props, {bsStyle: 'error'});
                 group = React.cloneElement(group, props);
+                // group = React.createElement(FormGroup, props, children);
             }
         }
         else {
