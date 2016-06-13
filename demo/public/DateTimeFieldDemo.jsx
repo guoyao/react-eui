@@ -22,17 +22,17 @@ export default class DateTimeFieldDemo extends React.Component {
                     <DateTimeField changeHandler={this.changeHandler} />
                     <DateTimeField
                         mode={DateTimeField.Mode.date}
-                        dateTime="2016-06-01T08:00:00Z"
+                        value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         mode={DateTimeField.Mode.time}
-                        dateTime="2016-06-01T08:00:00Z"
+                        value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         mode={DateTimeField.Mode.datetime}
-                        dateTime="2016-06-01T08:00:00Z"
+                        value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                 </div>
@@ -41,20 +41,20 @@ export default class DateTimeFieldDemo extends React.Component {
                         label="日期"
                         name="date"
                         mode={DateTimeField.Mode.date}
-                        dateTime="2016-06-01"
+                        value="2016-06-01"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="时间"
                         name="time"
                         mode={DateTimeField.Mode.time}
-                        dateTime="08:00:00"
+                        value="08:00:00"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="日期时间"
                         name="datetime"
-                        dateTime="2016-06-01T08:00:00Z"
+                        value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                 </div>

@@ -7,21 +7,21 @@ import './css/RichTextEditor.less';
 
 import React from 'react';
 
-import Control from './Control'
+import InputControl from './InputControl';
 
-export default class RichTextEditor extends Control {
+export default class RichTextEditor extends InputControl {
     static propTypes = {
-        ...React.Component.propTypes,
+        ...InputControl.propTypes,
         placeholder: React.PropTypes.string,
-        content: React.PropTypes.string,
+        value: React.PropTypes.string,
         maximumWords: React.PropTypes.number,
         config: React.PropTypes.object
     }
 
     static defaultProps = {
-        ...React.Component.defaultProps,
+        ...InputControl.defaultProps,
         placeholder: '',
-        content: '',
+        value: '',
         config: {
             initialFrameHeight: 250,
             autoHeightEnabled: false,
@@ -49,25 +49,30 @@ export default class RichTextEditor extends Control {
 
     constructor(...args) {
         super(...args);
+
         this.editorId = `rich-text-editor-${new Date().getTime()}`;
+
         if (typeof this.props.maximumWords === 'number') {
             this.props.config.maximumWords = this.props.maximumWords;
         }
     }
 
-    getHtml() {
+    getValue() {
         return this.editor.getContent();
     }
 
     validate() {
         const {maximumWords} = this.props.config;
+
         let currentWords = this.editor.getContentLength(true);
         let valid = currentWords <= maximumWords;
+
         this.setState({valid});
+
         return valid;
     }
 
-    render() {
+    renderControl() {
         return <div id={this.editorId} className="rich-text-editor" title={this.props.placeholder} />;
     }
 
@@ -79,7 +84,7 @@ export default class RichTextEditor extends Control {
         /* eslint-enable */
 
         this.editor.ready(() => {
-            this.editor.setContent(this.props.content || '');
+            this.editor.setContent(this.props.value || '');
         });
     }
 

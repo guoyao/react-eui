@@ -10,7 +10,7 @@ import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
 
-import Wrapper from './Wrapper';
+import Control from './Control';
 import InputControl from './InputControl';
 import DateTimeField from './DateTimeField';
 import util from './util/util';
@@ -60,6 +60,10 @@ export default class DateTimeRange extends InputControl {
         this.endTimeChangeHandler = this.endTimeChangeHandler.bind(this);
     }
 
+    get controlClassName() {
+        return classnames(super.controlClassName, 'eui-date-time-range');
+    }
+
     getValue() {
         return [
             this.refs.startDateTimeField.getValue(),
@@ -77,38 +81,34 @@ export default class DateTimeRange extends InputControl {
         this.props.changeHandler(this.getValue());
     }
 
-    renderInput() {
+    renderControl() {
         const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;
 
         let [startTime, endTime] = buildValue(this.props);
-        let className = {
-            'eui-date-time-range': true
-        };
 
-        className = classnames(className, this.props.className);
-
-        return Wrapper.createWrapper(
-            {className},
-            <DateTimeField
-                ref="startDateTimeField"
-                key="start"
-                mode={mode}
-                format={format}
-                inputFormat={inputFormat}
-                inputProps={startInputProps}
-                dateTime={startTime}
-                changeHandler={this.startTimeChangeHandler}
-            />,
-            <DateTimeField
-                ref="endDateTimeField"
-                key="end"
-                mode={mode}
-                format={format}
-                inputFormat={inputFormat}
-                inputProps={endInputProps}
-                dateTime={endTime}
-                changeHandler={this.endTimeChangeHandler}
-            />
+        return (
+            <Control className={this.controlClassName}>
+                <DateTimeField
+                    ref="startDateTimeField"
+                    key="start"
+                    mode={mode}
+                    format={format}
+                    inputFormat={inputFormat}
+                    inputProps={startInputProps}
+                    dateTime={startTime}
+                    changeHandler={this.startTimeChangeHandler}
+                />,
+                <DateTimeField
+                    ref="endDateTimeField"
+                    key="end"
+                    mode={mode}
+                    format={format}
+                    inputFormat={inputFormat}
+                    inputProps={endInputProps}
+                    dateTime={endTime}
+                    changeHandler={this.endTimeChangeHandler}
+                />
+            </Control>
         );
     }
 }

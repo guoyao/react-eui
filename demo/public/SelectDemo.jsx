@@ -3,6 +3,8 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
+import {Validator} from 'react-bootstrap-validation';
+
 import {Select, Form} from '../../index';
 
 const datasource = [
@@ -28,7 +30,7 @@ const datasource = [
 export default class SelectDemo extends React.Component {
     constructor(...args) {
         super(...args);
-        this.state = {datasource: datasource};
+        this.state = {datasource};
         this.selectHandler = this.selectHandler.bind(this);
         // this.usages();
     }
@@ -62,20 +64,90 @@ export default class SelectDemo extends React.Component {
     }
 
     selectHandler(value, datasource, index, selectedValues) {
-        this.setState({selectedValue: selectedValues.join(',')});
+        console.log(value, datasource, index, selectedValues);
     }
 
     render() {
         return (
-            <Form>
-                <Select
-                    ref="select"
-                    name="region"
-                    datasource={this.state.datasource}
-                    selectedValue={this.state.selectedValue}
-                    selectHandler={this.selectHandler}
-                />
-            </Form>
+            <div className="row select-demo">
+                <div className="col-md-6">
+                    <Select datasource={this.state.datasource} />
+
+                    <Select
+                        label="地区"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                    />
+
+                    <Select
+                        label="地区"
+                        validate="required"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                        selectHandler={this.selectHandler}
+                        errorHelp={{
+                            required: '请选择地区'
+                        }}
+                    />
+
+                    <Form>
+                        <Select
+                            ref="select"
+                            name="region"
+                            label="地区"
+                            className="required"
+                            datasource={this.state.datasource}
+                            value={this.state.value}
+                            selectHandler={this.selectHandler}
+                            validate={value => {
+                                let requiredLength = this.refs.select.numItemRenderer;
+                                return Validator.allRequired(value, {
+                                    requiredLength: requiredLength,
+                                    errorHelp: {allRequired: '请选择地区'}
+                                });
+                            }}
+                        />
+                    </Form>
+                </div>
+                <div className="col-md-6">
+                    <Select
+                        label="地区"
+                        groupClassName="horizontal"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                        selectHandler={this.selectHandler}
+                    />
+
+                    <Select
+                        label="地区"
+                        groupClassName="horizontal"
+                        validate="required"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                        selectHandler={this.selectHandler}
+                        errorHelp={{
+                            required: '请选择地区'
+                        }}
+                    />
+
+                    <Select
+                        ref="select1"
+                        label="地区"
+                        groupClassName="horizontal"
+                        className="required"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                        selectHandler={this.selectHandler}
+                        validate={value => {
+                            let requiredLength = this.refs.select1.numItemRenderer;
+                            return Validator.allRequired(value, {
+                                requiredLength: requiredLength,
+                                errorHelp: {allRequired: '请选择地区'}
+                            });
+                        }}
+                    />
+                </div>
+            </div>
         );
     }
 }

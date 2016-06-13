@@ -12,8 +12,8 @@ import classnames from 'classnames';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 import Constants from 'react-bootstrap-datetimepicker/lib/Constants'
 
+import Control from './Control';
 import InputControl from './InputControl';
-import Wrapper from './Wrapper';
 import timeUtil from './util/timeUtil';
 import util from './util/util';
 
@@ -61,45 +61,19 @@ export default class DateTimeFieldEx extends InputControl {
     constructor(...args) {
         super(...args);
 
-        const {format, inputFormat, mode, dateTime} = this.props;
+        const {format, inputFormat, mode, value} = this.props;
 
         this.format = format || DEFAULT_FORMAT[mode].format;
         this.inputFormat = inputFormat || DEFAULT_FORMAT[mode].inputFormat;
 
         this.state = {
-            dateTime: (dateTime ? moment(dateTime, this.format) : moment()).format(this.format)
+            value: (value ? moment(value, this.format) : moment()).format(this.format)
         };
 
         this.changeHandler = this.changeHandler.bind(this);
     }
 
-    getValue() {
-        let dateTime = this.state.dateTime;
-
-        if (/Z$/.test(this.format)) {
-            dateTime = timeUtil.timeToUtc(dateTime);
-        }
-
-        return dateTime;
-    }
-
-    changeHandler(value) {
-        this.setState({dateTime: value}, () => {
-            this.props.changeHandler(this.getValue());
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
-
-        if (this.props.dateTime !== nextProps.dateTime) {
-            this.setState({
-                dateTime: moment(nextProps.dateTime, this.format).format(this.format)
-            });
-        }
-    }
-
-    renderInput() {
+    get controlClassName() {
         const {mode} = this.props;
 
         let className = {
@@ -107,13 +81,41 @@ export default class DateTimeFieldEx extends InputControl {
             [`eui-date-time-field-${mode}`]: true
         };
 
-        className = classnames(className, this.props.className);
+        return classnames(super.controlClassName, className)
+    }
 
+    getValue() {
+        let value = this.state.value;
+
+        if (/Z$/.test(this.format)) {
+            value = timeUtil.timeToUtc(value);
+        }
+
+        return value;
+    }
+
+    changeHandler(value) {
+        this.setState({value}, () => {
+            this.props.changeHandler(this.getValue());
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
+
+        if (this.props.value !== nextProps.value) {
+            this.setState({
+                value: moment(nextProps.value, this.format).format(this.format)
+            });
+        }
+    }
+
+    renderControl() {
         const props = u.extend(
             {key: ''},
             u.pick(this.props, propKeys),
             {
-                dateTime: this.state.dateTime,
+                dateTime: this.state.value,
                 onChange: this.changeHandler,
                 format: this.format,
                 inputFormat: this.inputFormat
@@ -122,9 +124,10 @@ export default class DateTimeFieldEx extends InputControl {
 
         props.inputProps.readOnly = true;
 
-        return Wrapper.createWrapper(
-            {className},
-            <DateTimeField {...props} />
+        return (
+            <Control className={this.controlClassName}>
+                <DateTimeField {...props} />
+            </Control>
         );
     }
 }

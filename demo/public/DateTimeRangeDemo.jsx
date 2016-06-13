@@ -27,15 +27,15 @@ export default class DateTimeRangeDemo extends React.Component {
                     <DateTimeRange />
                     <DateTimeRange
                         label="日期时间"
-                        required
                     />
                     <DateTimeRange
                         label="日期"
                         mode={DateTimeRange.Mode.date}
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
-                        validate="isTimeRange"
+                        validate="required,isTimeRange"
                         errorHelp={{
+                            required: '请填写',
                             isTimeRange: '结束日期必须晚于开始日期'
                         }}
                     />
@@ -52,7 +52,6 @@ export default class DateTimeRangeDemo extends React.Component {
                     <Form>
                         <DateTimeRange
                             name="dateRange"
-                            className="required"
                             mode={DateTimeRange.Mode.date}
                             value={this.state.timeRange}
                             changeHandler={this.changeHandler}

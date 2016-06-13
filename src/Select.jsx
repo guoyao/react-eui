@@ -5,30 +5,32 @@
 
 import './css/Select.less';
 
-import React from 'react';
 import u from 'underscore';
+import React from 'react';
 import classnames from 'classnames';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
-import {ValidatedInput} from 'react-bootstrap-validation';
 
-class ItemRenderer extends React.Component {
+import Control from './Control';
+import InputControl from './InputControl';
+
+class ItemRenderer extends Control {
     static propTypes = {
-        ...React.Component.propTypes,
+        ...Control.propTypes,
         selectHandler: React.PropTypes.func
     }
 
     static defaultProps = {
-        ...React.Component.defaultProps,
+        ...Control.defaultProps,
 
         /* eslint-disable no-unused-vars */
         selectHandler: (e, value, datasource, index) => {}
         /* eslint-enable no-unused-vars */
     }
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(...args) {
+        super(...args);
 
-        this.state = {selectedValue: this.props.selectedValue};
+        this.state = {value: this.props.value};
         this.selectHandler = this.selectHandler.bind(this);
         this.datasource = this.getDatasource(this.props);
     }
@@ -49,16 +51,20 @@ class ItemRenderer extends React.Component {
     selectHandler(e, value) {
         if (this.props.disableChange) {
             this.props.selectHandler(e, value, this.datasource, this.props.index);
+
             return false;
         }
 
-        this.setState({selectedValue: value});
-        this.props.selectHandler(e, value, this.datasource, this.props.index);
+        this.setState({value}, () => {
+            this.props.selectHandler(e, value, this.datasource, this.props.index);
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.selectedValue !== nextProps.selectedValue) {
-            this.setState({selectedValue: nextProps.selectedValue});
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
+
+        if (this.props.value !== nextProps.value) {
+            this.setState({value: nextProps.value});
         }
 
         if (this.props.datasource !== nextProps.datasource) {
@@ -66,14 +72,16 @@ class ItemRenderer extends React.Component {
         }
     }
 
-    render() {
+    renderControl() {
         if (this.datasource.length === 0) {
             return null;
         }
 
-        const selectedValue = this.state.selectedValue;
-        let selectedItem = u.find(this.datasource, item => item.value === selectedValue);
+        const value = this.state.value;
+
+        let selectedItem = u.find(this.datasource, item => item.value === value);
         !selectedItem && (selectedItem = this.datasource[0]);
+
         let title = selectedItem.label;
 
         return (
@@ -101,29 +109,44 @@ class ItemRenderer extends React.Component {
     }
 }
 
-export default class Select extends ValidatedInput {
+export default class Select extends InputControl {
     static propTypes = {
-        ...ValidatedInput.propTypes,
+        ...InputControl.propTypes,
         selectHandler: React.PropTypes.func
     }
 
     static defaultProps = {
-        ...ValidatedInput.defaultProps,
+        ...InputControl.defaultProps,
 
         /* eslint-disable no-unused-vars */
+        /**
+         * 选择后的回调函数
+         *
+         * @param  {string} value         所选的那个子下拉组件的值
+         * @param  {Array} datasource     所选的那个子下拉组件的数据源
+         * @param  {int} index            所选的那个子下拉组件的序号，即第几个子下拉组件
+         * @param  {Array} selectedValues 选择的值的集合
+         */
         selectHandler: (value, datasource, index, selectedValues) => {}
         /* eslint-enable no-unused-vars */
     }
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(...args) {
+        super(...args);
 
+        this.state = u.pick(this.props, 'datasource', 'value');
+        this.numItemRenderer = 0;
         this.selectHandler = this.selectHandler.bind(this);
+    }
+
+    get controlClassName() {
+        return classnames(super.controlClassName, 'eui-select');
     }
 
     selectHandler(e, value, datasource, index) {
         const {selectHandler} = this.props;
-        const selectedValue = this.props.selectedValue || value;
+        const selectedValue = this.state.value || value;
+
         let selectedValues = selectedValue.split(',');
 
         if (this.props.disableChange) {
@@ -136,24 +159,22 @@ export default class Select extends ValidatedInput {
         let selectedItem = u.find(datasource, item => item.value === value);
 
         if (selectedItem.children && selectedItem.children.length) {
-            let value = this.props.isRawSource && selectedItem.children[0] && selectedItem.children[0].value || '';
-            selectedValues.push(value);
+            selectedValues.push(this.props.isRawSource && selectedItem.children[0] &&
+                selectedItem.children[0].value || '');
         }
 
-        selectHandler(value, datasource, index, selectedValues);
-
-        setTimeout(() => {
-            this._form && this._form._validateOne(this.props.name, this._form.getValues());
-        }, 0);
+        this.setState({value: selectedValues.join(',')}, () => {
+            this.validate();
+            selectHandler(value, datasource, index, selectedValues);
+        });
     }
 
     getValue() {
-        let datasource = this.props.datasource;
-        let selectedValue = this.props.selectedValue;
+        let {datasource, value} = this.state;
 
         // 处理初始值本身是错误的问题
-        if (selectedValue) {
-            const selectedValues = selectedValue.split(',');
+        if (value) {
+            const selectedValues = value.split(',');
             const values = [];
 
             for (var i = 0, length = selectedValues.length; i < length; i++) {
@@ -161,9 +182,10 @@ export default class Select extends ValidatedInput {
                     break;
                 }
 
-                if (u.contains(u.pluck(datasource, 'value'), selectedValues[i])) {
+                let index = u.findIndex(u.pluck(datasource, 'value'), v => v === selectedValues[i]);
+                if (index > -1) {
                     values.push(selectedValues[i]);
-                    datasource = datasource[i].children;
+                    datasource = datasource[index].children;
                 }
                 else {
                     this.props.isRawSource && values.push(datasource[0].value || '');
@@ -171,14 +193,14 @@ export default class Select extends ValidatedInput {
                 }
             }
 
-            selectedValue = values.join(',');
+            value = values.join(',');
         }
 
-        if (this.props.isRawSource && selectedValue === undefined) {
-            selectedValue = datasource[0] ? datasource[0].value : '';
+        if (this.props.isRawSource && value === undefined) {
+            value = datasource[0] ? datasource[0].value : '';
         }
 
-        return selectedValue ? selectedValue.replace(/,$/, '') : '';
+        return value ? value.replace(/,$/, '') : '';
     }
 
     getInputDOMNode() {
@@ -186,43 +208,25 @@ export default class Select extends ValidatedInput {
         return target || document.getElementById(`${this.props.name}-0`);
     }
 
-    renderLabel() {
-        let controlLabel;
-        let classes = {
-            'control-label': 'control-label'
-        };
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
 
-        if (this.props.label) {
-            let labelClassName = this.props.labelClassName;
-            let validate = this.props.validate;
-            classes[labelClassName] = labelClassName;
+        const {datasource, value} = nextProps;
 
-            if (!/\brequired\b/.test(labelClassName) &&
-                (u.isString(validate) &&
-                /\brequired\b/.test(validate) ||
-                /\brequired\b/.test(this.props.className))) {
-                classes.required = 'required';
-            }
-
-            let classNames = classnames(classes);
-            let required = /\brequired\b/.test(classNames);
-
-            controlLabel = (
-                <label
-                    className={classNames}
-                    dangerouslySetInnerHTML={{__html: `${required ? '<i>*</i>' : ''}${this.props.label}`}}
-                />
-            );
+        if (this.props.datasource !== datasource) {
+            this.setState({datasource});
         }
 
-        return controlLabel;
+        if (this.props.value !== value) {
+            this.setState({value});
+        }
     }
 
-    render() {
-        const {selectedValue} = this.props;
-        // console.log(selectedValue);
-        let datasource = this.props.datasource;
-        let selectedValues = selectedValue && selectedValue.split(',') || [''];
+    renderControl() {
+        const {value} = this.state;
+
+        let {datasource} = this.state;
+        let selectedValues = value && value.split(',') || [''];
         let datasources = [];
 
         if (datasource && datasource.length > 0) {
@@ -230,15 +234,19 @@ export default class Select extends ValidatedInput {
                 let datasourceItem = {datasource};
                 let selectedItem = u.find(datasource, item => item.value === selectedValues[0]);
                 datasources.push(datasourceItem);
+
                 if (!selectedItem) {
-                    datasourceItem.selectedValue = '';
+                    datasourceItem.value = '';
                     break;
                 }
-                datasourceItem.selectedValue = selectedItem.value;
+
+                datasourceItem.value = selectedItem.value;
                 datasource = selectedItem.children;
+
                 if (!datasource || datasource.length === 0) {
                     break;
                 }
+
                 if (selectedValues.shift() && selectedValues.length === 0) {
                     selectedValues.push('');
                 }
@@ -246,50 +254,30 @@ export default class Select extends ValidatedInput {
             while (selectedValues.length > 0);
         }
 
-        let groupClassName = {
-            'select-wrap': !this.props.standalone,
-            'select-wrap-lg': !this.props.standalone && this.props.bsSize === 'large',
-            'select-wrap-sm': !this.props.standalone && this.props.bsSize === 'small',
-            'select-wrap-hidden': this.props.isHidden,
-            'has-feedback': this.props.hasFeedback,
-            'has-success': this.props.bsStyle === 'success',
-            'has-warning': this.props.bsStyle === 'warning',
-            'has-error': this.props.bsStyle === 'error'
-        };
-
-        let className = classnames(groupClassName, this.props.groupClassName);
-        let innerclassName = classnames('select-group', this.props.className);
+        this.numItemRenderer = datasources.length;
 
         return (
-            <div className={className}>
-                {this.renderLabel()}
-                <div className={innerclassName}>
-                {
-                    datasources.map((datasource, index) => {
-                        return (
-                            <ItemRenderer
-                                key={index}
-                                index={index}
-                                id={`${this.props.name}-${index}`}
-                                ref={`itemRenderer${index}`}
-                                datasource={datasource.datasource}
-                                isRawSource={this.props.isRawSource}
-                                selectedValue={datasource.selectedValue}
-                                emptyLabel={this.props.emptyLabel}
-                                disabled={!!this.props.disabled}
-                                disableChange={!!this.props.disableChange}
-                                selectHandler={this.selectHandler}
-                            />
-                        );
-                    })
-                }
-                </div>
-                {
-                    this.props.help
-                        ? (<span className="help-block" key="help">{this.props.help}</span>)
-                        : null
-                }
-            </div>
-		);
+            <Control className={this.controlClassName}>
+            {
+                datasources.map((datasource, index) => {
+                    return (
+                        <ItemRenderer
+                            key={index}
+                            index={index}
+                            id={`${this.props.name}-${index}`}
+                            ref={`itemRenderer${index}`}
+                            datasource={datasource.datasource}
+                            isRawSource={this.props.isRawSource}
+                            value={datasource.value}
+                            emptyLabel={this.props.emptyLabel}
+                            disabled={!!this.props.disabled}
+                            disableChange={!!this.props.disableChange}
+                            selectHandler={this.selectHandler}
+                        />
+                    );
+                })
+            }
+            </Control>
+        );
     }
 }

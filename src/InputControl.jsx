@@ -49,8 +49,13 @@ export default class InputControl extends ValidatedInput {
         this.inputHandler = this.inputHandler.bind(this);
     }
 
+    get controlClassName() {
+        return classnames('eui-input-control', this.props.className);
+    }
+
     componentWillMount() {
         super.componentWillMount && super.componentWillMount();
+
         if (!this._form && typeof this.props.validate === 'string') {
             this.state = u.extend(this.state || {}, {_error: false});
             this._validators = compileValidationRules(this, this.props.validate);
@@ -68,10 +73,6 @@ export default class InputControl extends ValidatedInput {
 
         if (!/\brequired\b/.test(labelClassName)
             && (u.isString(validate) && /\brequired\b/.test(validate) || /\brequired\b/.test(this.props.className))) {
-            classes.required = 'required';
-        }
-
-        if (this.props.required) {
             classes.required = 'required';
         }
 
@@ -101,6 +102,10 @@ export default class InputControl extends ValidatedInput {
         }
 
         return super.renderHelp();
+    }
+
+    renderInput() {
+        return this.renderControl();
     }
 
     renderFormGroup(children) {
