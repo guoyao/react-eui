@@ -8,11 +8,58 @@ import './InputControl.less';
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
 
 import autosize from './util/autosize';
+
+function getInputErrorMessage(input, ruleName) {
+    const errorHelp = input.props.errorHelp;
+
+    if (typeof errorHelp === 'object') {
+        return errorHelp[ruleName];
+    }
+
+    return errorHelp;
+}
+
+function compileValidationRules(input, ruleProp) {
+    const rules = ruleProp.split(',').map(function (rule) {
+        const params = rule.split(':');
+        let name = params.shift();
+        const inverse = name[0] === '!';
+
+        if (inverse) {
+            name = name.substr(1);
+        }
+
+        return {name, inverse, params};
+    });
+
+    const validator = (input.props && input.props.type) === 'file' ? FileValidator : Validator;
+
+    return function (val) {
+        let result = true;
+
+        rules.forEach(function (rule) {
+            if (typeof validator[rule.name] !== 'function') {
+                throw new Error('Invalid input validation rule "' + rule.name + '"');
+            }
+
+            let ruleResult = validator[rule.name].apply(validator, [val].concat(toConsumableArray(rule.params)));
+
+            if (rule.inverse) {
+                ruleResult = !ruleResult;
+            }
+
+            if (result === true && ruleResult !== true) {
+                result = getInputErrorMessage(input, rule.name) || false;
+            }
+        });
+
+        return result;
+    };
+}
 
 export default class InputControl extends ValidatedInput {
     static propTypes = {
@@ -124,7 +171,6 @@ export default class InputControl extends ValidatedInput {
 
         if (this.props.label || this.props.help || this.maxLength ||
             this.props.validate || this.state._error) {
-
             group = super.renderFormGroup(children);
 
             if (this.state._error) {
@@ -168,7 +214,7 @@ export default class InputControl extends ValidatedInput {
             result = validate(value);
         }
         else if (typeof validate === 'string') {
-            result = this._validators(value)
+            result = this._validators(value);
         }
         else {
             result = true;
@@ -216,52 +262,4 @@ export default class InputControl extends ValidatedInput {
         super.componentWillUnmount && super.componentWillUnmount();
         this._validators = undefined;
     }
-}
-
-function getInputErrorMessage(input, ruleName) {
-    const errorHelp = input.props.errorHelp;
-
-    if (typeof errorHelp === 'object') {
-        return errorHelp[ruleName];
-    }
-
-    return errorHelp;
-}
-
-function compileValidationRules(input, ruleProp) {
-    const rules = ruleProp.split(',').map(function (rule) {
-        const params = rule.split(':');
-        let name = params.shift();
-        const inverse = name[0] === '!';
-
-        if (inverse) {
-            name = name.substr(1);
-        }
-
-        return {name, inverse, params};
-    });
-
-    const validator = (input.props && input.props.type) === 'file' ? FileValidator : Validator;
-
-    return function (val) {
-        let result = true;
-
-        rules.forEach(function (rule) {
-            if (typeof validator[rule.name] !== 'function') {
-                throw new Error('Invalid input validation rule "' + rule.name + '"');
-            }
-
-            let ruleResult = validator[rule.name].apply(validator, [val].concat(toConsumableArray(rule.params)));
-
-            if (rule.inverse) {
-                ruleResult = !ruleResult;
-            }
-
-            if (result === true && ruleResult !== true) {
-                result = getInputErrorMessage(input, rule.name) || false;
-            }
-        });
-
-        return result;
-    };
 }

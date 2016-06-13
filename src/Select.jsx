@@ -182,7 +182,10 @@ export default class Select extends InputControl {
                     break;
                 }
 
+                /* eslint-disable no-loop-func */
                 let index = u.findIndex(u.pluck(datasource, 'value'), v => v === selectedValues[i]);
+                /* eslint-enable no-loop-func */
+
                 if (index > -1) {
                     values.push(selectedValues[i]);
                     datasource = datasource[index].children;

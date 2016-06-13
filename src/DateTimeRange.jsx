@@ -5,8 +5,6 @@
 
 import './DateTimeRange.less';
 
-import u from 'underscore';
-import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
 
@@ -71,6 +69,7 @@ export default class DateTimeRange extends InputControl {
         ].join(',');
     }
 
+    /* eslint-disable no-unused-vars */
     startTimeChangeHandler(value) {
         this.validate();
         this.props.changeHandler(this.getValue());
@@ -80,6 +79,7 @@ export default class DateTimeRange extends InputControl {
         this.validate();
         this.props.changeHandler(this.getValue());
     }
+    /* eslint-enable no-unused-vars */
 
     renderControl() {
         const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;

@@ -10,7 +10,7 @@ import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
 import DateTimeField from 'react-bootstrap-datetimepicker';
-import Constants from 'react-bootstrap-datetimepicker/lib/Constants'
+import Constants from 'react-bootstrap-datetimepicker/lib/Constants';
 
 import Control from './Control';
 import InputControl from './InputControl';
@@ -81,7 +81,7 @@ export default class DateTimeFieldEx extends InputControl {
             [`eui-date-time-field-${mode}`]: true
         };
 
-        return classnames(super.controlClassName, className)
+        return classnames(super.controlClassName, className);
     }
 
     getValue() {
