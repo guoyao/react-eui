@@ -5,7 +5,7 @@
 import React from 'react';
 import {Validator} from 'react-bootstrap-validation';
 
-import {Select, Form} from '../../index';
+import {InputControl, Select, Form} from '../../index';
 
 const datasource = [
     {label: 'item-1', value: 'value-1'},

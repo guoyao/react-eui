@@ -1,5 +1,5 @@
 /**
- * @file 增强的ValidatedInput组件
+ * @file 所有input组件的基类
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
@@ -11,7 +11,9 @@ import classnames from 'classnames';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
 
+import Control from './Control';
 import autosize from './util/autosize';
+import util from './util/util';
 
 function getInputErrorMessage(input, ruleName) {
     const errorHelp = input.props.errorHelp;
@@ -76,8 +78,9 @@ export default class InputControl extends ValidatedInput {
         required: false,
         showLengthTip: true,
         name: '',
-        _registerInput: () => {},
-        _unregisterInput: () => {}
+        type: '',
+        _registerInput: util.emptyFunc,
+        _unregisterInput: util.emptyFunc
     }
 
     constructor(props, context) {
@@ -152,7 +155,45 @@ export default class InputControl extends ValidatedInput {
     }
 
     renderInput() {
-        return this.renderControl();
+        if (!this.props.type) {
+            return this.renderControl();
+        }
+
+        switch (this.props.type) {
+            case 'select':
+                return React.createElement('select', u.extend({}, this.props, {
+                    className: classnames('eui-control', this.controlClassName, 'form-control'),
+                    ref: 'input',
+                    key: 'input'
+                }), this.props.children);
+            case 'textarea':
+                return React.createElement('textarea', u.extend({}, this.props, {
+                    className: classnames('eui-control', this.controlClassName, 'form-control'),
+                    ref: 'input',
+                    key: 'input'
+                }));
+            case 'static':
+                return React.createElement('p', u.extend({}, this.props, {
+                    className: classnames('eui-control', this.controlClassName, 'form-control-static'),
+                    ref: 'input',
+                    key: 'input'
+                }), this.props.value);
+            default:
+                let className = this.isCheckboxOrRadio() || this.isFile() ? '' : 'form-control';
+                return React.createElement('input', u.extend({}, this.props, {
+                    className: classnames('eui-control', this.controlClassName, className),
+                    ref: 'input',
+                    key: 'input'
+                }));
+        }
+    }
+
+    renderControl() {
+        return (
+            <Control className={this.controlClassName}>
+                {this.props.children}
+            </Control>
+        );
     }
 
     renderFormGroup(children) {

@@ -1,5 +1,5 @@
 /**
-* @file src/Control.jsx
+* @file 非input组件基类
 * @author guoyao(wuguoyao@baidu.com)
 **/
 
