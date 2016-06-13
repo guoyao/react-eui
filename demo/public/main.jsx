@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
 
+import InputControlDemo from './InputControlDemo';
 import SelectDemo from './SelectDemo';
 import TableDemo from './TableDemo';
 import RichTextEditorDemo from './RichTextEditorDemo';
@@ -28,6 +29,9 @@ class Container extends React.Component {
                 activeKey={this.state.activeTab}
                 onSelect={this.selectHandler}
             >
+                <Tab eventKey="input-control" title="InputControl">
+                    <InputControlDemo />
+                </Tab>
                  <Tab eventKey="select" title="Select">
                      <SelectDemo />
                  </Tab>

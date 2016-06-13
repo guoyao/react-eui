@@ -110,3 +110,5 @@ u.each(Validator, function (v, key) {
         };
     }
 });
+
+export default Validator;
