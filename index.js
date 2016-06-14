@@ -6,6 +6,7 @@ import Control from './src/Control';
 import InputControl from './src/InputControl';
 import Form from './src/Form';
 import Select from './src/Select';
+import MultiSelect from './src/MultiSelect';
 import Table from './src/Table';
 import RichTextEditor from './src/RichTextEditor';
 import DateTimeField from './src/DateTimeField';
@@ -17,6 +18,7 @@ export {
     InputControl,
     Form,
     Select,
+    MultiSelect,
     Table,
     RichTextEditor,
     DateTimeField,

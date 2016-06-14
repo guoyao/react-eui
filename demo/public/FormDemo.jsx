@@ -63,6 +63,7 @@ export default class FormDemo extends React.Component {
                     <InputControl
                         name="pureText1"
                         label="带name和label属性的纯文本，值由value属性决定，没有value属性则值为undefined"
+                        groupClassName="vertical"
                     >
                         纯文本1
                     </InputControl>
@@ -126,6 +127,7 @@ export default class FormDemo extends React.Component {
                         name="range"
                         label="时间段"
                         className="required"
+                        groupClassName="vertical"
                         validate="isTimeRange"
                         errorHelp={{
                             isTimeRange: '结束时间必须晚于开始时间'

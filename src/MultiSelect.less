@@ -1,0 +1,69 @@
+/**
+ * @file components/common/multiselect.less
+ *
+ * 多选下拉框样式
+ */
+
+.eui-multi-select {
+    width: 160px;
+    display: inline-block;
+    line-height: 30px;
+    position: relative;
+    border: 1px solid #cdd6e1;
+    background-color: #f5f5f5;
+    vertical-align: middle;
+
+    .eui-multi-select-head {
+        padding: 0 5px;
+        cursor: pointer;
+        .ellipsis();
+    }
+
+    .eui-multi-select-list {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 30px;
+        background-color: #fff;
+        border: 1px solid #cdd6e1;
+        width: 100%;
+        padding: 1px;
+        display: none;
+        list-style: none;
+
+        &.active {
+            display: block;
+        }
+
+        li {
+            line-height: 26px;
+            list-style: none;
+
+            &:hover {
+                background-color: #eee;
+            }
+
+            &.active {
+                background-color: #eee;
+            }
+
+            > label {
+                font-weight: normal;
+                display: block;
+                margin-bottom: 0;
+                padding: 0 9px;
+                cursor: pointer;
+
+                input {
+                    display: inline-block;
+                    vertical-align: -2px;
+                    margin: 0 5px 0 0;
+                }
+
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}

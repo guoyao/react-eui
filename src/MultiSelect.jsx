@@ -1,0 +1,174 @@
+/**
+ * @file 多选下拉控件
+ * @author chenqiang(chenqiang03@baidu.com)
+ */
+
+import './MultiSelect.less';
+
+import u from 'underscore';
+import classnames from 'classnames';
+import React from 'react';
+import update from 'react-addons-update';
+
+import addEventListener from 'react-overlays/lib/utils/addEventListener';
+import ownerDocument from 'react-overlays/lib/utils/ownerDocument';
+
+import Control from './Control';
+import InputControl from './InputControl';
+
+function getSuppressRootClose() {
+    let id = Symbol('__click_was_inside');
+
+    return {
+        id,
+        suppressRootClose(event) {
+            // Tag the native event to prevent the root close logic on document click.
+            // This seems safer than using event.nativeEvent.stopImmediatePropagation(),
+            // which is only supported in IE >= 9.
+            event.nativeEvent[id] = true;
+        }
+    };
+}
+
+export default class MultiSelect extends InputControl {
+    static propTypes = {
+        ...InputControl.propTypes,
+
+        defaultValue: React.PropTypes.string,
+        datasource: React.PropTypes.array
+    }
+
+    constructor(...args) {
+        super(...args);
+
+        this.state = {
+            show: false,
+            activedOptions: this.props.defaultValue ? this.props.defaultValue.split(',') : []
+        };
+
+        this.handleDocumentClick = this.handleDocumentClick.bind(this);
+        this.toggleList = this.toggleList.bind(this);
+    }
+
+    get controlClassName() {
+        return classnames(super.controlClassName, 'eui-multi-select');
+    }
+
+    getValue() {
+        return this.state.activedOptions;
+    }
+
+    componentWillMount() {
+        super.componentWillMount && super.componentWillMount();
+
+        let {id, suppressRootClose} = getSuppressRootClose();
+
+        this._suppressRootId = id;
+        this._suppressRootCloseHandler = suppressRootClose.bind(this);
+    }
+
+    componentDidMount() {
+        super.componentDidMount && super.componentDidMount();
+        this.bindRootCloseHandlers();
+    }
+
+    bindRootCloseHandlers() {
+        const doc = ownerDocument(this);
+
+        this._onDocumentClickListener = addEventListener(doc, 'click', this.handleDocumentClick);
+    }
+
+    unbindRootCloseHandlers() {
+        if (this._onDocumentClickListener) {
+            this._onDocumentClickListener.remove();
+        }
+    }
+
+    handleClick(value, ref) {
+        let inputNode = this.refs[ref];
+        let newState;
+
+        if (inputNode.checked) {
+            newState = update(this.state.activedOptions, {
+                $push: [value]
+            });
+        }
+        else {
+            let index = u.indexOf(this.state.activedOptions, value);
+
+            newState = update(this.state.activedOptions, {
+                $splice: [[index, 1]]
+            });
+        }
+
+        this.setState({
+            activedOptions: newState
+        });
+    }
+
+    toggleList() {
+        this.state.show ? this.close() : this.open();
+    }
+
+    open() {
+        this.setState(update(this.state, {
+            show: {$set: true}
+        }));
+    }
+
+    close() {
+        this.setState(update(this.state, {
+            show: {$set: false}
+        }));
+    }
+
+    handleDocumentClick(e) {
+        // This is now the native event.
+        if (e[this._suppressRootId]) {
+            return;
+        }
+
+        this.close();
+    }
+
+    renderControl() {
+        const {label, datasource, name} = this.props;
+        const activedOptions = this.state.activedOptions;
+        const displayContent = activedOptions.join() || '请选择';
+
+        return (
+            <Control className={this.controlClassName} onClick={this._suppressRootCloseHandler}>
+                <div
+                    className="eui-multi-select-head"
+                    title={displayContent}
+                    onClick={this.toggleList}>
+                    {displayContent}
+                </div>
+                <ul className={this.state.show ? 'eui-multi-select-list active' : 'eui-multi-select-list'}>
+                {
+                    datasource.map((value, key) => (
+                        <li key={key} className={u.contains(activedOptions, value) ? 'active' : ''}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name={name}
+                                    value={value}
+                                    ref={`input${key}`}
+                                    defaultChecked={u.contains(activedOptions, value)}
+                                    onClick={this.handleClick.bind(this, value, `input${key}`)}
+                                />
+                                <span>{value}</span>
+                            </label>
+                        </li>
+                    ))
+                }
+                </ul>
+            </Control>
+        );
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount && super.componentWillUnmount();
+        this.unbindRootCloseHandlers();
+    }
+}

@@ -115,6 +115,7 @@ export default class InputControl extends ValidatedInput {
 
     renderLabel(children) {
         let classes = {
+            'eui-input-control-label': !this.isCheckboxOrRadio(),
             'control-label': !this.isCheckboxOrRadio()
         };
 
