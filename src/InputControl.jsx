@@ -66,8 +66,7 @@ function compileValidationRules(input, ruleProp) {
 export default class InputControl extends ValidatedInput {
     static propTypes = {
         ...ValidatedInput.propTypes,
-
-        required: React.PropTypes.bool,
+        name: React.PropTypes.string,
 
         // 当有字符串长度限制时，是否展示当前已输入的字数
         showLengthTip: React.PropTypes.bool
@@ -75,12 +74,10 @@ export default class InputControl extends ValidatedInput {
 
     static defaultProps = {
         ...ValidatedInput.defaultProps,
-        required: false,
-        showLengthTip: true,
-        name: '',
-        type: '',
         _registerInput: util.emptyFunc,
-        _unregisterInput: util.emptyFunc
+        _unregisterInput: util.emptyFunc,
+
+        showLengthTip: true
     }
 
     constructor(props, context) {
@@ -101,6 +98,10 @@ export default class InputControl extends ValidatedInput {
 
     get controlClassName() {
         return classnames('eui-input-control', this.props.className);
+    }
+
+    getValue() {
+        return !this.props.type ? this.props.value : super.getValue();
     }
 
     componentWillMount() {
@@ -159,6 +160,7 @@ export default class InputControl extends ValidatedInput {
             return this.renderControl();
         }
 
+        /* eslint-disable */
         switch (this.props.type) {
             case 'select':
                 return React.createElement('select', u.extend({}, this.props, {
@@ -186,6 +188,7 @@ export default class InputControl extends ValidatedInput {
                     key: 'input'
                 }));
         }
+        /* eslint-enable */
     }
 
     renderControl() {

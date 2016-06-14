@@ -1,9 +1,23 @@
 .eui-input-control {
     & + .length-tip {
         float: right;
+        margin-top: 5px;
 
         &.overstep {
             color: #F00;
+        }
+    }
+
+    & + .help-block {
+        display: inline-block;
+
+        & + .length-tip {
+            float: right;
+            margin-top: 5px;
+
+            &.overstep {
+                color: #F00;
+            }
         }
     }
 }

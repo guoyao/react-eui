@@ -1,7 +1,7 @@
 import './src/css/common.less';
 import './src/util/util';
-import './src/util/validator';
 
+import Validator from './src/util/validator';
 import Control from './src/Control';
 import InputControl from './src/InputControl';
 import Form from './src/Form';
@@ -12,9 +12,10 @@ import DateTimeField from './src/DateTimeField';
 import DateTimeRange from './src/DateTimeRange';
 
 export {
+    Validator,
     Control,
-    Form,
     InputControl,
+    Form,
     Select,
     Table,
     RichTextEditor,

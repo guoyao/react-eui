@@ -3,9 +3,8 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
-import {Validator} from 'react-bootstrap-validation';
 
-import {InputControl, Select, Form} from '../../index';
+import {Select, Validator} from '../../index';
 
 const datasource = [
     {label: 'item-1', value: 'value-1'},
@@ -90,24 +89,22 @@ export default class SelectDemo extends React.Component {
                         }}
                     />
 
-                    <Form>
-                        <Select
-                            ref="select"
-                            name="region"
-                            label="地区"
-                            className="required"
-                            datasource={this.state.datasource}
-                            value={this.state.value}
-                            selectHandler={this.selectHandler}
-                            validate={value => {
-                                let requiredLength = this.refs.select.numItemRenderer;
-                                return Validator.allRequired(value, {
-                                    requiredLength: requiredLength,
-                                    errorHelp: {allRequired: '请选择地区'}
-                                });
-                            }}
-                        />
-                    </Form>
+                    <Select
+                        ref="select"
+                        name="region"
+                        label="地区"
+                        className="required"
+                        datasource={this.state.datasource}
+                        value={this.state.value}
+                        selectHandler={this.selectHandler}
+                        validate={value => {
+                            let requiredLength = this.refs.select.numItemRenderer;
+                            return Validator.allRequired(value, {
+                                requiredLength: requiredLength,
+                                errorHelp: {allRequired: '请选择地区'}
+                            });
+                        }}
+                    />
                 </div>
                 <div className="col-md-6">
                     <Select

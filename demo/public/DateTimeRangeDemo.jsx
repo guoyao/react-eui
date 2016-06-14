@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
-import {DateTimeRange, Form} from '../../index';
+import {DateTimeRange} from '../../index';
 
 export default class DateTimeRangeDemo extends React.Component {
     constructor(...args) {
@@ -49,29 +49,25 @@ export default class DateTimeRangeDemo extends React.Component {
                     />
                 </div>
                 <div className="col-md-6">
-                    <Form>
-                        <DateTimeRange
-                            name="dateRange"
-                            mode={DateTimeRange.Mode.date}
-                            value={this.state.timeRange}
-                            changeHandler={this.changeHandler}
-                            validate="isTimeRange"
-                            errorHelp={{
-                                isTimeRange: '结束日期必须晚于开始日期'
-                            }}
-                        />
-                        <DateTimeRange
-                            name="timeRange"
-                            label="日期时间段"
-                            className="required"
-                            value={this.state.timeRange}
-                            changeHandler={this.changeHandler}
-                            validate="isTimeRange"
-                            errorHelp={{
-                                isTimeRange: '结束时间必须晚于开始时间'
-                            }}
-                        />
-                    </Form>
+                    <DateTimeRange
+                        mode={DateTimeRange.Mode.date}
+                        value={this.state.timeRange}
+                        changeHandler={this.changeHandler}
+                        validate="isTimeRange"
+                        errorHelp={{
+                            isTimeRange: '结束日期必须晚于开始日期'
+                        }}
+                    />
+                    <DateTimeRange
+                        label="日期时间段"
+                        className="required"
+                        value={this.state.timeRange}
+                        changeHandler={this.changeHandler}
+                        validate="isTimeRange"
+                        errorHelp={{
+                            isTimeRange: '结束时间必须晚于开始时间'
+                        }}
+                    />
                 </div>
             </div>
         );

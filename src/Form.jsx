@@ -4,8 +4,11 @@
  **/
 
 import u from 'underscore';
-import {Form} from 'react-bootstrap-validation';
+import React from 'react';
+import {Form, ValidatedInput, RadioGroup} from 'react-bootstrap-validation';
 import _Object$keys from 'babel-runtime/core-js/object/keys';
+
+import InputControl from './InputControl';
 
 function isPromise(obj) {
     return obj && u.isFunction(obj.then);
@@ -32,6 +35,86 @@ export default class FormEx extends Form {
         super.unregisterInput(input);
         input._form = undefined;
     }
+
+    /* eslint-disable */
+    _renderChildren(children) {
+        var _this2 = this;
+
+        if (typeof children !== 'object' || children === null) {
+            return children;
+        }
+
+        var model = this.props.model || {};
+
+        var processChild = function processChild(child) {
+            if (typeof child !== 'object' || child === null ||
+                (!child.props.name && (child.type === InputControl || child.type.prototype instanceof InputControl))) {
+                return child;
+            }
+
+            if (child.type === ValidatedInput || child.type === RadioGroup || child.type && child.type.prototype != null && (child.type.prototype instanceof ValidatedInput || child.type.prototype instanceof RadioGroup)) {
+                var _ret = (function () {
+                    var name = child.props && child.props.name;
+
+                    if (!name) {
+                        throw new Error('Can not add input without "name" attribute');
+                    }
+
+                    var newProps = {
+                        _registerInput: _this2.registerInput.bind(_this2),
+                        _unregisterInput: _this2.unregisterInput.bind(_this2)
+                    };
+
+                    var evtName = child.props.validationEvent ? child.props.validationEvent : _this2.props.validationEvent;
+
+                    var origCallback = child.props[evtName];
+
+                    newProps[evtName] = function (e) {
+                        _this2._validateInput(name);
+
+                        return origCallback && origCallback(e);
+                    };
+
+                    if (name in model) {
+                        if (child.props.type === 'checkbox') {
+                            newProps.defaultChecked = model[name];
+                        } else {
+                            newProps.defaultValue = model[name];
+                        }
+                    }
+
+                    var error = _this2._hasError(name);
+
+                    if (error) {
+                        newProps.bsStyle = 'error';
+
+                        if (typeof error === 'string') {
+                            newProps.help = error;
+                        } else if (child.props.errorHelp) {
+                            newProps.help = child.props.errorHelp;
+                        }
+                    }
+
+                    return {
+                        v: React.cloneElement(child, newProps)
+                    };
+                })();
+
+                if (typeof _ret === 'object') return _ret.v;
+            } else {
+                return React.cloneElement(child, {}, _this2._renderChildren(child.props && child.props.children));
+            }
+        };
+
+        var childrenCount = React.Children.count(children);
+
+        if (childrenCount === 1) {
+            return processChild(children);
+        } else if (childrenCount > 1) {
+            return React.Children.map(children, processChild);
+        }
+    }
+    /* eslint-enable */
 
     _validateOne(iptName, context) {
         var input = this._inputs[iptName];
