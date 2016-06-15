@@ -16,6 +16,7 @@ import InputControl from './InputControl';
 class ItemRenderer extends Control {
     static propTypes = {
         ...Control.propTypes,
+
         selectHandler: React.PropTypes.func
     }
 
@@ -112,6 +113,8 @@ class ItemRenderer extends Control {
 export default class Select extends InputControl {
     static propTypes = {
         ...InputControl.propTypes,
+
+        datasource: React.PropTypes.arrayOf(React.PropTypes.object),
         selectHandler: React.PropTypes.func
     }
 

@@ -8,7 +8,6 @@ import './MultiSelect.less';
 import u from 'underscore';
 import classnames from 'classnames';
 import React from 'react';
-import update from 'react-addons-update';
 
 import addEventListener from 'react-overlays/lib/utils/addEventListener';
 import ownerDocument from 'react-overlays/lib/utils/ownerDocument';
@@ -30,12 +29,40 @@ function getSuppressRootClose() {
     };
 }
 
+function getLabel(item, labelField) {
+    return u.isObject(item) ? item[labelField] : item;
+}
+
+function getValue(item, valueField) {
+    return u.isObject(item) ? item[valueField] : item;
+}
+
 export default class MultiSelect extends InputControl {
     static propTypes = {
         ...InputControl.propTypes,
 
-        defaultValue: React.PropTypes.string,
-        datasource: React.PropTypes.array
+        labelField: React.PropTypes.string,
+        valueField: React.PropTypes.string,
+        datasource: React.PropTypes.array,
+        changeHandler: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        ...InputControl.defaultProps,
+
+        labelField: 'label',
+        valueField: 'value',
+
+        /* eslint-disable */
+        /**
+         * 选择后的回调函数
+         *
+         * @param  {string} value         选中的所有值
+         * @param  {string} itemValue     子组件的值
+         * @param  {boolean} itemChecked  子组件的选中状态
+         */
+        changeHandler: (value, itemValue, itemChecked) => {}
+        /* eslint-enable */
     }
 
     constructor(...args) {
@@ -43,19 +70,38 @@ export default class MultiSelect extends InputControl {
 
         this.state = {
             show: false,
-            activedOptions: this.props.defaultValue ? this.props.defaultValue.split(',') : []
+            datasource: this.props.datasource,
+            value: this.props.value
         };
 
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
-        this.toggleList = this.toggleList.bind(this);
+        this.changeHandler = this.changeHandler.bind(this);
+        this.toggleDropdown = this.toggleDropdown.bind(this);
     }
 
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-multi-select');
     }
 
+    get filteredValue() {
+        const {value, datasource} = this.state;
+        const values = value ? value.split(',') : [];
+        const newValues = [];
+
+        // 过滤掉不合法的value，即不在datasource里面的value
+        u.each(values, (value) => {
+            let item = u.find(datasource, v => {
+                return getValue(v, this.props.valueField) === value;
+            });
+
+            item && newValues.push(getValue(item, this.props.valueField));
+        });
+
+        return newValues.join();
+    }
+
     getValue() {
-        return this.state.activedOptions;
+        return this.filteredValue;
     }
 
     componentWillMount() {
@@ -69,57 +115,42 @@ export default class MultiSelect extends InputControl {
 
     componentDidMount() {
         super.componentDidMount && super.componentDidMount();
-        this.bindRootCloseHandlers();
-    }
 
-    bindRootCloseHandlers() {
+        // bindRootCloseHandler
         const doc = ownerDocument(this);
-
         this._onDocumentClickListener = addEventListener(doc, 'click', this.handleDocumentClick);
     }
 
-    unbindRootCloseHandlers() {
-        if (this._onDocumentClickListener) {
-            this._onDocumentClickListener.remove();
-        }
-    }
+    changeHandler(e) {
+        const itemChecked = e.target.checked;
+        const itemValue = e.target.value;
+        const values = this.state.value ? this.state.value.split(',') : [];
 
-    handleClick(value, ref) {
-        let inputNode = this.refs[ref];
-        let newState;
-
-        if (inputNode.checked) {
-            newState = update(this.state.activedOptions, {
-                $push: [value]
-            });
+        if (itemChecked) {
+            values.push(itemValue);
         }
         else {
-            let index = u.indexOf(this.state.activedOptions, value);
-
-            newState = update(this.state.activedOptions, {
-                $splice: [[index, 1]]
-            });
+            let index = u.indexOf(values, itemValue);
+            values.splice(index, 1);
         }
 
-        this.setState({
-            activedOptions: newState
+        let value = values.join();
+
+        this.setState({value}, () => {
+            this.props.changeHandler(this.filteredValue, itemValue, itemChecked);
         });
     }
 
-    toggleList() {
-        this.state.show ? this.close() : this.open();
+    toggleDropdown() {
+        this.state.show ? this.closeDropdown() : this.openDropdown();
     }
 
-    open() {
-        this.setState(update(this.state, {
-            show: {$set: true}
-        }));
+    openDropdown() {
+        this.setState({show: true});
     }
 
-    close() {
-        this.setState(update(this.state, {
-            show: {$set: false}
-        }));
+    closeDropdown() {
+        this.setState({show: false});
     }
 
     handleDocumentClick(e) {
@@ -128,47 +159,86 @@ export default class MultiSelect extends InputControl {
             return;
         }
 
-        this.close();
+        this.closeDropdown();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
+
+        if (this.props.value !== nextProps.value) {
+            this.setState({value: nextProps.value});
+        }
+
+        if (this.props.datasource !== nextProps.datasource) {
+            this.datasource = nextProps.datasource;
+        }
+    }
+
+    renderDropdown() {
+        const {datasource, labelField, valueField} = this.props;
+        const values = this.state.value ? this.state.value.split(',') : [];
+
+        return (
+            <ul className={this.state.show ? 'eui-multi-select-list active' : 'eui-multi-select-list'}>
+            {
+                datasource.map((item, key) => {
+                    const label = getLabel(item, labelField);
+                    const value = getValue(item, valueField);
+
+                    return (
+                        <li key={key} className={u.contains(values, value) ? 'active' : ''}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    defaultValue={value}
+                                    defaultChecked={u.contains(values, value)}
+                                    onChange={this.changeHandler}
+                                />
+                                <span>{label}</span>
+                            </label>
+                        </li>
+                    );
+                })
+            }
+            </ul>
+        );
     }
 
     renderControl() {
-        const {label, datasource, name} = this.props;
-        const activedOptions = this.state.activedOptions;
-        const displayContent = activedOptions.join() || '请选择';
+        const {datasource} = this.props;
+        const values = this.state.value ? this.state.value.split(',') : [];
+        const labels = [];
+
+        u.each(values, (value) => {
+            let item = u.find(datasource, v => {
+                return getValue(v, this.props.valueField) === value;
+            });
+
+            item && labels.push(getLabel(item, this.props.labelField));
+        });
+
+        const displayContent = labels.join() || '请选择';
 
         return (
             <Control className={this.controlClassName} onClick={this._suppressRootCloseHandler}>
                 <div
                     className="eui-multi-select-head"
                     title={displayContent}
-                    onClick={this.toggleList}>
+                    onClick={this.toggleDropdown}
+                >
                     {displayContent}
                 </div>
-                <ul className={this.state.show ? 'eui-multi-select-list active' : 'eui-multi-select-list'}>
-                {
-                    datasource.map((value, key) => (
-                        <li key={key} className={u.contains(activedOptions, value) ? 'active' : ''}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    name={name}
-                                    value={value}
-                                    ref={`input${key}`}
-                                    defaultChecked={u.contains(activedOptions, value)}
-                                    onClick={this.handleClick.bind(this, value, `input${key}`)}
-                                />
-                                <span>{value}</span>
-                            </label>
-                        </li>
-                    ))
-                }
-                </ul>
+                {this.renderDropdown()}
             </Control>
         );
     }
 
     componentWillUnmount() {
         super.componentWillUnmount && super.componentWillUnmount();
-        this.unbindRootCloseHandlers();
+
+        // unbindRootCloseHandler
+        if (this._onDocumentClickListener) {
+            this._onDocumentClickListener.remove();
+        }
     }
 }
