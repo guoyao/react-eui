@@ -1,7 +1,7 @@
 {
-  "name": "reui",
+  "name": "react-eui",
   "version": "0.0.0",
-  "title": "reui",
+  "title": "react-eui",
   "main": "index.js",
   "description": "ui components based on react & react-bootstrap and so on",
   "scripts": {
@@ -10,7 +10,7 @@
     "eslint": "eslint src/**/*.js src/**/*.jsx || exit 0"
   },
   "keywords": [
-    "reui",
+    "react-eui",
     "ui",
     "react",
     "react-ui",
