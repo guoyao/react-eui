@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "title": "reui",
   "main": "index.js",
-  "description": "ui components based on react",
+  "description": "ui components based on react & react-bootstrap and so on",
   "scripts": {
     "start": "node demo/http.server.js --debug --port 8080",
     "build": "webpack --progress --colors",
@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://gitlab.baidu.com/bce-crm/reui.git"
+    "url": "https://github.com/guoyao/react-eui.git"
   },
   "license": "MIT",
   "dependencies": {
