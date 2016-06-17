@@ -22,7 +22,7 @@ export default class InputControlDemo extends React.Component {
             <div className="row select-demo">
                 <div className="col-md-12">
                     <InputControl>纯文本1</InputControl>
-                    <InputControl label="带label的纯文本" groupClassName="vertical">纯文本1</InputControl>
+                    <InputControl label="带label的纯文本">纯文本1</InputControl>
                     <InputControl className="text-primary">纯文本2</InputControl>
 
                     <InputControl type="text" />
@@ -41,7 +41,7 @@ export default class InputControlDemo extends React.Component {
                     <InputControl
                         type="textarea"
                         label="详细信息"
-                        validate='required,isLength:0:30'
+                        validate="required,isLength:0:30"
                         onChange={this.changeHandler}
                         errorHelp={{
                             required: '请填写',

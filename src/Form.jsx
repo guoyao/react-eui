@@ -26,16 +26,6 @@ export default class FormEx extends Form {
         this._errorIptNames = [];
     }
 
-    registerInput(input) {
-        super.registerInput(input);
-        input._form = this;
-    }
-
-    unregisterInput(input) {
-        super.unregisterInput(input);
-        input._form = undefined;
-    }
-
     /* eslint-disable */
     _renderChildren(children) {
         var _this2 = this;
@@ -62,7 +52,8 @@ export default class FormEx extends Form {
 
                     var newProps = {
                         _registerInput: _this2.registerInput.bind(_this2),
-                        _unregisterInput: _this2.unregisterInput.bind(_this2)
+                        _unregisterInput: _this2.unregisterInput.bind(_this2),
+                        _form: _this2
                     };
 
                     var evtName = child.props.validationEvent ? child.props.validationEvent : _this2.props.validationEvent;

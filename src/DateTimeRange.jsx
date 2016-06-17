@@ -30,6 +30,7 @@ function buildValue(props) {
 export default class DateTimeRange extends InputControl {
     static propTypes = {
         ...InputControl.propTypes,
+
         mode: React.PropTypes.oneOf([Mode.date, Mode.datetime, Mode.time]),
         format: React.PropTypes.string,
         inputFormat: React.PropTypes.string,
@@ -42,6 +43,7 @@ export default class DateTimeRange extends InputControl {
 
     static defaultProps = {
         ...InputControl.defaultProps,
+
         startInputProps: {},
         endInputProps: {},
         changeHandler: util.emptyFunc
@@ -97,7 +99,7 @@ export default class DateTimeRange extends InputControl {
                     inputProps={startInputProps}
                     dateTime={startTime}
                     changeHandler={this.startTimeChangeHandler}
-                />,
+                />
                 <DateTimeField
                     ref="endDateTimeField"
                     key="end"

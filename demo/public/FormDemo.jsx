@@ -57,9 +57,10 @@ export default class FormDemo extends React.Component {
 
     render() {
         return (
-            <Form onValidSubmit={this.validSubmitHandler} className="row">
-                <div className="col-md-6">
+            <div className="form-demo">
+                <Form onValidSubmit={this.validSubmitHandler}>
                     <InputControl>纯文本1</InputControl>
+
                     <InputControl
                         name="pureText1"
                         label="带name和label属性的纯文本，值由value属性决定，没有value属性则值为undefined"
@@ -67,6 +68,7 @@ export default class FormDemo extends React.Component {
                     >
                         纯文本1
                     </InputControl>
+
                     <InputControl
                         name="pureText2"
                         value="pure-text"
@@ -76,6 +78,11 @@ export default class FormDemo extends React.Component {
                     </InputControl>
 
                     <InputControl type="text" label="无name属性不会出现在表单提交中" />
+
+                    <button type="submit">提交</button>
+                </Form>
+
+                <Form onValidSubmit={this.validSubmitHandler}>
                     <InputControl
                         type="text"
                         name="abstract"
@@ -85,9 +92,9 @@ export default class FormDemo extends React.Component {
                             required: '请填写'
                         }}
                     />
+
                     <InputControl type="text" name="abstract2" label="概要内容" />
 
-                    <InputControl type="textarea" name="detail1" />
                     <InputControl
                         type="textarea"
                         name="detai2"
@@ -127,16 +134,15 @@ export default class FormDemo extends React.Component {
                         name="range"
                         label="时间段"
                         className="required"
-                        groupClassName="vertical"
                         validate="isTimeRange"
                         errorHelp={{
                             isTimeRange: '结束时间必须晚于开始时间'
                         }}
                     />
 
-                    <button type="submit" bsStyle="primary">提交</button>
-                </div>
-            </Form>
+                    <button type="submit">提交</button>
+                </Form>
+            </div>
         );
     }
 }

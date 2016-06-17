@@ -45,7 +45,6 @@ export default class DateTimeFieldDemo extends React.Component {
                         name="date"
                         mode={DateTimeField.Mode.date}
                         value="2016-06-01"
-                        groupClassName="vertical"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
@@ -53,14 +52,12 @@ export default class DateTimeFieldDemo extends React.Component {
                         name="time"
                         mode={DateTimeField.Mode.time}
                         value="08:00:00"
-                        groupClassName="vertical"
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="日期时间"
                         name="datetime"
                         value="2016-06-01T08:00:00Z"
-                        groupClassName="vertical"
                         changeHandler={this.changeHandler}
                     />
                 </div>

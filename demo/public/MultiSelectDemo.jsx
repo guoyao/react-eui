@@ -39,21 +39,18 @@ export default class MultiSelectDemo extends React.Component {
             <div>
                 <MultiSelect
                     label="地区"
-                    groupClassName="horizontal"
                     value="上海,美国硅谷,广州,Shanghai,Shenzhen"
                     datasource={datasource}
                     changeHandler={this.changeHandler}
                 />
                 <MultiSelect
                     label="地区"
-                    groupClassName="horizontal"
                     value="上海,美国硅谷,广州,Shanghai,Shenzhen"
                     datasource={datasource2}
                     changeHandler={this.changeHandler}
                 />
                 <MultiSelect
                     label="地区"
-                    groupClassName="horizontal"
                     labelField="text"
                     valueField="value"
                     value="上海,美国硅谷,广州,Shanghai,Shenzhen"
@@ -62,7 +59,6 @@ export default class MultiSelectDemo extends React.Component {
                 />
                 <MultiSelect
                     label="地区"
-                    groupClassName="horizontal"
                     labelField="text"
                     valueField="value"
                     value="上海,美国硅谷,广州,Shanghai,Shenzhen"

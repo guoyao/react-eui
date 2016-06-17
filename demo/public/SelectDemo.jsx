@@ -94,7 +94,6 @@ export default class SelectDemo extends React.Component {
                         name="region"
                         label="地区"
                         className="required"
-                        groupClassName="vertical"
                         datasource={this.state.datasource}
                         value={this.state.value}
                         selectHandler={this.selectHandler}

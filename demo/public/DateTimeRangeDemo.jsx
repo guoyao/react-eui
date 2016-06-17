@@ -27,7 +27,6 @@ export default class DateTimeRangeDemo extends React.Component {
                     <DateTimeRange />
                     <DateTimeRange
                         label="日期时间"
-                        groupClassName="vertical"
                     />
                     <DateTimeRange
                         label="日期"
@@ -62,7 +61,6 @@ export default class DateTimeRangeDemo extends React.Component {
                     <DateTimeRange
                         label="日期时间段"
                         className="required"
-                        groupClassName="vertical"
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
                         validate="isTimeRange"

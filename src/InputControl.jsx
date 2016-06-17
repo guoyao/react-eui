@@ -8,6 +8,7 @@ import './InputControl.less';
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
 
@@ -80,15 +81,15 @@ export default class InputControl extends ValidatedInput {
         showLengthTip: true
     }
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(...args) {
+        super(...args);
 
-        const {type, showLengthTip, validate} = props;
+        const {type, showLengthTip, validate, value} = this.props;
         if (type === 'textarea' && showLengthTip && u.isString(validate)) {
             let matches = /isLength:(\d+):(\d+)/.exec(validate);
             if (matches && matches.length > 2) {
                 this.maxLength = parseInt(matches[2], 10);
-                this.currentLength = props.defaultValue ? props.defaultValue.length : 0;
+                this.currentLength = value ? value.length : 0;
             }
         }
 
@@ -107,7 +108,9 @@ export default class InputControl extends ValidatedInput {
     componentWillMount() {
         super.componentWillMount && super.componentWillMount();
 
-        if (!this._form && typeof this.props.validate === 'string') {
+        const {_form, validate} = this.props;
+
+        if (!_form && typeof validate === 'string') {
             this.state = u.extend(this.state || {}, {_error: false});
             this._validators = compileValidationRules(this, this.props.validate);
         }
@@ -149,8 +152,10 @@ export default class InputControl extends ValidatedInput {
     }
 
     renderHelp() {
-        if (!this._form && this.state._error && typeof this.state._error === 'string') {
-            return <span key="help" className="help-block">{this.state._error}</span>;
+        const {_error} = this.state;
+
+        if (!this.props._form && u.isString(_error)) {
+            return <span key="help" className="help-block">{_error}</span>;
         }
 
         return super.renderHelp();
@@ -213,16 +218,18 @@ export default class InputControl extends ValidatedInput {
         }
 
         let group = null;
+        const {label, help, _form, validate, groupClassName} = this.props;
+        const {_error} = this.state;
 
-        if (this.props.label || this.props.help || this.maxLength ||
-            this.props.validate || this.state._error) {
-            group = super.renderFormGroup(children);
+        if (label || help || this.maxLength || validate || _error) {
+            const props = u.extend({}, this.props);
 
-            if (this.state._error) {
-                const props = u.extend({}, this.props, {bsStyle: 'error'});
-                group = React.cloneElement(group, props);
-                // group = React.createElement(FormGroup, props, children);
+            if (!_form && !groupClassName) {
+                props.groupClassName = 'vertical';
             }
+
+            _error && (props.bsStyle = 'error');
+            group = React.createElement(FormGroup, props, children);
         }
         else {
             group = u.isArray(children[1]) ? children[1][0] : children[1];
@@ -244,8 +251,10 @@ export default class InputControl extends ValidatedInput {
     }
 
     validate() {
-        if (this._form) {
-            return this._form._validateOne(this.props.name, this._form.getValues());
+        const {_form} = this.props;
+
+        if (_form) {
+            return _form._validateOne(this.props.name, _form.getValues());
         }
 
         const {validate} = this.props;
