@@ -40,6 +40,28 @@
     }
 }
 
+.control-label {
+    &.required {
+        i {
+            color: #EA0A0A;
+            padding-right: 6px;
+        }
+    }
+}
+
+.form-group {
+    &.horizontal {
+        .clearfix();
+
+        > .control-label {
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
+        }
+    }
+}
+
+/*
 .form-group {
     > .control-label {
         float: left;
@@ -100,3 +122,4 @@
 .help-block {
     margin: 0;
 }
+*/

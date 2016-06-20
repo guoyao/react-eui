@@ -116,6 +116,25 @@ export default class InputControl extends ValidatedInput {
         }
     }
 
+    renderWrapper(children) {
+        if (this.maxLength) {
+            const helpBlock = children.pop();
+
+            let currentLength = this.getInputDOMNode() ? this.getValue().length : this.currentLength;
+            let className = currentLength > this.maxLength ? 'length-tip overstep' : 'length-tip';
+
+            children.push(
+                <span key="lengthTip" className={className}>
+                    {currentLength}/{this.maxLength}
+                </span>
+            );
+
+            children.push(helpBlock);
+        }
+
+        return super.renderWrapper(children);
+    }
+
     renderLabel(children) {
         let classes = {
             'eui-input-control-label': !this.isCheckboxOrRadio(),
@@ -206,17 +225,6 @@ export default class InputControl extends ValidatedInput {
     }
 
     renderFormGroup(children) {
-        if (this.maxLength) {
-            let currentLength = this.getInputDOMNode() ? this.getValue().length : this.currentLength;
-            let className = currentLength > this.maxLength ? 'length-tip overstep' : 'length-tip';
-
-            children.push(
-                <span key="lengthTip" className={className}>
-                    {currentLength}/{this.maxLength}
-                </span>
-            );
-        }
-
         let group = null;
         const {label, help, _form, validate, groupClassName} = this.props;
         const {_error} = this.state;

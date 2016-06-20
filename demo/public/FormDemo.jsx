@@ -59,14 +59,14 @@ export default class FormDemo extends React.Component {
         return (
             <div className="form-demo">
                 <Form onValidSubmit={this.validSubmitHandler}>
-                    <InputControl>纯文本1</InputControl>
+                    <InputControl>最简单的纯文本</InputControl>
 
                     <InputControl
                         name="pureText1"
                         label="带name和label属性的纯文本，值由value属性决定，没有value属性则值为undefined"
-                        groupClassName="vertical"
+                        wrapperClassName="wrapper"
                     >
-                        纯文本1
+                        带name和label的纯文本
                     </InputControl>
 
                     <InputControl
@@ -74,7 +74,7 @@ export default class FormDemo extends React.Component {
                         value="pure-text"
                         className="text-primary"
                     >
-                        纯文本2
+                        带value不带label的纯文本
                     </InputControl>
 
                     <InputControl type="text" label="无name属性不会出现在表单提交中" />
@@ -87,18 +87,31 @@ export default class FormDemo extends React.Component {
                         type="text"
                         name="abstract"
                         label="标题"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         validate="required"
                         errorHelp={{
                             required: '请填写'
                         }}
                     />
 
-                    <InputControl type="text" name="abstract2" label="概要内容" />
+                    <InputControl
+                        type="text"
+                        name="abstract2"
+                        label="概要内容"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
+                    />
 
                     <InputControl
                         type="textarea"
                         name="detai2"
                         label="详细信息"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         validate='required,isLength:0:30'
                         errorHelp={{
                             required: '请填写',
@@ -111,6 +124,9 @@ export default class FormDemo extends React.Component {
                         name="region"
                         label="地区"
                         className="required"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         datasource={this.state.datasource}
                         value={this.state.value}
                         selectHandler={this.selectHandler}
@@ -127,6 +143,9 @@ export default class FormDemo extends React.Component {
                         label="日期时间"
                         name="datetime"
                         value="2016-06-01T08:00:00Z"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         changeHandler={this.changeHandler}
                     />
 
@@ -134,6 +153,9 @@ export default class FormDemo extends React.Component {
                         name="range"
                         label="时间段"
                         className="required"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         validate="isTimeRange"
                         errorHelp={{
                             isTimeRange: '结束时间必须晚于开始时间'
