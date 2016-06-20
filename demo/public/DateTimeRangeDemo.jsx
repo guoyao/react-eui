@@ -26,10 +26,12 @@ export default class DateTimeRangeDemo extends React.Component {
                 <div className="col-md-6">
                     <DateTimeRange />
                     <DateTimeRange
-                        label="日期时间"
+                        label="起止时间"
+                        wrapperClassName="eui-wrapper"
                     />
                     <DateTimeRange
-                        label="日期"
+                        label="起止日期"
+                        wrapperClassName="eui-wrapper"
                         mode={DateTimeRange.Mode.date}
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
@@ -50,6 +52,11 @@ export default class DateTimeRangeDemo extends React.Component {
                 </div>
                 <div className="col-md-6">
                     <DateTimeRange
+                        label="起止日期"
+                        className="required"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         mode={DateTimeRange.Mode.date}
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
@@ -59,8 +66,11 @@ export default class DateTimeRangeDemo extends React.Component {
                         }}
                     />
                     <DateTimeRange
-                        label="日期时间段"
+                        label="起止时间"
                         className="required"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         value={this.state.timeRange}
                         changeHandler={this.changeHandler}
                         validate="isTimeRange"

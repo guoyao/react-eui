@@ -36,35 +36,47 @@ export default class MultiSelectDemo extends React.Component {
 
     render() {
         return (
-            <div>
-                <MultiSelect
-                    label="地区"
-                    value="上海,美国硅谷,广州,Shanghai,Shenzhen"
-                    datasource={datasource}
-                    changeHandler={this.changeHandler}
-                />
-                <MultiSelect
-                    label="地区"
-                    value="上海,美国硅谷,广州,Shanghai,Shenzhen"
-                    datasource={datasource2}
-                    changeHandler={this.changeHandler}
-                />
-                <MultiSelect
-                    label="地区"
-                    labelField="text"
-                    valueField="value"
-                    value="上海,美国硅谷,广州,Shanghai,Shenzhen"
-                    datasource={datasource3}
-                    changeHandler={this.changeHandler}
-                />
-                <MultiSelect
-                    label="地区"
-                    labelField="text"
-                    valueField="value"
-                    value="上海,美国硅谷,广州,Shanghai,Shenzhen"
-                    datasource={datasource4}
-                    changeHandler={this.changeHandler}
-                />
+            <div className="row">
+                <div className="col-md-6">
+                    <MultiSelect
+                        label="地区"
+                        wrapperClassName="eui-wrapper"
+                        value="上海,美国硅谷,广州,Shanghai,Shenzhen"
+                        datasource={datasource}
+                        changeHandler={this.changeHandler}
+                    />
+                    <MultiSelect
+                        label="地区"
+                        wrapperClassName="eui-wrapper"
+                        value="上海,美国硅谷,广州,Shanghai,Shenzhen"
+                        datasource={datasource2}
+                        changeHandler={this.changeHandler}
+                    />
+                </div>
+                <div className="col-md-6">
+                    <MultiSelect
+                        label="地区"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
+                        labelField="text"
+                        valueField="value"
+                        value="上海,美国硅谷,广州,Shanghai,Shenzhen"
+                        datasource={datasource3}
+                        changeHandler={this.changeHandler}
+                    />
+                    <MultiSelect
+                        label="地区"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
+                        labelField="text"
+                        valueField="value"
+                        value="上海,美国硅谷,广州,Shanghai,Shenzhen"
+                        datasource={datasource4}
+                        changeHandler={this.changeHandler}
+                    />
+                </div>
             </div>
         );
     }

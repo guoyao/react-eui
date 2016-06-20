@@ -226,15 +226,11 @@ export default class InputControl extends ValidatedInput {
 
     renderFormGroup(children) {
         let group = null;
-        const {label, help, _form, validate, groupClassName} = this.props;
+        const {label, help, validate} = this.props;
         const {_error} = this.state;
 
         if (label || help || this.maxLength || validate || _error) {
             const props = u.extend({}, this.props);
-
-            if (!_form && !groupClassName) {
-                props.groupClassName = 'vertical';
-            }
 
             _error && (props.bsStyle = 'error');
             group = React.createElement(FormGroup, props, children);

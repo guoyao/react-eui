@@ -5,7 +5,7 @@
   "main": "index.js",
   "description": "ui components based on react & react-bootstrap and so on",
   "scripts": {
-    "start": "node demo/http.server.js --debug --port 8080",
+    "start": "node demo/http.server.js --debug --port 9080",
     "build": "webpack --progress --colors",
     "eslint": "eslint src/**/*.js src/**/*.jsx || exit 0"
   },

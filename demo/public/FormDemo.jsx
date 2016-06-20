@@ -64,7 +64,7 @@ export default class FormDemo extends React.Component {
                     <InputControl
                         name="pureText1"
                         label="带name和label属性的纯文本，值由value属性决定，没有value属性则值为undefined"
-                        wrapperClassName="wrapper"
+                        wrapperClassName="eui-wrapper"
                     >
                         带name和label的纯文本
                     </InputControl>
@@ -162,7 +162,9 @@ export default class FormDemo extends React.Component {
                         }}
                     />
 
-                    <button type="submit">提交</button>
+                    <div className="col-sm-10 col-sm-offset-2">
+                        <button type="submit">提交</button>
+                    </div>
                 </Form>
             </div>
         );

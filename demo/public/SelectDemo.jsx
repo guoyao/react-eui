@@ -74,12 +74,14 @@ export default class SelectDemo extends React.Component {
 
                     <Select
                         label="地区"
+                        wrapperClassName="eui-wrapper"
                         datasource={this.state.datasource}
                         value={this.state.value}
                     />
 
                     <Select
                         label="地区"
+                        wrapperClassName="eui-wrapper"
                         validate="required"
                         datasource={this.state.datasource}
                         value={this.state.value}
@@ -94,6 +96,7 @@ export default class SelectDemo extends React.Component {
                         name="region"
                         label="地区"
                         className="required"
+                        wrapperClassName="eui-wrapper"
                         datasource={this.state.datasource}
                         value={this.state.value}
                         selectHandler={this.selectHandler}
@@ -110,6 +113,8 @@ export default class SelectDemo extends React.Component {
                     <Select
                         label="地区"
                         groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         datasource={this.state.datasource}
                         value={this.state.value}
                         selectHandler={this.selectHandler}
@@ -118,6 +123,8 @@ export default class SelectDemo extends React.Component {
                     <Select
                         label="地区"
                         groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         validate="required"
                         datasource={this.state.datasource}
                         value={this.state.value}
@@ -130,8 +137,10 @@ export default class SelectDemo extends React.Component {
                     <Select
                         ref="select1"
                         label="地区"
-                        groupClassName="horizontal"
                         className="required"
+                        groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         datasource={this.state.datasource}
                         value={this.state.value}
                         selectHandler={this.selectHandler}

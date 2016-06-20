@@ -18,7 +18,7 @@ export default class DateTimeFieldDemo extends React.Component {
     render() {
         return (
             <div className="row date-time-field-demo">
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <DateTimeField changeHandler={this.changeHandler} />
                     <br />
                     <DateTimeField
@@ -38,11 +38,10 @@ export default class DateTimeFieldDemo extends React.Component {
                         value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
-                </div>
-                <div className="col-md-4">
                     <DateTimeField
                         label="日期"
                         name="date"
+                        wrapperClassName="eui-wrapper"
                         mode={DateTimeField.Mode.date}
                         value="2016-06-01"
                         changeHandler={this.changeHandler}
@@ -50,6 +49,7 @@ export default class DateTimeFieldDemo extends React.Component {
                     <DateTimeField
                         label="时间"
                         name="time"
+                        wrapperClassName="eui-wrapper"
                         mode={DateTimeField.Mode.time}
                         value="08:00:00"
                         changeHandler={this.changeHandler}
@@ -57,26 +57,33 @@ export default class DateTimeFieldDemo extends React.Component {
                     <DateTimeField
                         label="日期时间"
                         name="datetime"
+                        wrapperClassName="eui-wrapper"
                         value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <DateTimeField
                         label="日期"
                         groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         mode={DateTimeField.Mode.date}
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="时间"
                         groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         mode={DateTimeField.Mode.time}
                         changeHandler={this.changeHandler}
                     />
                     <DateTimeField
                         label="日期时间"
                         groupClassName="horizontal"
+                        labelClassName="col-sm-2"
+                        wrapperClassName="col-sm-10"
                         changeHandler={this.changeHandler}
                     />
                 </div>
