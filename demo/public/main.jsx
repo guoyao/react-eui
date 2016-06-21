@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
+import {autobind} from 'core-decorators';
 
 import InputControlDemo from './InputControlDemo';
 import SelectDemo from './SelectDemo';
@@ -9,6 +10,7 @@ import TableDemo from './TableDemo';
 import RichTextEditorDemo from './RichTextEditorDemo';
 import DateTimeFieldDemo from './DateTimeFieldDemo';
 import DateTimeRangeDemo from './DateTimeRangeDemo';
+import DateTimeRangeExDemo from './DateTimeRangeExDemo';
 import FormDemo from './FormDemo';
 
 import './main.less';
@@ -17,9 +19,9 @@ class Container extends React.Component {
     constructor(...args) {
         super(...args);
         this.state = {};
-        this.selectHandler = this.selectHandler.bind(this);
     }
 
+    @autobind
     selectHandler(tabKey) {
         this.setState({activeTab: tabKey});
     }
@@ -51,6 +53,9 @@ class Container extends React.Component {
                 </Tab>
                 <Tab eventKey="date-time-range" title="DateTimeRange">
                     <DateTimeRangeDemo />
+                </Tab>
+                <Tab eventKey="date-time-range-ex" title="DateTimeRangeEx">
+                    <DateTimeRangeExDemo />
                 </Tab>
                 <Tab eventKey="form" title="Form">
                     <FormDemo />

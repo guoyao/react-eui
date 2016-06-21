@@ -11,6 +11,7 @@ import Table from './src/Table';
 import RichTextEditor from './src/RichTextEditor';
 import DateTimeField from './src/DateTimeField';
 import DateTimeRange from './src/DateTimeRange';
+import DateTimeRangeEx from './src/DateTimeRangeEx';
 
 export {
     Validator,
@@ -22,5 +23,6 @@ export {
     Table,
     RichTextEditor,
     DateTimeField,
-    DateTimeRange
+    DateTimeRange,
+    DateTimeRangeEx
 }
