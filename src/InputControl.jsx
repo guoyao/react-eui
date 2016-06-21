@@ -8,6 +8,7 @@ import './InputControl.less';
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
+import {autobind, debounce} from 'core-decorators';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
@@ -94,7 +95,6 @@ export default class InputControl extends ValidatedInput {
         }
 
         this.state = {};
-        this.inputHandler = this.inputHandler.bind(this);
     }
 
     get controlClassName() {
@@ -182,7 +182,13 @@ export default class InputControl extends ValidatedInput {
 
     renderInput() {
         if (!this.props.type) {
-            return this.renderControl();
+            const control = this.renderControl();
+
+            if (this.props.wrapperClassName) {
+                return React.cloneElement(control, u.extend({key: 'control'}, control.props));
+            }
+
+            return control;
         }
 
         /* eslint-disable */
@@ -250,6 +256,8 @@ export default class InputControl extends ValidatedInput {
         this.props.type === 'textarea' && autosize(inputNode);
     }
 
+    @autobind
+    @debounce(100)
     inputHandler() {
         this.maxLength && this.forceUpdate();
     }

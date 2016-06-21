@@ -7,6 +7,7 @@ import './DateTimeRange.less';
 
 import React from 'react';
 import classnames from 'classnames';
+import {autobind, override} from 'core-decorators';
 
 import Control from './Control';
 import InputControl from './InputControl';
@@ -53,17 +54,12 @@ export default class DateTimeRange extends InputControl {
 
     static Format = Format
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.startTimeChangeHandler = this.startTimeChangeHandler.bind(this);
-        this.endTimeChangeHandler = this.endTimeChangeHandler.bind(this);
-    }
-
+    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-date-time-range');
     }
 
+    @override
     getValue() {
         return [
             this.refs.startDateTimeField.getValue(),
@@ -72,17 +68,20 @@ export default class DateTimeRange extends InputControl {
     }
 
     /* eslint-disable no-unused-vars */
+    @autobind
     startTimeChangeHandler(value) {
         this.validate();
         this.props.changeHandler(this.getValue());
     }
 
+    @autobind
     endTimeChangeHandler(value) {
         this.validate();
         this.props.changeHandler(this.getValue());
     }
     /* eslint-enable no-unused-vars */
 
+    @override
     renderControl() {
         const {mode, format, inputFormat, startInputProps, endInputProps} = this.props;
 

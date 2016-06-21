@@ -8,6 +8,7 @@ import './MultiSelect.less';
 import u from 'underscore';
 import classnames from 'classnames';
 import React from 'react';
+import {autobind, override} from 'core-decorators';
 
 import addEventListener from 'react-overlays/lib/utils/addEventListener';
 import ownerDocument from 'react-overlays/lib/utils/ownerDocument';
@@ -73,12 +74,9 @@ export default class MultiSelect extends InputControl {
             datasource: this.props.datasource,
             value: this.props.value
         };
-
-        this.handleDocumentClick = this.handleDocumentClick.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
     }
 
+    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-multi-select');
     }
@@ -100,6 +98,7 @@ export default class MultiSelect extends InputControl {
         return newValues.join();
     }
 
+    @override
     getValue() {
         return this.filteredValue;
     }
@@ -121,6 +120,7 @@ export default class MultiSelect extends InputControl {
         this._onDocumentClickListener = addEventListener(doc, 'click', this.handleDocumentClick);
     }
 
+    @autobind
     changeHandler(e) {
         const itemChecked = e.target.checked;
         const itemValue = e.target.value;
@@ -141,6 +141,7 @@ export default class MultiSelect extends InputControl {
         });
     }
 
+    @autobind
     toggleDropdown() {
         this.state.show ? this.closeDropdown() : this.openDropdown();
     }
@@ -153,6 +154,7 @@ export default class MultiSelect extends InputControl {
         this.setState({show: false});
     }
 
+    @autobind
     handleDocumentClick(e) {
         // This is now the native event.
         if (e[this._suppressRootId]) {
@@ -204,6 +206,7 @@ export default class MultiSelect extends InputControl {
         );
     }
 
+    @override
     renderControl() {
         const {datasource} = this.props;
         const values = this.state.value ? this.state.value.split(',') : [];

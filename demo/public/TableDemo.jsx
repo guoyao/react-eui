@@ -4,6 +4,7 @@
 **/
 import u from 'underscore';
 import React from 'react';
+import {autobind} from 'core-decorators';
 import {TableHeaderColumn} from 'react-bootstrap-table';
 
 import {Table} from '../../index';
@@ -21,11 +22,10 @@ export default class TableDemo extends React.Component {
         super(...args);
 
         this.state = {datasource, disableEditRow: true};
-        this.rowSelectHandler = this.rowSelectHandler.bind(this);
-        this.selectAllHandler = this.selectAllHandler.bind(this);
         this.selectStatusMap = {};
     }
 
+    @autobind
     rowSelectHandler(selectItem, selected, e) {
         console.log(selectItem, selected);
         selected && (this.selectStatusMap[selectItem.id] = true);
@@ -33,6 +33,7 @@ export default class TableDemo extends React.Component {
         this.setState({disableEditRow: u.isEmpty(this.selectStatusMap)});
     }
 
+    @autobind
     selectAllHandler(selected, selects) {
         console.log(selected, selects);
         !selected && (this.selectStatusMap = {});

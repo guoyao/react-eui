@@ -9,6 +9,7 @@ import u from 'underscore';
 import moment from 'moment';
 import React from 'react';
 import classnames from 'classnames';
+import {autobind, override} from 'core-decorators';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 import Constants from 'react-bootstrap-datetimepicker/lib/Constants';
 
@@ -44,12 +45,14 @@ export default class DateTimeFieldEx extends InputControl {
     static propTypes = {
         ...InputControl.propTypes,
         ...DateTimeField.propTypes,
+
         changeHandler: React.PropTypes.func
     }
 
     static defaultProps = {
         ...InputControl.defaultProps,
         ...(u.omit(DateTimeField.defaultProps, 'dateTime', 'format')),
+
         inputProps: {},
         changeHandler: util.emptyFunc
     }
@@ -69,10 +72,9 @@ export default class DateTimeFieldEx extends InputControl {
         this.state = {
             value: (value ? moment(value, this.format) : moment()).format(this.format)
         };
-
-        this.changeHandler = this.changeHandler.bind(this);
     }
 
+    @override
     get controlClassName() {
         const {mode} = this.props;
 
@@ -84,6 +86,7 @@ export default class DateTimeFieldEx extends InputControl {
         return classnames(super.controlClassName, className);
     }
 
+    @override
     getValue() {
         let value = this.state.value;
 
@@ -94,6 +97,7 @@ export default class DateTimeFieldEx extends InputControl {
         return value;
     }
 
+    @autobind
     changeHandler(value) {
         this.setState({value}, () => {
             this.props.changeHandler(this.getValue());
@@ -110,6 +114,7 @@ export default class DateTimeFieldEx extends InputControl {
         }
     }
 
+    @override
     renderControl() {
         const props = u.extend(
             {key: ''},

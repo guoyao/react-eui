@@ -4,6 +4,8 @@
  **/
 
 import React from 'react';
+import {autobind} from 'core-decorators';
+
 import {MultiSelect} from '../../index';
 
 const datasource = ['北京', '深圳', '青岛', '杭州', '香港', '美国硅谷', '上海', '亚太（新加坡）'];
@@ -24,12 +26,7 @@ const datasource4 = [
 ];
 
 export default class MultiSelectDemo extends React.Component {
-    constructor(...args) {
-        super(...args);
-
-        this.changeHandler = this.changeHandler.bind(this);
-    }
-
+    @autobind
     changeHandler(value, itemValue, itemChecked) {
         console.log(value, itemValue, itemChecked);
     }

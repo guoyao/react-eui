@@ -4,15 +4,12 @@
  **/
 
 import React from 'react';
+import {autobind} from 'core-decorators';
 
 import {InputControl} from '../../index';
 
 export default class InputControlDemo extends React.Component {
-    constructor(...args) {
-        super(...args);
-        this.changeHandler = this.changeHandler.bind(this);
-    }
-
+    @autobind
     changeHandler(e) {
         console.log(e.target.value);
     }

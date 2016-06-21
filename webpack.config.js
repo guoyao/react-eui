@@ -51,8 +51,8 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: ['babel'],
                 query: {
-                    plugins: ['transform-runtime'],
-                    presets: ['es2015', 'react', 'stage-0']
+                    plugins: ['transform-runtime', 'transform-decorators-legacy'],
+                    presets: ['es2015', 'react', 'stage-0', 'stage-1']
                 }
             },
             {

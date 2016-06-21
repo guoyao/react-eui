@@ -3,6 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
+import {autobind} from 'core-decorators';
 
 import {Select, Validator} from '../../index';
 
@@ -30,7 +31,6 @@ export default class SelectDemo extends React.Component {
     constructor(...args) {
         super(...args);
         this.state = {datasource};
-        this.selectHandler = this.selectHandler.bind(this);
         // this.usages();
     }
 
@@ -62,6 +62,7 @@ export default class SelectDemo extends React.Component {
         }, 5000);
     }
 
+    @autobind
     selectHandler(value, datasource, index, selectedValues) {
         console.log(value, datasource, index, selectedValues);
     }
