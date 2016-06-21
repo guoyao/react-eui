@@ -68,8 +68,8 @@ export default class SelectDemo extends React.Component {
 
     render() {
         return (
-            <div className="row select-demo">
-                <div className="col-md-6">
+            <div>
+                <section>
                     <Select datasource={this.state.datasource} />
 
                     <Select
@@ -108,8 +108,8 @@ export default class SelectDemo extends React.Component {
                             });
                         }}
                     />
-                </div>
-                <div className="col-md-6">
+                </section>
+                <section>
                     <Select
                         label="地区"
                         groupClassName="horizontal"
@@ -152,7 +152,7 @@ export default class SelectDemo extends React.Component {
                             });
                         }}
                     />
-                </div>
+                </section>
             </div>
         );
     }

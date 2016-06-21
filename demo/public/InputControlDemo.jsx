@@ -19,8 +19,8 @@ export default class InputControlDemo extends React.Component {
 
     render() {
         return (
-            <div className="row select-demo">
-                <div className="col-md-6">
+            <div>
+                <section>
                     <InputControl>纯文本1</InputControl>
                     <InputControl label="带label的纯文本" wrapperClassName="eui-wrapper">纯文本1</InputControl>
                     <InputControl className="text-primary">纯文本2</InputControl>
@@ -48,8 +48,8 @@ export default class InputControlDemo extends React.Component {
                             isLength: '字符长度限制为0-30'
                         }}
                     />
-                </div>
-                <div className="col-md-6">
+                </section>
+                <section>
                     <InputControl
                         type="text"
                         label="概要内容"
@@ -83,7 +83,7 @@ export default class InputControlDemo extends React.Component {
                             isLength: '字符长度限制为0-30'
                         }}
                     />
-                </div>
+                </section>
             </div>
         );
     }

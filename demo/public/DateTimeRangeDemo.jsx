@@ -22,8 +22,8 @@ export default class DateTimeRangeDemo extends React.Component {
 
     render() {
         return (
-            <div className="row date-time-range-demo">
-                <div className="col-md-6">
+            <div>
+                <section>
                     <DateTimeRange />
                     <DateTimeRange
                         label="起止时间"
@@ -49,8 +49,8 @@ export default class DateTimeRangeDemo extends React.Component {
                             isTimeRange: '结束时间必须晚于开始时间'
                         }}
                     />
-                </div>
-                <div className="col-md-6">
+                </section>
+                <section>
                     <DateTimeRange
                         label="起止日期"
                         className="required"
@@ -78,7 +78,7 @@ export default class DateTimeRangeDemo extends React.Component {
                             isTimeRange: '结束时间必须晚于开始时间'
                         }}
                     />
-                </div>
+                </section>
             </div>
         );
     }

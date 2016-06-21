@@ -17,8 +17,8 @@ export default class DateTimeFieldDemo extends React.Component {
 
     render() {
         return (
-            <div className="row date-time-field-demo">
-                <div className="col-md-6">
+            <div>
+                <section>
                     <DateTimeField changeHandler={this.changeHandler} />
                     <br />
                     <DateTimeField
@@ -38,6 +38,8 @@ export default class DateTimeFieldDemo extends React.Component {
                         value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
+                </section>
+                <section>
                     <DateTimeField
                         label="日期"
                         name="date"
@@ -61,8 +63,8 @@ export default class DateTimeFieldDemo extends React.Component {
                         value="2016-06-01T08:00:00Z"
                         changeHandler={this.changeHandler}
                     />
-                </div>
-                <div className="col-md-6">
+                </section>
+                <section>
                     <DateTimeField
                         label="日期"
                         groupClassName="horizontal"
@@ -86,7 +88,7 @@ export default class DateTimeFieldDemo extends React.Component {
                         wrapperClassName="col-sm-10"
                         changeHandler={this.changeHandler}
                     />
-                </div>
+                </section>
             </div>
         );
     }

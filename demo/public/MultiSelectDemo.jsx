@@ -36,8 +36,8 @@ export default class MultiSelectDemo extends React.Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-md-6">
+            <div>
+                <section>
                     <MultiSelect
                         label="地区"
                         wrapperClassName="eui-wrapper"
@@ -52,8 +52,8 @@ export default class MultiSelectDemo extends React.Component {
                         datasource={datasource2}
                         changeHandler={this.changeHandler}
                     />
-                </div>
-                <div className="col-md-6">
+                </section>
+                <section>
                     <MultiSelect
                         label="地区"
                         groupClassName="horizontal"
@@ -76,7 +76,7 @@ export default class MultiSelectDemo extends React.Component {
                         datasource={datasource4}
                         changeHandler={this.changeHandler}
                     />
-                </div>
+                </section>
             </div>
         );
     }
