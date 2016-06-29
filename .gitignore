@@ -4,3 +4,4 @@ dist/
 demo/upload/*
 !demo/upload/.gitkeep
 *.log
+.vscode

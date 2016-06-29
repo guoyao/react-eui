@@ -72,6 +72,7 @@ export default class TableDemo extends React.Component {
                 data={this.state.datasource}
                 selectRow={selectRowProp}
                 editRowProp={editRowProp}
+                resizeMode="fix"
             >
                 <TableHeaderColumn dataField="name" mustVisible>姓名</TableHeaderColumn>
                 <TableHeaderColumn dataField="age" defaultVisible>年龄</TableHeaderColumn>

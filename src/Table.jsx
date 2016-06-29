@@ -6,6 +6,7 @@
 import './css/Table.less';
 
 import u from 'underscore';
+import $ from 'jquery';
 import _extends from 'babel-runtime/helpers/extends';
 import _Object$keys from 'babel-runtime/core-js/object/keys';
 import _objectWithoutProperties from 'babel-runtime/helpers/object-without-properties';
@@ -18,6 +19,8 @@ import {DropdownButton, Dropdown, Input, Button, OverlayTrigger, Tooltip} from '
 import ToolBar from 'react-bootstrap-table/lib/toolbar/ToolBar';
 import _Const2 from 'react-bootstrap-table/lib/Const';
 import _NotificationJs2 from 'react-bootstrap-table/lib/Notification';
+
+import './util/colresizable';
 
 class DropdownButtonEx extends DropdownButton {
     render() {
@@ -189,7 +192,11 @@ class TableToolBar extends ToolBar {
         });
 
         localStorage.setItem(this.uniqueName, JSON.stringify(columns));
+        this.props.table.initDrag({disable: true});
         this.columnVisibleUpdate();
+        setTimeout(() => {
+            this.props.table.initDrag();
+        }, 500);
     }
 
     cancelHandler() {
@@ -464,12 +471,16 @@ function getTitle(props) {
 export default class Table extends BootstrapTable {
     static propTypes = {
         ...BootstrapTable.propTypes,
-        uniqueName: React.PropTypes.string
+        uniqueName: React.PropTypes.string,
+        resizable: React.PropTypes.bool,
+        resizeMode: React.PropTypes.oneOf(['fix', 'overflow', 'flex'])
     }
 
     static defaultProps = {
         ...BootstrapTable.defaultProps,
-        uniqueName: ''
+        uniqueName: '',
+        resizable: true,
+        resizeMode: 'overflow'
     }
 
     constructor() {
@@ -594,5 +605,36 @@ export default class Table extends BootstrapTable {
         }
 
         return null;
+    }
+
+    componentDidMount() {
+        super.componentDidMount && super.componentDidMount();
+        setTimeout(() => {
+            this.initDrag();
+        }, 500);
+    }
+
+    initDrag(options) {
+        const {resizable, selectRow} = this.props;
+        const selectable = selectRow && selectRow.mode !== 'none';
+        const $root = $(ReactDOM.findDOMNode(this));
+
+        selectable && $root.addClass('selectable');
+
+        if (resizable) {
+            const $table = $root.find('.react-bs-container-body table');
+
+            $table.colResizable(u.extend({
+                resizeMode: this.props.resizeMode,
+                minWidth: 100,
+                partialRefresh: true,
+                disabledColumns: selectable ? [0] : [],
+                onResize: () => {
+                    this.forceUpdate();
+                }
+            }, options));
+
+            this.forceUpdate();
+        }
     }
 }
