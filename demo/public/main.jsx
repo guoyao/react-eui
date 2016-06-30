@@ -10,7 +10,7 @@ import TableDemo from './TableDemo';
 import RichTextEditorDemo from './RichTextEditorDemo';
 import DateTimeFieldDemo from './DateTimeFieldDemo';
 import DateTimeRangeDemo from './DateTimeRangeDemo';
-import DateTimeRangeExDemo from './DateTimeRangeExDemo';
+import DateTimeRangePickerDemo from './DateTimeRangePickerDemo';
 import FormDemo from './FormDemo';
 
 import './main.less';
@@ -54,8 +54,8 @@ class Container extends React.Component {
                 <Tab eventKey="date-time-range" title="DateTimeRange">
                     <DateTimeRangeDemo />
                 </Tab>
-                <Tab eventKey="date-time-range-ex" title="DateTimeRangeEx">
-                    <DateTimeRangeExDemo />
+                <Tab eventKey="date-time-range-picker" title="DateTimeRangePicker">
+                    <DateTimeRangePickerDemo />
                 </Tab>
                 <Tab eventKey="form" title="Form">
                     <FormDemo />
