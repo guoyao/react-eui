@@ -7,119 +7,30 @@ import './css/Select.less';
 
 import u from 'underscore';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import {DropdownButton, MenuItem} from 'react-bootstrap';
 
 import Control from './Control';
 import InputControl from './InputControl';
-
-class ItemRenderer extends Control {
-    static propTypes = {
-        ...Control.propTypes,
-
-        selectHandler: React.PropTypes.func
-    }
-
-    static defaultProps = {
-        ...Control.defaultProps,
-
-        /* eslint-disable no-unused-vars */
-        selectHandler: (e, value, datasource, index) => {}
-        /* eslint-enable no-unused-vars */
-    }
-
-    constructor(...args) {
-        super(...args);
-
-        this.state = {value: this.props.value};
-        this.selectHandler = this.selectHandler.bind(this);
-        this.datasource = this.getDatasource(this.props);
-    }
-
-    getDatasource(props) {
-        const isRawSource = props.isRawSource;
-        let {datasource, emptyLabel} = props;
-
-        datasource = !datasource ? [] : datasource.slice();
-
-        if (!isRawSource && datasource[0] && datasource[0].value !== '') {
-            datasource.unshift({label: emptyLabel || '请选择', value: ''});
-        }
-
-        return datasource;
-    }
-
-    selectHandler(e, value) {
-        if (this.props.disableChange) {
-            this.props.selectHandler(e, value, this.datasource, this.props.index);
-
-            return false;
-        }
-
-        this.setState({value}, () => {
-            this.props.selectHandler(e, value, this.datasource, this.props.index);
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
-
-        if (this.props.value !== nextProps.value) {
-            this.setState({value: nextProps.value});
-        }
-
-        if (this.props.datasource !== nextProps.datasource) {
-            this.datasource = this.getDatasource(nextProps);
-        }
-    }
-
-    renderControl() {
-        if (this.datasource.length === 0) {
-            return null;
-        }
-
-        const value = this.state.value;
-
-        let selectedItem = u.find(this.datasource, item => item.value === value);
-        !selectedItem && (selectedItem = this.datasource[0]);
-
-        let title = selectedItem.label;
-
-        return (
-            <DropdownButton
-                id={this.props.id}
-                title={title}
-                disabled={!!this.props.disabled}
-                onSelect={this.selectHandler}
-            >
-            {
-                this.datasource.map(item => {
-                    return (
-                        <MenuItem
-                            key={item.value}
-                            eventKey={item.value}
-                            disabled={!!item.disabled}
-                        >
-                            {item.label}
-                        </MenuItem>
-                    );
-                })
-            }
-            </DropdownButton>
-        );
-    }
-}
+import ItemRenderer from './itemRenderers/ItemRenderer';
+import SelectItemRenderer from './itemRenderers/SelectItemRenderer';
 
 export default class Select extends InputControl {
     static propTypes = {
         ...InputControl.propTypes,
 
         datasource: React.PropTypes.arrayOf(React.PropTypes.object),
+        isRawSource: React.PropTypes.bool,
+        emptyLabel: React.PropTypes.string,
+        disableChange: React.PropTypes.bool,
+        itemRenderer: React.PropTypes.func,
         selectHandler: React.PropTypes.func
     }
 
     static defaultProps = {
         ...InputControl.defaultProps,
+
+        itemRenderer: SelectItemRenderer,
 
         /* eslint-disable no-unused-vars */
         /**
@@ -211,7 +122,7 @@ export default class Select extends InputControl {
 
     getInputDOMNode() {
         let target = super.getInputDOMNode();
-        return target || document.getElementById(`${this.props.name}-0`);
+        return target || ReactDOM.findDOMNode(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -262,22 +173,22 @@ export default class Select extends InputControl {
 
         this.numItemRenderer = datasources.length;
 
+        const {isRawSource, emptyLabel, disabled, disableChange} = this.props;
+        
         return (
             <Control className={this.controlClassName}>
             {
                 datasources.map((datasource, index) => {
                     return (
-                        <ItemRenderer
+                        <this.props.itemRenderer
                             key={index}
                             index={index}
-                            id={`${this.props.name}-${index}`}
-                            ref={`itemRenderer${index}`}
-                            datasource={datasource.datasource}
-                            isRawSource={this.props.isRawSource}
-                            value={datasource.value}
-                            emptyLabel={this.props.emptyLabel}
-                            disabled={!!this.props.disabled}
-                            disableChange={!!this.props.disableChange}
+                            data={datasource}
+                            parent={this}
+                            isRawSource={isRawSource}
+                            emptyLabel={emptyLabel}
+                            disabled={!!disabled}
+                            disableChange={!!disableChange}
                             selectHandler={this.selectHandler}
                         />
                     );

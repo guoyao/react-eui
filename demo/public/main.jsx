@@ -6,6 +6,7 @@ import {autobind} from 'core-decorators';
 import InputControlDemo from './InputControlDemo';
 import SelectDemo from './SelectDemo';
 import MultiSelectDemo from './MultiSelectDemo';
+import ButtonSelectDemo from './ButtonSelectDemo';
 import TableDemo from './TableDemo';
 import RichTextEditorDemo from './RichTextEditorDemo';
 import DateTimeFieldDemo from './DateTimeFieldDemo';
@@ -47,6 +48,9 @@ class Container extends React.Component {
                 </Tab>
                 <Tab eventKey="multi-select" title="MultiSelect">
                     <MultiSelectDemo />
+                </Tab>
+                <Tab eventKey="button-select" title="ButtonSelect">
+                    <ButtonSelectDemo />
                 </Tab>
                 <Tab eventKey="date-time-field" title="DateTimeField">
                     <DateTimeFieldDemo />

@@ -2,10 +2,12 @@
  * @file demo for Select component
  * @author guoyao(wuguoyao@baidu.com)
  **/
-import React from 'react';
-import {autobind} from 'core-decorators';
 
-import {Select, Validator} from '../../index';
+import u from 'underscore';
+import React from 'react';
+import {autobind, override} from 'core-decorators';
+
+import {Select, ItemRenderer, Validator} from '../../index';
 
 const datasource = [
     {label: 'item-1', value: 'value-1'},
@@ -26,6 +28,15 @@ const datasource = [
         {label: 'item-5-3', value: 'value-5-3'}
     ]}
 ];
+
+class SimpleItemRenderer extends ItemRenderer {
+    @override
+    renderControl() {
+        const text = u.pluck(this.props.data.datasource, 'label').join(' ');
+
+        return <span>{text}</span>;
+    }
+}
 
 export default class SelectDemo extends React.Component {
     constructor(...args) {
@@ -54,7 +65,7 @@ export default class SelectDemo extends React.Component {
                         {label: 'label001-3', value: 'value-001-3'}
                     ]
                 },
-            ], selectedValue: 'value-5,value-001-2,value-001-2-3'});
+            ], value: 'value-5,value-001-2,value-001-2-3'});
         }, 3000);
 
         setTimeout(() => {
@@ -72,6 +83,13 @@ export default class SelectDemo extends React.Component {
             <div>
                 <section>
                     <Select datasource={this.state.datasource} />
+
+                    <Select
+                        label="Custom ItemRenderer"
+                        wrapperClassName="eui-wrapper"
+                        itemRenderer={SimpleItemRenderer}
+                        datasource={this.state.datasource}
+                    />
 
                     <Select
                         label="地区"
@@ -110,6 +128,7 @@ export default class SelectDemo extends React.Component {
                         }}
                     />
                 </section>
+
                 <section>
                     <Select
                         label="地区"

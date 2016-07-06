@@ -15,12 +15,12 @@ export default class Control extends React.Component {
     }
 
     renderControl() {
-        const props = u.extend({}, u.omit(this.props, 'children'), {className: this.controlClassName});
-
-        return <div {...props}>{this.props.children}</div>;
+        return this.props.children;
     }
 
     render() {
-        return this.renderControl();
+        const props = u.extend({}, u.omit(this.props, 'children', 'data'), {className: this.controlClassName});
+
+        return <div {...props}>{this.renderControl()}</div>;
     }
 }
