@@ -3,7 +3,7 @@
 * @author guoyao(wuguoyao@baidu.com)
 **/
 
-import './css/RichTextEditor.less';
+import './RichTextEditor.less';
 
 import React from 'react';
 

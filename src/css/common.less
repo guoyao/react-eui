@@ -9,13 +9,16 @@
     height: 32px;
     background-image: none;
     border-radius: 0 !important;
-    box-shadow: none;
+    .box-shadow(none);
     outline: none;
 
     &:hover,
     &:focus,
-    &:active {
+    &:active,
+    &.active {
         outline: none;
+        z-index: 1;
+        .box-shadow(none);
     }
 
     &.btn-disabled {
@@ -28,16 +31,24 @@
     border: 1px solid #CDD6E1;
     background-color: #FAFAFA;
 
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        outline: none;
+        .box-shadow(none);
+    }
+
+    &:hover {
+        background-color: #E9E9E9;
+    }
+
     &.btn-disabled {
         &:hover,
         &:focus,
         &:active {
             background-color: #FAFAFA;
         }
-    }
-
-    &:hover {
-        background-color: #E9E9E9;
     }
 }
 

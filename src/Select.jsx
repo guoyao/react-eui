@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './css/Select.less';
+import './Select.less';
 
 import u from 'underscore';
 import React from 'react';
@@ -55,6 +55,11 @@ export default class Select extends InputControl {
 
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-select');
+    }
+
+    getInputDOMNode() {
+        let target = super.getInputDOMNode();
+        return target || ReactDOM.findDOMNode(this);
     }
 
     selectHandler(e, value, datasource, index) {
@@ -118,11 +123,6 @@ export default class Select extends InputControl {
         }
 
         return value ? value.replace(/,$/, '') : '';
-    }
-
-    getInputDOMNode() {
-        let target = super.getInputDOMNode();
-        return target || ReactDOM.findDOMNode(this);
     }
 
     componentWillReceiveProps(nextProps) {

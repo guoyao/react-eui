@@ -9,11 +9,9 @@
 }
 
 .eui-select {
-    > .eui-item-renderer {
-        margin-left: -1px;
-
-        &:first-child {
-            margin-left: 0;
+    > .eui-select-item-renderer {
+        & + .eui-select-item-renderer {
+            margin-left: -1px;
         }
     }
 
@@ -31,7 +29,6 @@
             padding: 0 10px;
             background: none;
             &:hover {
-                // background-color: #54ABD9;
                 background-color: #E9E9E9;
             }
         }

@@ -21,8 +21,4 @@ let util = {};
 
 util.emptyFunc = function () {};
 
-util.defaultFunc = function (v) {
-    return v;
-};
-
 export default util;

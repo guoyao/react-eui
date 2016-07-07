@@ -3,7 +3,7 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './css/Table.less';
+import './Table.less';
 
 import u from 'underscore';
 import $ from 'jquery';
