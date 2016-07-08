@@ -3,8 +3,6 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './DateTimeRangePicker.less';
-
 import React from 'react';
 import u from 'underscore';
 import moment from 'moment';

@@ -3,8 +3,6 @@
 * @author guoyao(wuguoyao@baidu.com)
 **/
 
-import './ButtonSelect.less';
-
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';

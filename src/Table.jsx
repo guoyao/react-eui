@@ -3,8 +3,6 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './Table.less';
-
 import u from 'underscore';
 import $ from 'jquery';
 import _extends from 'babel-runtime/helpers/extends';

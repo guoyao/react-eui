@@ -6,7 +6,7 @@
   "description": "ui components based on react & react-bootstrap and so on",
   "scripts": {
     "start": "node demo/http.server.js --debug --port 9080",
-    "build": "babel --stage 0 ./src -d ./lib",
+    "build": "./node_modules/.bin/babel --stage 0 ./src -d ./lib",
     "eslint": "eslint src/**/*.js src/**/*.jsx || exit 0"
   },
   "keywords": [
@@ -40,6 +40,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.10.1",
     "babel-core": "^6.7.7",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",

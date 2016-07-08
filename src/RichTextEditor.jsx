@@ -3,8 +3,6 @@
 * @author guoyao(wuguoyao@baidu.com)
 **/
 
-import './RichTextEditor.less';
-
 import React from 'react';
 
 import InputControl from './InputControl';

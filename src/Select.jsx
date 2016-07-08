@@ -3,8 +3,6 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './Select.less';
-
 import u from 'underscore';
 import React from 'react';
 import ReactDOM from 'react-dom';

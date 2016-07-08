@@ -3,8 +3,6 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './DateTimeField.less';
-
 import u from 'underscore';
 import moment from 'moment';
 import React from 'react';

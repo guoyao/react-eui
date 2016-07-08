@@ -3,8 +3,6 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 
-import './DateTimeRange.less';
-
 import React from 'react';
 import classnames from 'classnames';
 import {autobind, override} from 'core-decorators';

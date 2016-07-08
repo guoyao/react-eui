@@ -3,8 +3,6 @@
  * @author chenqiang(chenqiang03@baidu.com)
  */
 
-import './MultiSelect.less';
-
 import u from 'underscore';
 import classnames from 'classnames';
 import React from 'react';

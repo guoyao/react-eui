@@ -1,4 +1,3 @@
-import './css/common.less';
 import './util/util';
 
 import Validator from './util/validator';
