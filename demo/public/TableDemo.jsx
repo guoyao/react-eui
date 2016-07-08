@@ -7,7 +7,7 @@ import React from 'react';
 import {autobind} from 'core-decorators';
 import {TableHeaderColumn} from 'react-bootstrap-table';
 
-import {Table} from '../../index';
+import {Table} from '../../src/index';
 
 const datasource = [
     {id: 1, name: '张三', age: 20, gender: '男', tel: '13012345678', address: '北京市海淀区'},

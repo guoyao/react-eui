@@ -5,7 +5,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 
-import {DateTimeField} from '../../index';
+import {DateTimeField} from '../../src/index';
 
 export default class DateTimeFieldDemo extends React.Component {
     constructor(...args) {

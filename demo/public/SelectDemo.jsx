@@ -7,7 +7,7 @@ import u from 'underscore';
 import React from 'react';
 import {autobind, override} from 'core-decorators';
 
-import {Select, ItemRenderer, Validator} from '../../index';
+import {Select, ItemRenderer, Validator} from '../../src/index';
 
 const datasource = [
     {label: 'item-1', value: 'value-1'},

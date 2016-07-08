@@ -6,7 +6,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 
-import {MultiSelect} from '../../index';
+import {MultiSelect} from '../../src/index';
 
 const datasource = ['北京', '深圳', '青岛', '杭州', '香港', '美国硅谷', '上海', '亚太（新加坡）'];
 const datasource2 = [

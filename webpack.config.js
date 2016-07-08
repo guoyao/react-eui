@@ -29,7 +29,7 @@ module.exports = {
         ] : ['./index.js']
     },
     output: {
-        filename: DEBUG ? '[name].js' : 'reui.min.js',
+        filename: DEBUG ? '[name].js' : 'react-eui.min.js',
         path: documentPath + '/dist',
         publicPath: '/demo'
     },
@@ -103,7 +103,7 @@ module.exports = {
                 comments: false
             }
         }),
-        new ExtractTextPlugin('reui.min.css'),
+        new ExtractTextPlugin('react-eui.min.css'),
         new webpack.NoErrorsPlugin()
     ]),
     devtool: 'eval-cheap-module-source-map'

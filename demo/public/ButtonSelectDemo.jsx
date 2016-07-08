@@ -6,7 +6,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 
-import {ButtonSelect} from '../../index';
+import {ButtonSelect} from '../../src/index';
 
 const datasource = [
     {label: 'label1', value: 'value1'},

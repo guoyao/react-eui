@@ -13,7 +13,7 @@ import {
     DateTimeField,
     DateTimeRange,
     Form
-} from '../../index';
+} from '../../src/index';
 
 const datasource = [
     {label: 'item-1', value: 'value-1'},

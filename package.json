@@ -2,11 +2,11 @@
   "name": "react-eui",
   "version": "0.0.2",
   "title": "react-eui",
-  "main": "index.js",
+  "main": "lib/index.js",
   "description": "ui components based on react & react-bootstrap and so on",
   "scripts": {
     "start": "node demo/http.server.js --debug --port 9080",
-    "build": "webpack --progress --colors",
+    "build": "babel --stage 0 ./src -d ./lib",
     "eslint": "eslint src/**/*.js src/**/*.jsx || exit 0"
   },
   "keywords": [

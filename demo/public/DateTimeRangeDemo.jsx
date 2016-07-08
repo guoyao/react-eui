@@ -5,7 +5,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 
-import {DateTimeRange} from '../../index';
+import {DateTimeRange} from '../../src/index';
 
 export default class DateTimeRangeDemo extends React.Component {
     constructor(...args) {

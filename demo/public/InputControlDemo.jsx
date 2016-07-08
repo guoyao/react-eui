@@ -6,7 +6,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 
-import {InputControl} from '../../index';
+import {InputControl} from '../../src/index';
 
 export default class InputControlDemo extends React.Component {
     @autobind
