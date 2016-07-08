@@ -37,7 +37,10 @@ export default class ButtonSelect extends InputControl {
 
         itemRenderer: ButtonSelectItemRenderer,
         multiple: true,
+
+        /* eslint-disable no-unused-vars */
         changeHandler: (value) => {}
+        /* eslint-enable no-unused-vars */
     }
 
     constructor(...args) {
@@ -76,7 +79,7 @@ export default class ButtonSelect extends InputControl {
 
         this.setState({value: values.join(',')}, () => {
             this.props.changeHandler(this.state.value);
-        })
+        });
     }
 
     componentWillReceiveProps(nextProps) {

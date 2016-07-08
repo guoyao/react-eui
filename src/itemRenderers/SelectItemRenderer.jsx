@@ -42,7 +42,7 @@ export default class SelectItemRenderer extends ItemRenderer {
     getDatasource(props) {
         const isRawSource = props.isRawSource;
         const {data, emptyLabel} = props;
-        
+
         let datasource = data.datasource;
 
         datasource = !datasource ? [] : datasource.slice();

@@ -23,14 +23,16 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
     static propTypes = {
         ...ItemRenderer.propTypes,
 
-        parentValue: React.PropTypes.any.isRequired,
+        parentValue: React.PropTypes.any,
         changeHandler: React.PropTypes.func
     }
 
     static defaultProps = {
         ...ItemRenderer.defaultProps,
 
+        /* eslint-disable no-unused-vars */
         changeHandler: (v, checked) => {}
+        /* eslint-enable no-unused-vars */
     }
 
     constructor(...args) {
@@ -48,11 +50,9 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
     changeHandler(e) {
         const {value} = e.target;
 
-        console.log(e.target.checked);
-
         this.setState({checked: e.target.checked}, () => {
             this.props.changeHandler(value, this.state.checked);
-        })
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -69,7 +69,7 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
         const {checked} = this.state;
 
         let className = 'btn btn-default';
-        
+
         if (checked) {
             className = classnames(className, 'active');
         }
@@ -78,7 +78,6 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
             <label className={className}>
                 <input
                     type="checkbox"
-                    autocomplete="off"
                     value={data.value}
                     checked={this.state.checked}
                     onChange={this.changeHandler}

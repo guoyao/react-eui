@@ -16,6 +16,7 @@
 
 */
 
+/* eslint-disable */
 import jQuery from 'jquery';
 
 (function($){
@@ -414,3 +415,4 @@ import jQuery from 'jquery';
         }
     });
 })(jQuery);
+/* eslint-enable */

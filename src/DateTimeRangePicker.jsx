@@ -50,22 +50,22 @@ const Locale = {
 
 function getRanges() {
     return {
-        '本月': [moment().startOf('month'), moment().endOf('month')],
-        '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-        '本季度': [moment().startOf('quarter'), moment().endOf('quarter')],
-        '下季度': [moment().add(1, 'quarter').startOf('quarter'), moment().add(1, 'quarter').endOf('quarter')],
-        '本年': [moment().startOf('year'), moment().endOf('year')],
-        '全部': [moment('2000', 'YYYY').startOf('year'), moment('2050', 'YYYY').endOf('year')]
+        本月: [moment().startOf('month'), moment().endOf('month')],
+        上月: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        本季度: [moment().startOf('quarter'), moment().endOf('quarter')],
+        下季度: [moment().add(1, 'quarter').startOf('quarter'), moment().add(1, 'quarter').endOf('quarter')],
+        本年: [moment().startOf('year'), moment().endOf('year')],
+        全部: [moment('2000', 'YYYY').startOf('year'), moment('2050', 'YYYY').endOf('year')]
     };
 }
 
 function getSingleRanges() {
     return {
-        '今天': [moment().endOf('day'), moment().endOf('day')],
-        '昨天': [moment().subtract(1, 'day').endOf('day'), moment().subtract(1, 'day').endOf('day')],
-        '明天': [moment().add(1, 'day').endOf('day'), moment().add(1, 'day').endOf('day')],
-        '前天': [moment().subtract(2, 'day').endOf('day'), moment().subtract(2, 'day').endOf('day')],
-        '后天': [moment().add(2, 'day').endOf('day'), moment().add(2, 'day').endOf('day')]
+        今天: [moment().endOf('day'), moment().endOf('day')],
+        昨天: [moment().subtract(1, 'day').endOf('day'), moment().subtract(1, 'day').endOf('day')],
+        明天: [moment().add(1, 'day').endOf('day'), moment().add(1, 'day').endOf('day')],
+        前天: [moment().subtract(2, 'day').endOf('day'), moment().subtract(2, 'day').endOf('day')],
+        后天: [moment().add(2, 'day').endOf('day'), moment().add(2, 'day').endOf('day')]
     };
 }
 
@@ -97,7 +97,7 @@ function getRange(value, ranges, format, singleDatePicker) {
         range.endDate = range.startDate;
     }
 
-    u.each(ranges, (dates, key) => {
+    u.each(ranges, (dates) => {
         let [rangeStart, rangeEnd] = dates;
         if (rangeStart.isSame(range.startDate, unit) && rangeEnd.isSame(range.endDate, unit)) {
             range.startDate = rangeStart;

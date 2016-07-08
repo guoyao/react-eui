@@ -12,7 +12,6 @@ import classnames from 'classnames';
 
 import Control from './Control';
 import InputControl from './InputControl';
-import ItemRenderer from './itemRenderers/ItemRenderer';
 import SelectItemRenderer from './itemRenderers/SelectItemRenderer';
 
 export default class Select extends InputControl {
@@ -174,7 +173,7 @@ export default class Select extends InputControl {
         this.numItemRenderer = datasources.length;
 
         const {isRawSource, emptyLabel, disabled, disableChange} = this.props;
-        
+
         return (
             <Control className={this.controlClassName}>
             {
