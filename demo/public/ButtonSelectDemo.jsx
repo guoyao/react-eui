@@ -9,6 +9,7 @@ import {autobind} from 'core-decorators';
 import {ButtonSelect} from '../../src/index';
 
 const datasource = [
+    {label: '全部', value: ''},
     {label: 'label1', value: 'value1'},
     {label: 'label2', value: 'value2'},
     {label: 'label3', value: 'value3'}
@@ -63,6 +64,7 @@ export default class ButtonSelectDemo extends React.Component {
                         label="单选"
                         wrapperClassName="eui-wrapper"
                         multiple={false}
+                        keepOne
                         datasource={this.state.datasource}
                         value={this.state.value}
                         changeHandler={this.changeHandler}

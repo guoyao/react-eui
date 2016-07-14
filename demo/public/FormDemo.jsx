@@ -12,6 +12,7 @@ import {
     Select,
     DateTimeField,
     DateTimeRange,
+    ButtonSelect,
     Form
 } from '../../src/index';
 
@@ -33,6 +34,13 @@ const datasource = [
         ]},
         {label: 'item-5-3', value: 'value-5-3'}
     ]}
+];
+
+const datasource2 = [
+    {label: '全部', value: ''},
+    {label: 'label1', value: 'value1'},
+    {label: 'label2', value: 'value2'},
+    {label: 'label3', value: 'value3'}
 ];
 
 export default class FormDemo extends React.Component {
@@ -80,6 +88,17 @@ export default class FormDemo extends React.Component {
                         </InputControl>
 
                         <InputControl type="text" label="无name属性不会出现在表单提交中" />
+
+                        <ButtonSelect
+                            name="payment"
+                            datasource={datasource2}
+                            validate="required"
+                            errorHelp={{
+                                required: '请选择'
+                            }}
+                        />
+
+                        <br />
 
                         <button type="submit">提交</button>
                     </Form>

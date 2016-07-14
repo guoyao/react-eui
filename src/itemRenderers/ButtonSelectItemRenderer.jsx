@@ -9,7 +9,7 @@ function getChecked(props) {
     const parentValue = props.parentValue;
     let checked = false;
 
-    if (parentValue) {
+    if (u.isString(parentValue)) {
         const values = parentValue.split(',');
         checked = u.contains(values, props.data.value);
     }
@@ -55,10 +55,7 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
 
     componentWillReceiveProps(nextProps) {
         super.componentWillReceiveProps && super.componentWillReceiveProps(nextProps);
-
-        if (this.props.parentValue !== nextProps.parentValue) {
-            this.setState({checked: getChecked(nextProps)});
-        }
+        this.setState({checked: getChecked(nextProps)});
     }
 
     @override
@@ -76,7 +73,7 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
             <label className={className}>
                 <input
                     type="checkbox"
-                    value={data.value}
+                    value={data.value || ""}
                     checked={this.state.checked}
                     onChange={this.changeHandler}
                 />

@@ -26,6 +26,7 @@ export default class ButtonSelect extends InputControl {
 
         itemRenderer: React.PropTypes.func,
         multiple: React.PropTypes.bool,
+        keepOne: React.PropTypes.bool, // 是否至少保持一个处于选中状态
         datasource: React.PropTypes.arrayOf(React.PropTypes.object),
         changeHandler: React.PropTypes.func
     }
@@ -35,6 +36,7 @@ export default class ButtonSelect extends InputControl {
 
         itemRenderer: ButtonSelectItemRenderer,
         multiple: true,
+        keepOne: false,
 
         /* eslint-disable no-unused-vars */
         changeHandler: (value) => {}
@@ -64,19 +66,24 @@ export default class ButtonSelect extends InputControl {
 
     @autobind
     changeHandler(value, checked) {
-        const values = this.state.value ? this.state.value.split(',') : [];
+        const values = u.isString(this.state.value) ? this.state.value.split(',') : [];
         const index = u.findIndex(values, (v) => v === value);
 
         if (checked) {
             !this.props.multiple && values.splice(0, values.length);
             index === -1 && values.push(value);
         }
-        else if (index !== -1) {
+        else if (index !== -1 && !(this.props.keepOne && values.length === 1)) {
             values.splice(index, 1);
         }
 
+        var oldValue = this.getValue();
+        var newValue = values.join(',');
+
         this.setState({value: values.join(',')}, () => {
-            this.props.changeHandler(this.state.value);
+            if (oldValue !== newValue) {
+                this.props.changeHandler(this.getValue());
+            }
         });
     }
 
@@ -97,6 +104,10 @@ export default class ButtonSelect extends InputControl {
     @override
     renderControl() {
         const {datasource, value} = this.state;
+
+        if (!datasource || datasource.length === 0) {
+            return null;
+        }
 
         return (
             <Control className={this.controlClassName}>
