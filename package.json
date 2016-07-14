@@ -1,6 +1,6 @@
 {
   "name": "react-eui",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "title": "react-eui",
   "main": "lib/index.js",
   "description": "ui components based on react & react-bootstrap and so on",
