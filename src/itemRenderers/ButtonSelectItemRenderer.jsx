@@ -5,8 +5,6 @@ import {override, autobind} from 'core-decorators';
 
 import ItemRenderer from './ItemRenderer';
 
-import './ButtonSelectItemRenderer.less';
-
 function getChecked(props) {
     const parentValue = props.parentValue;
     let checked = false;
