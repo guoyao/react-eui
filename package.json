@@ -1,18 +1,15 @@
 {
   "name": "react-eui",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "title": "react-eui",
   "main": "lib/index.js",
   "description": "ui components based on react & react-bootstrap and so on",
-  "directories": {
-    "lib": "lib/",
-    "src": "src/"
-  },
   "scripts": {
     "start": "node demo/http.server.js --debug --port 9080",
     "build": "./node_modules/.bin/babel --stage 0 ./src -d ./lib && ./node_modules/.bin/gulp less",
     "eslint": "eslint src/**/*.js src/**/*.jsx || exit 0",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "react-eui",
