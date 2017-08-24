@@ -4,7 +4,6 @@
  **/
 
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {
     Validator,
@@ -44,23 +43,17 @@ const datasource2 = [
 ];
 
 export default class FormDemo extends React.Component {
-    constructor(...args) {
-        super(...args);
-        this.state = {datasource};
-    }
+    state = {datasource}
 
-    @autobind
-    changeHandler(value) {
+    changeHandler = value => {
         console.log(value);
     }
 
-    @autobind
-    selectHandler(value, datasource, index, selectedValues) {
+    selectHandler = (value, datasource, index, selectedValues) => {
         console.log(value, datasource, index, selectedValues);
     }
 
-    @autobind
-    validSubmitHandler(values) {
+    validSubmitHandler = values => {
         console.log(values);
     }
 

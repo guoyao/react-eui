@@ -3,22 +3,13 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {DateTimeRange} from '../../src/index';
 
 export default class DateTimeRangeDemo extends React.Component {
-    constructor(...args) {
-        super(...args);
-        this.state = {};
+    state = {}
 
-        // setTimeout(() => {
-        //     this.setState({timeRange: '2016-05-05T00:00:00Z,2016-06-06T00:00:00Z'});
-        // }, 5000);
-    }
-
-    @autobind
-    changeHandler(value) {
+    changeHandler = value => {
         console.log(value);
     }
 

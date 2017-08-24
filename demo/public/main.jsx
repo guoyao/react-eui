@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
-import {autobind} from 'core-decorators';
 
 import InputControlDemo from './InputControlDemo';
 import SelectDemo from './SelectDemo';
@@ -17,13 +16,9 @@ import FormDemo from './FormDemo';
 import './main.less';
 
 class Container extends React.Component {
-    constructor(...args) {
-        super(...args);
-        this.state = {};
-    }
+    state = {}
 
-    @autobind
-    selectHandler(tabKey) {
+    selectHandler = tabKey => {
         this.setState({activeTab: tabKey});
     }
 

@@ -4,7 +4,6 @@
  **/
 
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {MultiSelect} from '../../src/index';
 
@@ -26,8 +25,7 @@ const datasource4 = [
 ];
 
 export default class MultiSelectDemo extends React.Component {
-    @autobind
-    changeHandler(value, itemValue, itemChecked) {
+    changeHandler = (value, itemValue, itemChecked) => {
         console.log(value, itemValue, itemChecked);
     }
 

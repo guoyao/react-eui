@@ -3,17 +3,11 @@
  * @author guoyao(wuguoyao@baidu.com)
  **/
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {DateTimeField} from '../../src/index';
 
 export default class DateTimeFieldDemo extends React.Component {
-    constructor(...args) {
-        super(...args);
-    }
-
-    @autobind
-    changeHandler(value) {
+    changeHandler = value => {
         console.log(value);
     }
 

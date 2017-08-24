@@ -1,7 +1,6 @@
 import u from 'underscore';
 import classnames from 'classnames';
 import React from 'react';
-import {override} from 'core-decorators';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 
 import ItemRenderer from './ItemRenderer';
@@ -34,7 +33,6 @@ export default class SelectItemRenderer extends ItemRenderer {
         this.datasource = this.getDatasource(this.props);
     }
 
-    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-select-item-renderer');
     }

@@ -1,7 +1,6 @@
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
-import {override, autobind} from 'core-decorators';
 
 import ItemRenderer from './ItemRenderer';
 
@@ -39,13 +38,11 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
         this.state = {checked: getChecked(this.props)};
     }
 
-    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-button-select-item-renderer');
     }
 
-    @autobind
-    changeHandler(e) {
+    changeHandler = e => {
         const {value} = e.target;
 
         this.setState({checked: e.target.checked}, () => {
@@ -58,7 +55,6 @@ export default class ButtonSelectItemRenderer extends ItemRenderer {
         this.setState({checked: getChecked(nextProps)});
     }
 
-    @override
     renderControl() {
         const {data} = this.props;
         const {checked} = this.state;

@@ -5,7 +5,6 @@
 
 import u from 'underscore';
 import React from 'react';
-import {autobind, override} from 'core-decorators';
 
 import {Select, ItemRenderer, Validator} from '../../src/index';
 
@@ -30,7 +29,6 @@ const datasource = [
 ];
 
 class SimpleItemRenderer extends ItemRenderer {
-    @override
     renderControl() {
         const text = u.pluck(this.props.data.datasource, 'label').join(' ');
 
@@ -64,7 +62,7 @@ export default class SelectDemo extends React.Component {
                         },
                         {label: 'label001-3', value: 'value-001-3'}
                     ]
-                },
+                }
             ], value: 'value-5,value-001-2,value-001-2-3'});
         }, 3000);
 
@@ -73,8 +71,7 @@ export default class SelectDemo extends React.Component {
         }, 5000);
     }
 
-    @autobind
-    selectHandler(value, datasource, index, selectedValues) {
+    selectHandler = (value, datasource, index, selectedValues) => {
         console.log(value, datasource, index, selectedValues);
     }
 

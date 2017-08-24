@@ -6,7 +6,6 @@
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
-import {autobind, override} from 'core-decorators';
 
 import Control from './Control';
 import InputControl from './InputControl';
@@ -54,18 +53,15 @@ export default class ButtonSelect extends InputControl {
         };
     }
 
-    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-button-select');
     }
 
-    @override
     getValue() {
         return this.state.value;
     }
 
-    @autobind
-    changeHandler(value, checked) {
+    changeHandler = (value, checked) => {
         const values = u.isString(this.state.value) ? this.state.value.split(',') : [];
         const index = u.findIndex(values, (v) => v === value);
 
@@ -101,7 +97,6 @@ export default class ButtonSelect extends InputControl {
         }
     }
 
-    @override
     renderControl() {
         const {datasource, value} = this.state;
 

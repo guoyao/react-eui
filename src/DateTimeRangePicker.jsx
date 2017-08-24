@@ -7,7 +7,6 @@ import React from 'react';
 import u from 'underscore';
 import moment from 'moment';
 import classnames from 'classnames';
-import {autobind, override} from 'core-decorators';
 import {Button} from 'react-bootstrap';
 import DateTimeRangePicker from 'react-bootstrap-datetimerangepicker';
 
@@ -145,12 +144,10 @@ export default class DateTimeRangePickerEx extends InputControl {
         this.state = getRange(value, this.ranges, this.format, singleDatePicker);
     }
 
-    @override
     get controlClassName() {
         return classnames(super.controlClassName, 'eui-date-time-range-picker');
     }
 
-    @override
     getValue() {
         const {startDate, endDate} = this.state;
         const {singleDatePicker} = this.props;
@@ -170,8 +167,7 @@ export default class DateTimeRangePickerEx extends InputControl {
         return `${startDate.format(this.format)},${endDate.format(this.format)}`;
     }
 
-    @autobind
-    _applyHandler(e, picker) {
+    _applyHandler = (e, picker) => {
         let {startDate, endDate} = picker;
 
         if (this.props.singleDatePicker) {
@@ -191,7 +187,6 @@ export default class DateTimeRangePickerEx extends InputControl {
         }
     }
 
-    @override
     renderControl() {
         let props = u.omit(this.props, 'className', 'mode', 'format', 'inputFormat');
         const {startDate, endDate} = this.state;

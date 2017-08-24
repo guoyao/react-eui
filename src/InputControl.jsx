@@ -6,7 +6,6 @@
 import u from 'underscore';
 import React from 'react';
 import classnames from 'classnames';
-import {autobind, debounce} from 'core-decorators';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import {ValidatedInput, Validator, FileValidator} from 'react-bootstrap-validation';
 import toConsumableArray from 'babel-runtime/helpers/to-consumable-array';
@@ -93,6 +92,7 @@ export default class InputControl extends ValidatedInput {
         }
 
         this.state = {};
+        this.inputHandler = u.debounce(this.inputHandler, 100);
     }
 
     get controlClassName() {
@@ -254,9 +254,7 @@ export default class InputControl extends ValidatedInput {
         this.props.type === 'textarea' && autosize(inputNode);
     }
 
-    @autobind
-    @debounce(100)
-    inputHandler() {
+    inputHandler = () => {
         this.maxLength && this.forceUpdate();
     }
 

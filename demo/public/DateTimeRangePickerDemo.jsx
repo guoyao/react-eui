@@ -4,7 +4,6 @@
  **/
 import moment from 'moment';
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {DateTimeRangePicker} from '../../src/index';
 import timeUtil from '../../src/util/timeUtil';
@@ -26,8 +25,7 @@ export default class DateTimeRangePickerDemo extends React.Component {
         }, 5000);
     }
 
-    @autobind
-    changeHandler(value) {
+    changeHandler = value => {
         console.log(value);
     }
 

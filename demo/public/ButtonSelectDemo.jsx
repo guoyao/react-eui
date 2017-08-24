@@ -4,7 +4,6 @@
  **/
 
 import React from 'react';
-import {autobind} from 'core-decorators';
 
 import {ButtonSelect} from '../../src/index';
 
@@ -26,8 +25,7 @@ export default class ButtonSelectDemo extends React.Component {
         }, 5000);
     }
 
-    @autobind
-    changeHandler(value) {
+    changeHandler = value => {
         console.log(value);
     }
 
